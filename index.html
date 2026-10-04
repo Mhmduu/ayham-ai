@@ -1,21 +1,661 @@
-<!doctype html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080d1c"><title>Ayham AI</title>
-<style>
-:root{color-scheme:dark;--bg:#080d1c;--panel:#111a2e;--line:#273552;--cyan:#42e8d5;--blue:#70a7ff;--text:#f4f7ff;--muted:#a8b5ce}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top right,#18294b,transparent 48%),radial-gradient(ellipse at bottom left,#241744,transparent 42%),var(--bg);font-family:system-ui,Tahoma,sans-serif;color:var(--text);display:grid;place-items:center;padding:22px}.wrap{width:min(100%,460px)}.brand{text-align:center;margin-bottom:22px}.logo{width:66px;height:66px;border-radius:22px;margin:0 auto 12px;display:grid;place-items:center;font-size:28px;font-weight:900;color:#06111e;background:linear-gradient(135deg,var(--cyan),var(--blue))}h1{font-size:28px;margin:0 0 5px}.brand p,.hint,footer{color:var(--muted)}.card{border:1px solid #ffffff18;background:linear-gradient(145deg,#121c31ee,#0d1426f2);border-radius:24px;padding:24px;box-shadow:0 24px 80px #0007}.tabs{display:grid;grid-template-columns:1fr 1fr;background:#080e1d;border:1px solid var(--line);padding:4px;border-radius:14px;gap:4px;margin-bottom:22px}.tabs button{border:0;background:transparent;color:var(--muted);padding:11px;border-radius:10px;font:inherit}.tabs button.active{background:#21314e;color:white}label{display:block;font-size:14px;margin:14px 0 7px}input{width:100%;border:1px solid var(--line);background:#080f20;color:white;padding:13px 14px;border-radius:12px;font:inherit;outline:none}input:focus{border-color:var(--cyan)}.primary{width:100%;margin-top:20px;border:0;border-radius:13px;padding:14px;font:inherit;font-weight:800;color:#06111e;background:linear-gradient(100deg,var(--cyan),var(--blue))}.message{display:none;padding:12px;border-radius:12px;margin-top:15px;font-size:14px;line-height:1.7;overflow-wrap:anywhere}.message.show{display:block}.error{background:#481e2a;color:#ffd7dd}.success{background:#123b32;color:#d4ffea}.account{display:none}.account.show{display:block}.hint{font-size:12px;line-height:1.8}.signout{margin-top:14px;border:1px solid var(--line);background:transparent;color:white;border-radius:12px;padding:11px;font:inherit}footer{text-align:center;font-size:12px;margin-top:18px}
-</style></head><body><main class="wrap"><header class="brand"><div class="logo">A</div><h1>Ayham AI</h1><p>مساحتك الذكية، خطوة بخطوة</p></header>
-<section class="card" id="authCard"><div class="tabs"><button id="loginTab" class="active" type="button">تسجيل الدخول</button><button id="signupTab" type="button">إنشاء حساب</button></div>
-<form id="authForm"><label for="email">البريد الإلكتروني</label><input id="email" type="email" autocomplete="email" placeholder="name@example.com" required><label for="password">كلمة المرور</label><input id="password" type="password" autocomplete="current-password" minlength="6" placeholder="6 أحرف على الأقل" required><button class="primary" id="submitBtn" type="submit">تسجيل الدخول</button></form><div id="message" class="message" role="status"></div><p class="hint">لا تشارك كلمة المرور مع أي شخص.</p></section>
-<section class="card account" id="accountCard"><h2>أهلاً بيك في Ayham AI ✨</h2><p id="userEmail"></p><p id="credits">جاري تحميل معلومات الحساب…</p><button class="signout" id="signoutBtn" type="button">تسجيل الخروج</button><div id="accountMessage" class="message"></div></section><footer>Ayham AI · نسخة أولية لتجربة التسجيل</footer></main>
-<script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-const supabase=createClient('https://yyhykirxcsbgfddjyuti.supabase.co','sb_publishable_ulGr0S06yyfBBzsiJqSeRQ_p3sO5dxh');
-const authCard=document.querySelector('#authCard'), accountCard=document.querySelector('#accountCard'), form=document.querySelector('#authForm'), emailInput=document.querySelector('#email'), passwordInput=document.querySelector('#password'), submitBtn=document.querySelector('#submitBtn'), message=document.querySelector('#message'), accountMessage=document.querySelector('#accountMessage'), loginTab=document.querySelector('#loginTab'), signupTab=document.querySelector('#signupTab');let mode='login';
-function msg(el,text,kind='error'){el.textContent=text;el.className='message show '+kind}function clear(){message.className='message';message.textContent=''}
-function setMode(m){mode=m;loginTab.classList.toggle('active',m==='login');signupTab.classList.toggle('active',m==='signup');submitBtn.textContent=m==='login'?'تسجيل الدخول':'إنشاء حساب';passwordInput.autocomplete=m==='login'?'current-password':'new-password';clear()}
-loginTab.onclick=()=>setMode('login');signupTab.onclick=()=>setMode('signup');
-async function showUser(user){authCard.style.display='none';accountCard.classList.add('show');document.querySelector('#userEmail').textContent=user.email||'حسابك';const c=document.querySelector('#credits');const {data,error}=await supabase.from('profiles').select('credits').eq('id',user.id).maybeSingle();c.textContent=error?'تم الدخول، لكن تعذر تحميل الرصيد.':data?`الرصيد التجريبي: ${data.credits??20} نقطة`:'تم الدخول. ملف الحساب غير موجود بعد.'}
-function signedOut(){accountCard.classList.remove('show');authCard.style.display='block'}
-form.onsubmit=async e=>{e.preventDefault();clear();submitBtn.disabled=true;submitBtn.textContent='لحظة…';try{const email=emailInput.value.trim(),password=passwordInput.value;if(mode==='signup'){const {data,error}=await supabase.auth.signUp({email,password});if(error)throw error;if(data.session&&data.user)await showUser(data.user);else{msg(message,'تم إرسال طلب إنشاء الحساب. افتح بريدك واضغط رابط التأكيد إذا كان تأكيد البريد مفعّلاً.','success');setMode('login')}}else{const {data,error}=await supabase.auth.signInWithPassword({email,password});if(error)throw error;await showUser(data.user)}}catch(e){msg(message,e?.message||'صار خطأ، حاول مرة ثانية.')}finally{submitBtn.disabled=false;submitBtn.textContent=mode==='login'?'تسجيل الدخول':'إنشاء حساب'}};
-document.querySelector('#signoutBtn').onclick=async()=>{const {error}=await supabase.auth.signOut();if(error)msg(accountMessage,error.message);else signedOut()};
-const {data:{session}}=await supabase.auth.getSession();if(session?.user)showUser(session.user);supabase.auth.onAuthStateChange((_event,s)=>{if(s?.user)showUser(s.user);else signedOut()});
-</script></body></html>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d1c">
+  <title>Ayham AI | أيهم AI</title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080d1c;
+      --panel: #111a2e;
+      --line: #273552;
+      --cyan: #42e8d5;
+      --blue: #70a7ff;
+      --text: #f4f7ff;
+      --muted: #a8b5ce;
+      --red: #ff8e9d;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 22px;
+      display: grid;
+      place-items: center;
+      font-family: system-ui, Tahoma, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at top right, #18294b, transparent 48%),
+        radial-gradient(ellipse at bottom left, #241744, transparent 42%),
+        var(--bg);
+    }
+
+    button, input { font: inherit; }
+
+    button { cursor: pointer; }
+
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .wrap {
+      width: min(100%, 460px);
+      margin: auto;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 23px;
+      margin: 0 auto 12px;
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+      font-weight: 900;
+      color: #06111e;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      box-shadow: 0 0 35px #42e8d533;
+    }
+
+    h1 { font-size: 29px; margin: 0 0 5px; }
+    h2 { font-size: 22px; margin-top: 0; }
+
+    .brand p, .hint, footer { color: var(--muted); }
+
+    .card {
+      border: 1px solid #ffffff18;
+      background: linear-gradient(145deg, #121c31ee, #0d1426f2);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 24px 80px #0007;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #080e1d;
+      border: 1px solid var(--line);
+      padding: 4px;
+      border-radius: 14px;
+      gap: 4px;
+      margin-bottom: 22px;
+    }
+
+    .tabs button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 11px;
+      border-radius: 10px;
+    }
+
+    .tabs button.active {
+      background: #21314e;
+      color: white;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin: 14px 0 7px;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #080f20;
+      color: white;
+      padding: 13px 14px;
+      border-radius: 12px;
+      outline: none;
+    }
+
+    input:focus { border-color: var(--cyan); }
+
+    .primary {
+      width: 100%;
+      margin-top: 20px;
+      border: 0;
+      border-radius: 13px;
+      padding: 14px;
+      font-weight: 800;
+      color: #06111e;
+      background: linear-gradient(100deg, var(--cyan), var(--blue));
+    }
+
+    .secondary {
+      width: 100%;
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      color: white;
+      background: #101a2c;
+    }
+
+    .message {
+      display: none;
+      padding: 12px;
+      border-radius: 12px;
+      margin-top: 15px;
+      font-size: 14px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .message.show { display: block; }
+    .error { background: #481e2a; color: #ffd7dd; }
+    .success { background: #123b32; color: #d4ffea; }
+
+    .hint {
+      font-size: 12px;
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+
+    .account { display: none; }
+    .account.show { display: block; }
+
+    .balance {
+      padding: 18px;
+      margin: 18px 0;
+      border-radius: 16px;
+      border: 1px solid #42e8d544;
+      background: linear-gradient(135deg, #12383b88, #192c4c88);
+      text-align: center;
+    }
+
+    .balance small { color: var(--muted); }
+    .balance strong {
+      display: block;
+      font-size: 32px;
+      color: var(--cyan);
+      margin-top: 7px;
+    }
+
+    .signout {
+      width: 100%;
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: white;
+      border-radius: 12px;
+      padding: 11px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 18px;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+
+    <header class="brand">
+      <div class="logo">A</div>
+      <h1>Ayham AI</h1>
+      <p>مساحتك الذكية، خطوة بخطوة ✨</p>
+    </header>
+
+    <!-- تسجيل الدخول وإنشاء الحساب -->
+    <section class="card" id="authCard">
+      <div class="tabs">
+        <button id="loginTab" class="active" type="button">
+          تسجيل الدخول
+        </button>
+        <button id="signupTab" type="button">
+          إنشاء حساب
+        </button>
+      </div>
+
+      <form id="authForm">
+        <label for="email">البريد الإلكتروني</label>
+        <input
+          id="email"
+          type="email"
+          autocomplete="email"
+          placeholder="name@example.com"
+          required
+        >
+
+        <label for="password">كلمة المرور</label>
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          minlength="6"
+          placeholder="6 أحرف على الأقل"
+          required
+        >
+
+        <button class="primary" id="submitBtn" type="submit">
+          تسجيل الدخول
+        </button>
+      </form>
+
+      <button class="secondary" id="resetBtn" type="button">
+        نسيت كلمة المرور؟
+      </button>
+
+      <div id="message" class="message" role="status"></div>
+
+      <p class="hint">
+        حافظ على سرية كلمة المرور ولا تشاركها مع أي شخص.
+      </p>
+    </section>
+
+    <!-- صفحة الحساب -->
+    <section class="card account" id="accountCard">
+      <h2>أهلاً بيك في Ayham AI ✨</h2>
+      <p id="userEmail"></p>
+
+      <div class="balance">
+        <small>رصيد نقاط حسابك</small>
+        <strong id="credits">جاري التحميل...</strong>
+      </div>
+
+      <p class="hint">
+        هذا رصيد حسابك التجريبي. استخدام النقاط داخل خدمات الذكاء
+        الاصطناعي يحتاج إلى ربط خدمة الذكاء الاصطناعي ونظام خصم آمن.
+      </p>
+
+      <button class="secondary" id="refreshBtn" type="button">
+        تحديث الرصيد
+      </button>
+
+      <div id="accountMessage" class="message" role="status"></div>
+
+      <button class="signout" id="signoutBtn" type="button">
+        تسجيل الخروج
+      </button>
+    </section>
+
+    <footer>Ayham AI · تطوير أيهم نزار</footer>
+  </main>
+
+  <script type="module">
+    import { createClient } from
+      'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    // إعدادات مشروع Supabase
+    const SUPABASE_URL =
+      'https://yyhykirxcsbgfddjyuti.supabase.co';
+
+    const SUPABASE_KEY =
+      'sb_publishable_ulGr0S06yyfBBzsiJqSeRQ_p3sO5dxh';
+
+    const supabase = createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    // عناصر الصفحة
+    const authCard = document.querySelector('#authCard');
+    const accountCard = document.querySelector('#accountCard');
+    const form = document.querySelector('#authForm');
+    const emailInput = document.querySelector('#email');
+    const passwordInput = document.querySelector('#password');
+    const submitBtn = document.querySelector('#submitBtn');
+    const loginTab = document.querySelector('#loginTab');
+    const signupTab = document.querySelector('#signupTab');
+    const message = document.querySelector('#message');
+    const accountMessage = document.querySelector('#accountMessage');
+    const credits = document.querySelector('#credits');
+
+    let mode = 'login';
+    let currentUserId = null;
+    let loadNumber = 0;
+
+    function showMessage(element, text, type = 'error') {
+      element.textContent = text;
+      element.className = 'message show ' + type;
+    }
+
+    function clearMessage(element) {
+      element.textContent = '';
+      element.className = 'message';
+    }
+
+    function setMode(newMode) {
+      mode = newMode;
+
+      loginTab.classList.toggle('active', mode === 'login');
+      signupTab.classList.toggle('active', mode === 'signup');
+
+      submitBtn.textContent =
+        mode === 'login' ? 'تسجيل الدخول' : 'إنشاء حساب';
+
+      passwordInput.autocomplete =
+        mode === 'login' ? 'current-password' : 'new-password';
+
+      clearMessage(message);
+    }
+
+    function showAuth() {
+      currentUserId = null;
+      loadNumber++;
+
+      accountCard.classList.remove('show');
+      authCard.style.display = 'block';
+      clearMessage(accountMessage);
+    }
+
+    function showAccount(user) {
+      currentUserId = user.id;
+
+      authCard.style.display = 'none';
+      accountCard.classList.add('show');
+
+      document.querySelector('#userEmail').textContent =
+        user.email || 'حسابك';
+
+      loadCredits(user.id);
+    }
+
+    // تحميل الرصيد من جدول profiles
+    async function loadCredits(userId) {
+      const thisLoad = ++loadNumber;
+
+      credits.textContent = 'جاري تحميل الرصيد...';
+      clearMessage(accountMessage);
+
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('credits')
+          .eq('id', userId)
+          .maybeSingle();
+
+        // تجاهل أي نتيجة قديمة لحساب سابق
+        if (
+          thisLoad !== loadNumber ||
+          currentUserId !== userId
+        ) {
+          return;
+        }
+
+        if (error) {
+          console.error('Supabase profile error:', error);
+
+          credits.textContent = 'تعذر تحميل الرصيد';
+
+          showMessage(
+            accountMessage,
+            'فشل تحميل الرصيد: ' + error.message
+          );
+          return;
+        }
+
+        if (!data) {
+          credits.textContent = 'غير متوفر';
+
+          showMessage(
+            accountMessage,
+            'ما لقينا ملف الرصيد لهذا الحساب. تأكد من وجود سجل في جدول profiles.'
+          );
+          return;
+        }
+
+        credits.textContent =
+          Number(data.credits ?? 0).toLocaleString('en-US');
+
+        showMessage(
+          accountMessage,
+          'تم تحميل رصيد حسابك بنجاح.',
+          'success'
+        );
+
+      } catch (error) {
+        console.error('Unexpected profile error:', error);
+
+        if (thisLoad !== loadNumber) return;
+
+        credits.textContent = 'تعذر تحميل الرصيد';
+
+        showMessage(
+          accountMessage,
+          'حدث خطأ بالاتصال. تأكد من الإنترنت ثم حدّث الرصيد.'
+        );
+      }
+    }
+
+    function translateError(error) {
+      const text = String(error?.message || '').toLowerCase();
+
+      if (text.includes('invalid login credentials')) {
+        return 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
+      }
+
+      if (text.includes('email not confirmed')) {
+        return 'لازم تأكد بريدك الإلكتروني من رابط التأكيد.';
+      }
+
+      if (text.includes('user already registered')) {
+        return 'هذا البريد مسجل سابقاً. سجّل الدخول بدلاً من إنشاء حساب جديد.';
+      }
+
+      if (text.includes('password should be at least')) {
+        return 'كلمة المرور لازم تكون 6 أحرف على الأقل.';
+      }
+
+      if (text.includes('rate limit')) {
+        return 'حاولت مرات كثيرة. انتظر قليلاً ثم حاول مرة ثانية.';
+      }
+
+      if (text.includes('network') || text.includes('fetch')) {
+        return 'تعذر الاتصال. تأكد من الإنترنت وحاول مرة ثانية.';
+      }
+
+      return error?.message || 'صار خطأ غير متوقع. حاول مرة ثانية.';
+    }
+
+    loginTab.addEventListener('click', () => setMode('login'));
+    signupTab.addEventListener('click', () => setMode('signup'));
+
+    // تسجيل الدخول أو إنشاء حساب
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      clearMessage(message);
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'لحظة من فضلك...';
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      try {
+        if (mode === 'signup') {
+          const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              data: {
+                display_name: email.split('@')[0]
+              }
+            }
+          });
+
+          if (error) throw error;
+
+          if (data.session && data.user) {
+            showAccount(data.user);
+          } else {
+            showMessage(
+              message,
+              'تم إنشاء طلب الحساب. افتح بريدك الإلكتروني واضغط رابط التأكيد، وبعدها ارجع وسجّل الدخول.',
+              'success'
+            );
+
+            setMode('login');
+          }
+
+        } else {
+          const { data, error } =
+            await supabase.auth.signInWithPassword({
+              email,
+              password
+            });
+
+          if (error) throw error;
+
+          if (!data.user) {
+            throw new Error('تم تسجيل الدخول لكن لم يتم العثور على بيانات الحساب.');
+          }
+
+          showAccount(data.user);
+        }
+
+      } catch (error) {
+        console.error('Authentication error:', error);
+
+        showMessage(message, translateError(error));
+
+      } finally {
+        submitBtn.disabled = false;
+
+        submitBtn.textContent =
+          mode === 'login' ? 'تسجيل الدخول' : 'إنشاء حساب';
+      }
+    });
+
+    // استعادة كلمة المرور
+    document.querySelector('#resetBtn').addEventListener(
+      'click',
+      async () => {
+        const email = emailInput.value.trim();
+
+        if (!email) {
+          showMessage(
+            message,
+            'اكتب بريدك الإلكتروني أولاً، وبعدها اضغط نسيت كلمة المرور.'
+          );
+          emailInput.focus();
+          return;
+        }
+
+        const button = document.querySelector('#resetBtn');
+        button.disabled = true;
+        button.textContent = 'جاري الإرسال...';
+
+        try {
+          const { error } = await supabase.auth.resetPasswordForEmail(
+            email,
+            {
+              redirectTo: window.location.origin +
+                window.location.pathname
+            }
+          );
+
+          if (error) throw error;
+
+          showMessage(
+            message,
+            'إذا كان البريد مسجلاً، راح توصلك رسالة لاستعادة كلمة المرور. افحص البريد ومجلد الرسائل غير المرغوب بها.',
+            'success'
+          );
+
+        } catch (error) {
+          showMessage(message, translateError(error));
+
+        } finally {
+          button.disabled = false;
+          button.textContent = 'نسيت كلمة المرور؟';
+        }
+      }
+    );
+
+    // تحديث الرصيد يدوياً
+    document.querySelector('#refreshBtn').addEventListener(
+      'click',
+      async () => {
+        if (currentUserId) {
+          await loadCredits(currentUserId);
+        }
+      }
+    );
+
+    // تسجيل الخروج
+    document.querySelector('#signoutBtn').addEventListener(
+      'click',
+      async () => {
+        const button = document.querySelector('#signoutBtn');
+
+        button.disabled = true;
+        button.textContent = 'جاري تسجيل الخروج...';
+
+        try {
+          const { error } = await supabase.auth.signOut();
+
+          if (error) throw error;
+
+          showAuth();
+
+        } catch (error) {
+          showMessage(accountMessage, translateError(error));
+
+        } finally {
+          button.disabled = false;
+          button.textContent = 'تسجيل الخروج';
+        }
+      }
+    );
+
+    // مراقبة حالة تسجيل الدخول
+    // setTimeout يمنع تنفيذ عمليات Supabase داخل callback مباشرة
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'INITIAL_SESSION') return;
+
+      setTimeout(() => {
+        if (session?.user) {
+          if (currentUserId !== session.user.id) {
+            showAccount(session.user);
+          }
+        } else {
+          showAuth();
+        }
+      }, 0);
+    });
+
+    // استعادة الجلسة الموجودة عند فتح الموقع
+    try {
+      const { data, error } = await supabase.auth.getSession();
+
+      if (error) throw error;
+
+      if (data.session?.user) {
+        showAccount(data.session.user);
+      } else {
+        showAuth();
+      }
+
+    } catch (error) {
+      console.error('Session error:', error);
+
+      showAuth();
+
+      showMessage(
+        message,
+        'تعذر التحقق من الجلسة. تأكد من الإنترنت ثم حدّث الصفحة.'
+      );
+    }
+  </script>
+</body>
+</html>
