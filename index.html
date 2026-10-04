@@ -1,42 +1,54 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-  />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Ayham AI</title>
+
+  <meta
+    name="description"
+    content="Ayham AI - مساعدك الذكي"
+  >
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
 
     :root {
-      --bg: #080808;
-      --panel: #111111;
-      --panel2: #181818;
-      --panel3: #202020;
-      --border: #2b2b2b;
-      --text: #f5f5f5;
-      --muted: #999;
-      --white: #fff;
-      --danger: #ff6b6b;
-      --green: #22c55e;
+      --bg: #0b0d10;
+      --panel: #111418;
+      --panel2: #171a1f;
+      --panel3: #20242a;
+
+      --border: rgba(255,255,255,.08);
+
+      --text: #f4f4f5;
+      --muted: #9ca3af;
+
+      --green: #19c37d;
+      --green2: #13a86c;
+
+      --danger: #ef4444;
+
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     html,
     body {
       margin: 0;
       padding: 0;
+
       width: 100%;
       height: 100%;
+
       background: var(--bg);
       color: var(--text);
+
       font-family:
         system-ui,
         -apple-system,
@@ -45,10 +57,6 @@
         Tahoma,
         Arial,
         sans-serif;
-    }
-
-    body {
-      overflow: hidden;
     }
 
     button,
@@ -61,437 +69,375 @@
       cursor: pointer;
     }
 
-    .hidden {
-      display: none !important;
-    }
-
-    /* =========================
-       AUTH
-    ========================= */
-
-    #authScreen {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background:
-        radial-gradient(
-          circle at top,
-          #222 0%,
-          #0c0c0c 45%,
-          #050505 100%
-        );
-    }
-
-    .auth-card {
-      width: 100%;
-      max-width: 460px;
-      background: rgba(20, 20, 20, 0.95);
-      border: 1px solid #303030;
-      border-radius: 28px;
-      padding: 38px 30px 32px;
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.55);
-    }
-
-    .logo {
-      width: 76px;
-      height: 76px;
-      margin: 0 auto 22px;
-      background: #fff;
-      color: #111;
-      border-radius: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 29px;
-      font-weight: 900;
-    }
-
-    .auth-title {
-      text-align: center;
-      font-size: 34px;
-      margin: 0;
-      font-weight: 800;
-    }
-
-    .auth-subtitle {
-      text-align: center;
-      color: #999;
-      margin: 12px 0 30px;
-      font-size: 16px;
-    }
-
-    .auth-error {
-      background: rgba(255, 70, 70, 0.12);
-      border: 1px solid rgba(255, 90, 90, 0.35);
-      color: #ff9b9b;
-      padding: 13px 15px;
-      border-radius: 13px;
-      margin-bottom: 18px;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .field {
-      margin-bottom: 18px;
-    }
-
-    .field label {
-      display: block;
-      margin-bottom: 8px;
-      color: #ddd;
-      font-size: 15px;
-    }
-
-    .field input {
-      width: 100%;
-      height: 56px;
-      border-radius: 15px;
-      border: 1px solid #3a3a3a;
-      background: #f0f4ff;
-      color: #111;
-      padding: 0 17px;
-      outline: none;
-      direction: rtl;
-      font-size: 16px;
-    }
-
-    .field input:focus {
-      border-color: #888;
-    }
-
-    .primary-btn {
-      width: 100%;
-      height: 57px;
-      border: 0;
-      border-radius: 15px;
-      background: #fff;
-      color: #111;
-      font-weight: 800;
-      font-size: 17px;
-      margin-top: 4px;
-    }
-
-    .primary-btn:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
-
-    .secondary-btn {
-      width: 100%;
-      height: 55px;
-      margin-top: 12px;
-      border-radius: 15px;
-      border: 1px solid #303030;
-      background: transparent;
-      color: #ddd;
-    }
-
-    .link-btn {
-      display: block;
-      border: 0;
-      background: transparent;
-      color: #aaa;
-      margin: 20px auto 0;
-      font-size: 15px;
-    }
-
-    .link-btn:hover {
-      color: #fff;
-    }
-
-    /* =========================
+    /* =========================================
        APP
-    ========================= */
+    ========================================= */
 
-    #app {
+    .app {
+      display: flex;
       width: 100%;
       height: 100vh;
-      display: flex;
-      background: var(--bg);
+      overflow: hidden;
     }
+
+    /* =========================================
+       SIDEBAR
+    ========================================= */
 
     .sidebar {
-      width: 285px;
-      height: 100%;
-      background: #101010;
+      width: 280px;
+      flex-shrink: 0;
+
+      background: #101215;
+
       border-left: 1px solid var(--border);
+
       display: flex;
       flex-direction: column;
-      flex-shrink: 0;
-      z-index: 20;
-    }
 
-    .sidebar-top {
-      padding: 15px;
+      padding: 14px;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 11px;
-      padding: 7px 5px 18px;
+
+      padding: 10px 8px 18px;
     }
 
-    .brand-icon {
-      width: 39px;
-      height: 39px;
-      background: #fff;
-      color: #111;
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 16px;
-    }
 
-    .brand-name {
+      display: grid;
+      place-items: center;
+
+      background: linear-gradient(
+        135deg,
+        #19c37d,
+        #0e9f67
+      );
+
+      color: white;
+
       font-size: 18px;
       font-weight: 800;
     }
 
+    .brand-text {
+      font-weight: 800;
+      font-size: 18px;
+    }
+
     .new-chat {
       width: 100%;
-      height: 47px;
-      border: 1px solid #343434;
-      border-radius: 13px;
-      background: #191919;
-      color: #fff;
+
+      border: 1px solid var(--border);
+
+      background: #191c20;
+
+      color: white;
+
+      padding: 12px 14px;
+
+      border-radius: 12px;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 9px;
-      font-weight: 700;
+
+      gap: 8px;
+
+      transition: .2s;
     }
 
     .new-chat:hover {
-      background: #232323;
+      background: #22262c;
     }
 
-    .conversations-title {
-      color: #777;
-      font-size: 12px;
-      padding: 20px 8px 9px;
-    }
-
-    .conversation-list {
+    .chat-list {
       flex: 1;
+
       overflow-y: auto;
-      padding: 0 10px 10px;
+
+      margin-top: 18px;
     }
 
-    .conversation-item {
+    .chat-item {
       width: 100%;
+
+      border: 0;
+
+      background: transparent;
+
+      color: #ddd;
+
+      text-align: right;
+
+      padding: 11px 12px;
+
+      border-radius: 10px;
+
+      margin-bottom: 4px;
+
       display: flex;
       align-items: center;
+
       gap: 8px;
-      min-height: 45px;
-      border-radius: 11px;
-      border: 0;
-      background: transparent;
-      color: #ddd;
-      text-align: right;
-      padding: 8px 10px;
-      margin-bottom: 4px;
-    }
 
-    .conversation-item:hover {
-      background: #1b1b1b;
-    }
-
-    .conversation-item.active {
-      background: #242424;
-    }
-
-    .conversation-title-text {
-      flex: 1;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-size: 14px;
     }
 
-    .delete-chat {
-      width: 29px;
-      height: 29px;
-      border: 0;
-      border-radius: 8px;
-      background: transparent;
-      color: #777;
-      flex-shrink: 0;
+    .chat-item:hover {
+      background: #1b1e23;
     }
 
-    .delete-chat:hover {
-      color: #ff7777;
-      background: #302020;
+    .chat-item.active {
+      background: #24282e;
+    }
+
+    .chat-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sidebar-bottom {
+      border-top: 1px solid var(--border);
+
+      padding-top: 12px;
     }
 
     .account {
-      border-top: 1px solid #282828;
-      padding: 13px;
-    }
-
-    .account-info {
       display: flex;
       align-items: center;
       gap: 10px;
-      min-width: 0;
-      margin-bottom: 10px;
+
+      padding: 10px;
+
+      border-radius: 12px;
+
+      background: #15181c;
     }
 
     .avatar {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
+
       border-radius: 50%;
-      background: #303030;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
+
+      display: grid;
+      place-items: center;
+
+      background: #30343b;
+
+      font-weight: 700;
+
       flex-shrink: 0;
     }
 
-    .account-text {
+    .account-info {
       min-width: 0;
+      flex: 1;
     }
 
     .account-name {
       font-size: 14px;
       font-weight: 700;
-      white-space: nowrap;
+
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .account-email {
-      color: #777;
       font-size: 11px;
-      white-space: nowrap;
+      color: var(--muted);
+
       overflow: hidden;
       text-overflow: ellipsis;
-      direction: ltr;
-      text-align: right;
+      white-space: nowrap;
     }
 
-    .logout-btn {
-      width: 100%;
-      height: 40px;
-      border-radius: 10px;
-      border: 1px solid #2e2e2e;
+    .logout {
+      border: 0;
       background: transparent;
-      color: #bbb;
+      color: #aaa;
+
+      padding: 7px;
+
+      border-radius: 8px;
     }
 
-    .logout-btn:hover {
-      color: #fff;
-      background: #1d1d1d;
+    .logout:hover {
+      background: #272b31;
+      color: white;
     }
 
-    /* =========================
-       CHAT
-    ========================= */
+    /* =========================================
+       MAIN
+    ========================================= */
 
     .main {
-      flex: 1;
       min-width: 0;
-      height: 100%;
+      flex: 1;
+
       display: flex;
       flex-direction: column;
+
       position: relative;
     }
 
     .topbar {
-      height: 64px;
-      border-bottom: 1px solid #202020;
+      height: 60px;
+
       display: flex;
       align-items: center;
-      padding: 0 20px;
-      gap: 12px;
-      background: rgba(8, 8, 8, 0.92);
+
+      padding: 0 18px;
+
+      border-bottom: 1px solid var(--border);
+
+      background: rgba(11,13,16,.86);
+
       backdrop-filter: blur(12px);
-      flex-shrink: 0;
+
+      position: relative;
+      z-index: 10;
     }
 
     .mobile-menu {
       display: none;
-      width: 40px;
-      height: 40px;
-      border: 0;
-      background: transparent;
-      color: #fff;
-      font-size: 23px;
-      border-radius: 10px;
-    }
 
-    .mobile-menu:hover {
-      background: #202020;
+      border: 0;
+
+      background: transparent;
+
+      color: white;
+
+      font-size: 22px;
+
+      margin-left: 8px;
     }
 
     .top-title {
       font-weight: 700;
-      font-size: 16px;
+      font-size: 15px;
     }
 
     .status {
-      color: #777;
-      font-size: 12px;
       margin-right: auto;
+
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      color: var(--muted);
+
+      font-size: 12px;
     }
 
-    .chat-area {
-      flex: 1;
-      overflow-y: auto;
-      scroll-behavior: smooth;
+    .status-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: var(--green);
     }
+
+    /* =========================================
+       CHAT
+    ========================================= */
 
     .messages {
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 22px 170px;
+      flex: 1;
+
+      overflow-y: auto;
+
+      padding: 35px 20px 150px;
+    }
+
+    .messages-inner {
+      max-width: 850px;
+
+      margin: auto;
     }
 
     .welcome {
-      min-height: 60vh;
+      min-height: 55vh;
+
       display: flex;
       flex-direction: column;
+
       align-items: center;
       justify-content: center;
+
       text-align: center;
     }
 
     .welcome-logo {
-      width: 70px;
-      height: 70px;
-      background: #fff;
-      color: #111;
-      border-radius: 21px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 25px;
+      width: 68px;
+      height: 68px;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #19c37d,
+          #0b8255
+        );
+
+      display: grid;
+      place-items: center;
+
+      font-size: 28px;
       font-weight: 900;
-      margin-bottom: 22px;
+
+      box-shadow:
+        0 15px 45px rgba(25,195,125,.18);
     }
 
     .welcome h1 {
-      margin: 0;
+      margin: 20px 0 8px;
+
       font-size: 30px;
     }
 
     .welcome p {
-      color: #888;
-      margin-top: 10px;
-      font-size: 15px;
+      margin: 0;
+
+      color: var(--muted);
+
+      max-width: 500px;
+      line-height: 1.8;
     }
 
     .message {
       display: flex;
+
       gap: 13px;
-      margin-bottom: 30px;
-      align-items: flex-start;
+
+      margin-bottom: 26px;
+
+      animation: fadeIn .2s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .message.user {
@@ -501,522 +447,747 @@
     .message-avatar {
       width: 34px;
       height: 34px;
-      border-radius: 10px;
+
+      border-radius: 50%;
+
       flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
+
+      display: grid;
+      place-items: center;
+
+      font-size: 12px;
       font-weight: 800;
+
+      background: #2c3036;
     }
 
-    .assistant .message-avatar {
-      background: #fff;
-      color: #111;
+    .message.user .message-avatar {
+      background: #19a96f;
     }
 
-    .user .message-avatar {
-      background: #292929;
-      color: #ddd;
+    .message-body {
+      max-width: min(720px, 85%);
+    }
+
+    .message-name {
+      font-size: 12px;
+      color: var(--muted);
+
+      margin-bottom: 5px;
+    }
+
+    .message.user .message-name {
+      text-align: right;
     }
 
     .message-content {
-      max-width: calc(100% - 48px);
-      line-height: 1.85;
-      font-size: 15px;
+      line-height: 1.9;
+
       white-space: pre-wrap;
-      overflow-wrap: anywhere;
+
+      word-break: break-word;
+
+      font-size: 15px;
     }
 
-    .user .message-content {
-      background: #202020;
-      border: 1px solid #2c2c2c;
-      border-radius: 17px 17px 4px 17px;
-      padding: 11px 15px;
+    .message.user .message-content {
+      background: #20242a;
+
+      padding: 10px 14px;
+
+      border-radius: 15px;
+
+      display: inline-block;
     }
 
-    .assistant .message-content {
-      padding-top: 2px;
-    }
+    .assistant-actions {
+      display: flex;
 
-    .typing {
-      display: inline-flex;
       gap: 5px;
+
+      margin-top: 8px;
+    }
+
+    .assistant-actions button {
+      border: 0;
+
+      background: transparent;
+
+      color: #777;
+
+      padding: 5px 8px;
+
+      border-radius: 7px;
+
+      font-size: 12px;
+    }
+
+    .assistant-actions button:hover {
+      background: #20242a;
+      color: white;
+    }
+
+    /* =========================================
+       ATTACHMENTS
+    ========================================= */
+
+    .attachment-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(auto-fill, minmax(180px, 1fr));
+
+      gap: 10px;
+
+      margin-top: 10px;
+
+      max-width: 650px;
+    }
+
+    .attachment-card {
+      overflow: hidden;
+
+      border: 1px solid var(--border);
+
+      background: #171a1e;
+
+      border-radius: 12px;
+
+      padding: 8px;
+    }
+
+    .attachment-card img,
+    .attachment-card video {
+      display: block;
+
+      width: 100%;
+
+      max-height: 300px;
+
+      object-fit: cover;
+
+      border-radius: 8px;
+    }
+
+    .attachment-card audio {
+      width: 100%;
+    }
+
+    .file-card {
+      display: flex;
       align-items: center;
-      height: 25px;
+
+      gap: 10px;
+
+      padding: 10px;
     }
 
-    .typing span {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #aaa;
-      animation: bounce 1s infinite;
+    .file-icon {
+      width: 40px;
+      height: 40px;
+
+      border-radius: 10px;
+
+      background: #292e35;
+
+      display: grid;
+      place-items: center;
+
+      font-size: 18px;
     }
 
-    .typing span:nth-child(2) {
-      animation-delay: 0.15s;
+    .file-name {
+      min-width: 0;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      font-size: 13px;
     }
 
-    .typing span:nth-child(3) {
-      animation-delay: 0.3s;
-    }
-
-    @keyframes bounce {
-      0%, 60%, 100% {
-        transform: translateY(0);
-        opacity: 0.5;
-      }
-
-      30% {
-        transform: translateY(-5px);
-        opacity: 1;
-      }
-    }
-
-    /* =========================
+    /* =========================================
        COMPOSER
-    ========================= */
+    ========================================= */
 
     .composer-wrap {
       position: absolute;
-      left: 0;
-      right: 0;
+
       bottom: 0;
-      padding: 15px 20px 20px;
+      right: 0;
+      left: 0;
+
+      padding:
+        12px
+        max(14px, calc((100vw - 900px) / 2))
+        18px;
+
       background:
         linear-gradient(
           to top,
-          #080808 55%,
-          rgba(8, 8, 8, 0.92) 75%,
+          var(--bg) 65%,
           transparent
         );
     }
 
     .composer {
-      max-width: 900px;
-      margin: 0 auto;
-      position: relative;
-    }
+      max-width: 850px;
 
-    .composer-box {
-      display: flex;
-      align-items: flex-end;
-      gap: 9px;
-      border: 1px solid #343434;
-      background: #151515;
+      margin: auto;
+
+      background: #171a1f;
+
+      border: 1px solid #30343a;
+
       border-radius: 18px;
-      padding: 9px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+
+      box-shadow:
+        0 10px 40px rgba(0,0,0,.25);
     }
 
-    #messageInput {
-      flex: 1;
-      resize: none;
-      border: 0;
-      outline: 0;
-      background: transparent;
-      color: #fff;
-      min-height: 44px;
-      max-height: 170px;
-      padding: 10px 8px;
-      line-height: 1.6;
-      font-size: 15px;
-      direction: rtl;
+    .preview-strip {
+      display: none;
+
+      gap: 8px;
+
+      overflow-x: auto;
+
+      padding: 10px 10px 0;
     }
 
-    #messageInput::placeholder {
-      color: #707070;
+    .preview-strip.has-items {
+      display: flex;
     }
 
-    #sendButton {
-      width: 43px;
-      height: 43px;
-      border: 0;
-      border-radius: 13px;
-      background: #fff;
-      color: #111;
-      font-size: 20px;
+    .preview {
+      width: 72px;
+      height: 72px;
+
+      position: relative;
+
       flex-shrink: 0;
-      font-weight: 900;
+
+      border-radius: 10px;
+
+      overflow: hidden;
+
+      background: #252930;
     }
 
-    #sendButton:disabled {
-      opacity: 0.4;
+    .preview img,
+    .preview video {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .preview-file {
+      width: 100%;
+      height: 100%;
+
+      display: grid;
+      place-items: center;
+
+      padding: 5px;
+
+      text-align: center;
+
+      font-size: 10px;
+    }
+
+    .remove-preview {
+      position: absolute;
+
+      top: 4px;
+      left: 4px;
+
+      width: 20px;
+      height: 20px;
+
+      border: 0;
+
+      border-radius: 50%;
+
+      background: rgba(0,0,0,.75);
+
+      color: white;
+
+      line-height: 20px;
+
+      padding: 0;
+    }
+
+    .composer-row {
+      display: flex;
+
+      align-items: flex-end;
+
+      gap: 8px;
+
+      padding: 10px;
+    }
+
+    .composer textarea {
+      flex: 1;
+
+      min-height: 42px;
+      max-height: 180px;
+
+      resize: none;
+
+      border: 0;
+      outline: none;
+
+      background: transparent;
+
+      color: white;
+
+      padding: 10px;
+
+      line-height: 1.6;
+    }
+
+    .composer textarea::placeholder {
+      color: #777;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+
+      border: 0;
+
+      border-radius: 10px;
+
+      background: transparent;
+
+      color: #aaa;
+
+      display: grid;
+      place-items: center;
+
+      font-size: 19px;
+
+      flex-shrink: 0;
+    }
+
+    .icon-btn:hover {
+      background: #282c32;
+
+      color: white;
+    }
+
+    .send-btn {
+      width: 40px;
+      height: 40px;
+
+      border: 0;
+
+      border-radius: 10px;
+
+      background: var(--green);
+
+      color: white;
+
+      display: grid;
+      place-items: center;
+
+      font-size: 17px;
+
+      flex-shrink: 0;
+
+      transition: .2s;
+    }
+
+    .send-btn:hover {
+      background: var(--green2);
+    }
+
+    .send-btn:disabled {
+      opacity: .45;
       cursor: not-allowed;
     }
 
-    .composer-note {
+    .recording {
+      background: #b91c1c !important;
+
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      50% {
+        transform: scale(1.08);
+      }
+    }
+
+    .composer-hint {
       text-align: center;
-      color: #555;
+
+      color: #666;
+
       font-size: 10px;
-      margin-top: 7px;
+
+      padding-bottom: 8px;
     }
 
-    /* =========================
-       TOAST
-    ========================= */
+    /* =========================================
+       AUTH
+    ========================================= */
 
-    #toast {
+    .auth-screen {
       position: fixed;
-      left: 50%;
-      bottom: 95px;
-      transform: translateX(-50%);
-      max-width: calc(100% - 30px);
-      padding: 12px 17px;
-      border-radius: 13px;
-      background: #242424;
-      border: 1px solid #3a3a3a;
-      color: #eee;
+
+      inset: 0;
+
+      background: #090b0d;
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
       z-index: 100;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.45);
-      font-size: 14px;
+    }
+
+    .auth-screen.show {
+      display: flex;
+    }
+
+    .auth-box {
+      width: 100%;
+      max-width: 410px;
+
+      background: #15181c;
+
+      border: 1px solid var(--border);
+
+      border-radius: 20px;
+
+      padding: 28px;
+
+      box-shadow:
+        0 25px 80px rgba(0,0,0,.4);
+    }
+
+    .auth-logo {
+      width: 55px;
+      height: 55px;
+
+      border-radius: 17px;
+
+      background: var(--green);
+
+      display: grid;
+      place-items: center;
+
+      font-weight: 900;
+
+      margin: 0 auto 16px;
+    }
+
+    .auth-box h2 {
       text-align: center;
+
+      margin: 0 0 7px;
     }
 
-    #toast.error {
-      background: #351d1d;
-      border-color: #683737;
-      color: #ffb1b1;
+    .auth-subtitle {
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      margin-bottom: 22px;
     }
 
-    /* =========================
+    .auth-input {
+      width: 100%;
+
+      padding: 13px 14px;
+
+      margin-bottom: 10px;
+
+      border-radius: 11px;
+
+      border: 1px solid #30343a;
+
+      background: #0f1114;
+
+      color: white;
+
+      outline: none;
+    }
+
+    .auth-input:focus {
+      border-color: var(--green);
+    }
+
+    .auth-main-btn {
+      width: 100%;
+
+      padding: 13px;
+
+      border: 0;
+
+      border-radius: 11px;
+
+      background: var(--green);
+
+      color: white;
+
+      font-weight: 700;
+
+      margin-top: 5px;
+    }
+
+    .auth-switch {
+      border: 0;
+
+      background: transparent;
+
+      color: var(--green);
+
+      width: 100%;
+
+      margin-top: 15px;
+    }
+
+    .auth-forgot {
+      border: 0;
+
+      background: transparent;
+
+      color: #999;
+
+      width: 100%;
+
+      margin-top: 10px;
+
+      font-size: 12px;
+    }
+
+    .auth-error {
+      color: #f87171;
+
+      font-size: 12px;
+
+      margin: 10px 0;
+
+      display: none;
+    }
+
+    /* =========================================
        MOBILE
-    ========================= */
+    ========================================= */
 
-    @media (max-width: 760px) {
+    .overlay {
+      display: none;
+
+      position: fixed;
+
+      inset: 0;
+
+      background: rgba(0,0,0,.55);
+
+      z-index: 40;
+    }
+
+    @media(max-width: 800px) {
+
       .sidebar {
         position: fixed;
-        right: 0;
+
         top: 0;
         bottom: 0;
-        width: 285px;
+        right: 0;
+
+        z-index: 50;
+
         transform: translateX(105%);
-        transition: transform 0.25s ease;
-        box-shadow: -20px 0 60px rgba(0,0,0,0.5);
+
+        transition: transform .25s;
+
+        width: 290px;
+
+        box-shadow:
+          -15px 0 50px rgba(0,0,0,.35);
       }
 
       .sidebar.open {
         transform: translateX(0);
       }
 
+      .overlay.show {
+        display: block;
+      }
+
       .mobile-menu {
         display: block;
       }
 
-      .topbar {
-        height: 58px;
-        padding: 0 10px;
-      }
-
       .messages {
-        padding: 25px 14px 155px;
+        padding:
+          25px 12px 145px;
       }
 
-      .welcome {
-        min-height: 55vh;
+      .message-body {
+        max-width: 82%;
+      }
+
+      .composer-wrap {
+        padding: 10px 8px 12px;
       }
 
       .welcome h1 {
         font-size: 25px;
       }
 
-      .message {
-        gap: 9px;
-        margin-bottom: 24px;
+      .welcome {
+        min-height: 60vh;
       }
 
-      .message-avatar {
-        width: 31px;
-        height: 31px;
-        border-radius: 9px;
+    }
+
+    /* =========================================
+       LOADING
+    ========================================= */
+
+    .typing {
+      display: flex;
+
+      align-items: center;
+
+      gap: 5px;
+
+      padding-top: 5px;
+    }
+
+    .typing span {
+      width: 6px;
+      height: 6px;
+
+      background: #888;
+
+      border-radius: 50%;
+
+      animation: typing .9s infinite;
+    }
+
+    .typing span:nth-child(2) {
+      animation-delay: .15s;
+    }
+
+    .typing span:nth-child(3) {
+      animation-delay: .3s;
+    }
+
+    @keyframes typing {
+      0%,60%,100% {
+        opacity: .25;
+        transform: translateY(0);
       }
 
-      .message-content {
-        max-width: calc(100% - 40px);
-        font-size: 14px;
-      }
-
-      .composer-wrap {
-        padding: 8px 9px 12px;
-      }
-
-      .composer-box {
-        border-radius: 17px;
-      }
-
-      #messageInput {
-        font-size: 14px;
-      }
-
-      .status {
-        display: none;
-      }
-
-      .auth-card {
-        padding: 30px 18px 25px;
-        border-radius: 23px;
-      }
-
-      .auth-title {
-        font-size: 29px;
+      30% {
+        opacity: 1;
+        transform: translateY(-3px);
       }
     }
+
   </style>
 </head>
 
 <body>
 
-  <!-- =========================
-       AUTH SCREEN
-  ========================= -->
+<div class="app">
 
-  <section id="authScreen">
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="sidebar">
 
-    <div class="auth-card">
-
-      <div class="logo">AI</div>
-
-      <h1 id="authTitle" class="auth-title">
-        تسجيل الدخول
-      </h1>
-
-      <p id="authSubtitle" class="auth-subtitle">
-        سجّل دخولك حتى تستخدم Ayham AI
-      </p>
-
-      <div
-        id="authError"
-        class="auth-error hidden"
-      ></div>
-
-      <div
-        id="nameField"
-        class="field hidden"
-      >
-        <label>الاسم</label>
-
-        <input
-          id="nameInput"
-          type="text"
-          autocomplete="name"
-          placeholder="اكتب اسمك"
-        />
-      </div>
-
-      <div class="field">
-        <label>البريد الإلكتروني</label>
-
-        <input
-          id="emailInput"
-          type="email"
-          autocomplete="email"
-          placeholder="example@gmail.com"
-          dir="ltr"
-        />
-      </div>
-
-      <div
-        id="passwordField"
-        class="field"
-      >
-        <label>كلمة المرور</label>
-
-        <input
-          id="passwordInput"
-          type="password"
-          autocomplete="current-password"
-          placeholder="••••••••"
-          dir="ltr"
-        />
-      </div>
-
-      <button
-        id="authButton"
-        class="primary-btn"
-      >
-        تسجيل الدخول
-      </button>
-
-      <button
-        id="forgotButton"
-        class="secondary-btn"
-      >
-        نسيت كلمة المرور؟
-      </button>
-
-      <button
-        id="switchAuthButton"
-        class="link-btn"
-      >
-        إنشاء حساب جديد
-      </button>
-
+    <div class="brand">
+      <div class="brand-logo">A</div>
+      <div class="brand-text">Ayham AI</div>
     </div>
 
-  </section>
+    <button id="newChatBtn" class="new-chat">
+      ＋ محادثة جديدة
+    </button>
 
+    <div id="chatList" class="chat-list"></div>
 
-  <!-- =========================
-       APP
-  ========================= -->
-
-  <main
-    id="app"
-    class="hidden"
-  >
-
-    <!-- SIDEBAR -->
-
-    <aside
-      id="sidebar"
-      class="sidebar"
-    >
-
-      <div class="sidebar-top">
-
-        <div class="brand">
-
-          <div class="brand-icon">
-            AI
-          </div>
-
-          <div class="brand-name">
-            Ayham AI
-          </div>
-
-        </div>
-
-        <button
-          id="newChatButton"
-          class="new-chat"
-        >
-          <span>＋</span>
-          <span>محادثة جديدة</span>
-        </button>
-
-        <div class="conversations-title">
-          محادثاتك
-        </div>
-
-      </div>
-
-      <div
-        id="conversationList"
-        class="conversation-list"
-      ></div>
+    <div class="sidebar-bottom">
 
       <div class="account">
 
+        <div id="accountAvatar" class="avatar">
+          A
+        </div>
+
         <div class="account-info">
 
-          <div
-            id="avatar"
-            class="avatar"
-          >
-            AI
+          <div id="accountName" class="account-name">
+            مستخدم
           </div>
 
-          <div class="account-text">
-
-            <div
-              id="accountName"
-              class="account-name"
-            >
-              المستخدم
-            </div>
-
-            <div
-              id="accountEmail"
-              class="account-email"
-            >
-              —
-            </div>
-
+          <div id="accountEmail" class="account-email">
+            —
           </div>
 
         </div>
 
-        <button
-          id="logoutButton"
-          class="logout-btn"
-        >
-          تسجيل الخروج
+        <button id="logoutBtn" class="logout">
+          ↪
         </button>
 
       </div>
 
-    </aside>
+    </div>
 
+  </aside>
 
-    <!-- MAIN -->
+  <div id="overlay" class="overlay"></div>
 
-    <section class="main">
+  <!-- MAIN -->
+  <main class="main">
 
-      <header class="topbar">
+    <header class="topbar">
 
-        <button
-          id="mobileMenu"
-          class="mobile-menu"
-        >
-          ☰
-        </button>
+      <button id="mobileMenu" class="mobile-menu">
+        ☰
+      </button>
 
-        <div
-          id="topTitle"
-          class="top-title"
-        >
-          Ayham AI
-        </div>
-
-        <div
-          id="statusText"
-          class="status"
-        >
-          متصل
-        </div>
-
-      </header>
-
-
-      <div
-        id="chatArea"
-        class="chat-area"
-      >
-
-        <div
-          id="messages"
-          class="messages"
-        ></div>
-
+      <div id="topTitle" class="top-title">
+        محادثة جديدة
       </div>
 
+      <div class="status">
+        <span class="status-dot"></span>
+        متصل
+      </div>
 
-      <div class="composer-wrap">
+    </header>
 
-        <div class="composer">
+    <!-- MESSAGES -->
+    <section id="messages" class="messages">
 
-          <div class="composer-box">
+      <div id="messagesInner" class="messages-inner">
 
-            <textarea
-              id="messageInput"
-              rows="1"
-              placeholder="اكتب رسالتك..."
-              autocomplete="off"
-            ></textarea>
+        <div id="welcome" class="welcome">
 
-            <button
-              id="sendButton"
-              title="إرسال"
-            >
-              ↑
-            </button>
-
+          <div class="welcome-logo">
+            A
           </div>
 
-          <div class="composer-note">
-            Ayham AI قد يخطئ أحياناً، تحقق من المعلومات المهمة.
-          </div>
+          <h1>
+            شلون أگدر أساعدك؟
+          </h1>
+
+          <p>
+            اسألني عن أي شيء، أو أرسل صورة أو ملف أو فيديو أو تسجيل صوتي.
+          </p>
 
         </div>
 
@@ -1024,1526 +1195,2032 @@
 
     </section>
 
+    <!-- COMPOSER -->
+    <div class="composer-wrap">
+
+      <div class="composer">
+
+        <div
+          id="previewStrip"
+          class="preview-strip">
+        </div>
+
+        <div class="composer-row">
+
+          <button
+            id="attachBtn"
+            class="icon-btn"
+            title="إرفاق ملف">
+            📎
+          </button>
+
+          <input
+            id="fileInput"
+            type="file"
+            hidden
+            multiple
+            accept="
+              image/*,
+              video/*,
+              audio/*,
+              application/pdf,
+              .doc,
+              .docx,
+              .txt,
+              .csv,
+              .md
+            "
+          >
+
+          <textarea
+            id="messageInput"
+            rows="1"
+            placeholder="اكتب رسالتك هنا..."
+          ></textarea>
+
+          <button
+            id="micBtn"
+            class="icon-btn"
+            title="تسجيل صوتي">
+            🎙️
+          </button>
+
+          <button
+            id="sendBtn"
+            class="send-btn"
+            title="إرسال">
+            ↑
+          </button>
+
+        </div>
+
+        <div class="composer-hint">
+          Ayham AI قد يخطئ أحياناً، تحقق من المعلومات المهمة.
+        </div>
+
+      </div>
+
+    </div>
+
   </main>
 
+</div>
 
-  <div
-    id="toast"
-    class="hidden"
-  ></div>
+
+<!-- AUTH -->
+<div id="authScreen" class="auth-screen">
+
+  <div class="auth-box">
+
+    <div class="auth-logo">
+      A
+    </div>
+
+    <h2 id="authTitle">
+      تسجيل الدخول
+    </h2>
+
+    <div id="authSubtitle" class="auth-subtitle">
+      ادخل لحسابك حتى تستخدم Ayham AI
+    </div>
+
+    <input
+      id="authName"
+      class="auth-input"
+      placeholder="اسمك"
+      style="display:none"
+    >
+
+    <input
+      id="authEmail"
+      class="auth-input"
+      type="email"
+      placeholder="البريد الإلكتروني"
+    >
+
+    <input
+      id="authPassword"
+      class="auth-input"
+      type="password"
+      placeholder="كلمة المرور"
+    >
+
+    <div id="authError" class="auth-error"></div>
+
+    <button
+      id="authMainBtn"
+      class="auth-main-btn">
+      تسجيل الدخول
+    </button>
+
+    <button
+      id="authSwitch"
+      class="auth-switch">
+      إنشاء حساب جديد
+    </button>
+
+    <button
+      id="authForgot"
+      class="auth-forgot">
+      نسيت كلمة المرور؟
+    </button>
+
+  </div>
+
+</div>
 
 
 <script>
-/* =========================================================
-   SUPABASE
-========================================================= */
 
-const SUPABASE_URL =
-  "https://yyhykirxcsbgfddjyuti.supabase.co";
+  /* =========================================
+     SUPABASE
+  ========================================= */
 
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_ulGr0S06yyfBBzsiJqSeRQ_p3sO5dxh";
+  const SUPABASE_URL =
+    "https://yyhykirxcsbgfddjyuti.supabase.co";
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY,
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true
-    }
-  }
-);
+  const SUPABASE_ANON_KEY =
+    "sb_publishable_ulGr0S06yyfBBzsiJqSeRQ_p3sO5dxh";
 
-
-/* =========================================================
-   STATE
-========================================================= */
-
-const state = {
-  user: null,
-  profile: null,
-  conversations: [],
-  currentId: null,
-  messages: [],
-  authMode: "login",
-  sending: false
-};
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function $(id) {
-  return document.getElementById(id);
-}
-
-
-function escapeHTML(value) {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-
-function showToast(message, error = false) {
-  const toast = $("toast");
-
-  toast.textContent = message;
-  toast.classList.remove("hidden");
-
-  if (error) {
-    toast.classList.add("error");
-  } else {
-    toast.classList.remove("error");
-  }
-
-  clearTimeout(window.__toastTimer);
-
-  window.__toastTimer = setTimeout(() => {
-    toast.classList.add("hidden");
-  }, 3500);
-}
-
-
-function showAuthError(message) {
-  const box = $("authError");
-
-  if (!message) {
-    box.textContent = "";
-    box.classList.add("hidden");
-    return;
-  }
-
-  box.textContent = message;
-  box.classList.remove("hidden");
-}
-
-
-function friendlyError(error) {
-  const message =
-    error?.message ||
-    error?.error_description ||
-    String(error || "");
-
-  const text = message.toLowerCase();
-
-  if (text.includes("invalid login credentials")) {
-    return "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
-  }
-
-  if (text.includes("email not confirmed")) {
-    return "لازم تأكد بريدك الإلكتروني أولاً.";
-  }
-
-  if (text.includes("user already registered")) {
-    return "هذا البريد مسجل مسبقاً.";
-  }
-
-  if (text.includes("password")) {
-    return "كلمة المرور غير صحيحة أو قصيرة جداً.";
-  }
-
-  if (text.includes("invalid api key")) {
-    return "مفتاح Supabase غير صحيح. تأكد من URL والمفتاح.";
-  }
-
-  if (text.includes("failed to fetch")) {
-    return "تعذر الاتصال بـ Supabase. تأكد من الإنترنت وإعدادات المشروع.";
-  }
-
-  if (text.includes("edge function")) {
-    return "تعذر الاتصال بخدمة الذكاء الاصطناعي.";
-  }
-
-  return message || "صار خطأ غير متوقع.";
-}
-
-
-/* =========================================================
-   AUTH UI
-========================================================= */
-
-function setAuthMode(mode) {
-
-  state.authMode = mode;
-
-  showAuthError("");
-
-  const isSignup = mode === "signup";
-  const isReset = mode === "reset";
-
-  $("authTitle").textContent =
-    isSignup
-      ? "إنشاء حساب"
-      : isReset
-        ? "استعادة كلمة المرور"
-        : "تسجيل الدخول";
-
-  $("authSubtitle").textContent =
-    isSignup
-      ? "أنشئ حسابك حتى تستخدم Ayham AI"
-      : isReset
-        ? "اكتب بريدك حتى نرسل لك رابط الاستعادة"
-        : "سجّل دخولك حتى تستخدم Ayham AI";
-
-  $("nameField").classList.toggle(
-    "hidden",
-    !isSignup
-  );
-
-  $("passwordField").classList.toggle(
-    "hidden",
-    isReset
-  );
-
-  $("forgotButton").classList.toggle(
-    "hidden",
-    isSignup || isReset
-  );
-
-  $("authButton").textContent =
-    isSignup
-      ? "إنشاء الحساب"
-      : isReset
-        ? "إرسال رابط الاستعادة"
-        : "تسجيل الدخول";
-
-  $("switchAuthButton").textContent =
-    isSignup
-      ? "عندي حساب بالفعل"
-      : "إنشاء حساب جديد";
-
-  $("passwordInput").value = "";
-
-  if (isSignup) {
-    $("passwordInput").autocomplete =
-      "new-password";
-  } else {
-    $("passwordInput").autocomplete =
-      "current-password";
-  }
-}
-
-
-/* =========================================================
-   AUTH
-========================================================= */
-
-async function handleAuth() {
-
-  const email =
-    $("emailInput").value.trim();
-
-  const password =
-    $("passwordInput").value;
-
-  const name =
-    $("nameInput").value.trim();
-
-  showAuthError("");
-
-  if (!email) {
-    showAuthError("اكتب البريد الإلكتروني.");
-    return;
-  }
-
-  if (!email.includes("@")) {
-    showAuthError("اكتب بريد إلكتروني صحيح.");
-    return;
-  }
-
-  if (
-    state.authMode !== "reset" &&
-    password.length < 6
-  ) {
-    showAuthError(
-      "كلمة المرور لازم تكون 6 أحرف أو أكثر."
+  const db =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
     );
-    return;
+
+
+  /* =========================================
+     STATE
+  ========================================= */
+
+  const state = {
+
+    user: null,
+
+    profile: null,
+
+    conversations: [],
+
+    currentId: null,
+
+    messages: [],
+
+    pendingFiles: [],
+
+    sending: false,
+
+    authMode: "login",
+
+    mediaRecorder: null,
+
+    audioChunks: [],
+
+    recording: false
+
+  };
+
+
+  /* =========================================
+     DOM
+  ========================================= */
+
+  const $ = id =>
+    document.getElementById(id);
+
+
+  const messagesInner =
+    $("messagesInner");
+
+  const messageInput =
+    $("messageInput");
+
+  const sendBtn =
+    $("sendBtn");
+
+  const previewStrip =
+    $("previewStrip");
+
+
+  /* =========================================
+     INIT
+  ========================================= */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    init
+  );
+
+
+  async function init() {
+
+    bindEvents();
+
+    const {
+      data: {
+        session
+      }
+    } = await db.auth.getSession();
+
+    if (session?.user) {
+
+      await startApp(session.user);
+
+    } else {
+
+      showAuth();
+
+    }
+
+    db.auth.onAuthStateChange(
+      async (event, session) => {
+
+        if (
+          session?.user &&
+          !state.user
+        ) {
+
+          await startApp(
+            session.user
+          );
+
+        }
+
+        if (
+          event === "SIGNED_OUT"
+        ) {
+
+          state.user = null;
+
+          state.profile = null;
+
+          state.messages = [];
+
+          state.currentId = null;
+
+          showAuth();
+
+        }
+
+      }
+    );
+
   }
 
-  const button = $("authButton");
 
-  button.disabled = true;
+  /* =========================================
+     EVENTS
+  ========================================= */
 
-  const oldText = button.textContent;
+  function bindEvents() {
 
-  button.textContent = "جاري التنفيذ...";
+    $("newChatBtn")
+      .addEventListener(
+        "click",
+        createNewChat
+      );
 
-  try {
+    $("sendBtn")
+      .addEventListener(
+        "click",
+        sendMessage
+      );
 
-    if (state.authMode === "login") {
+    $("attachBtn")
+      .addEventListener(
+        "click",
+        () =>
+          $("fileInput").click()
+      );
 
-      const { error } =
-        await db.auth.signInWithPassword({
-          email,
-          password
-        });
+    $("fileInput")
+      .addEventListener(
+        "change",
+        handleFiles
+      );
 
-      if (error) {
-        throw error;
+    $("micBtn")
+      .addEventListener(
+        "click",
+        toggleRecording
+      );
+
+    $("logoutBtn")
+      .addEventListener(
+        "click",
+        async () => {
+
+          await db.auth.signOut();
+
+        }
+      );
+
+    $("mobileMenu")
+      .addEventListener(
+        "click",
+        openSidebar
+      );
+
+    $("overlay")
+      .addEventListener(
+        "click",
+        closeSidebar
+      );
+
+    $("authMainBtn")
+      .addEventListener(
+        "click",
+        handleAuth
+      );
+
+    $("authSwitch")
+      .addEventListener(
+        "click",
+        switchAuthMode
+      );
+
+    $("authForgot")
+      .addEventListener(
+        "click",
+        resetPassword
+      );
+
+    messageInput
+      .addEventListener(
+        "keydown",
+        e => {
+
+          if (
+            e.key === "Enter" &&
+            !e.shiftKey
+          ) {
+
+            e.preventDefault();
+
+            sendMessage();
+
+          }
+
+        }
+      );
+
+    messageInput
+      .addEventListener(
+        "input",
+        autoResize
+      );
+
+    document.addEventListener(
+      "dragover",
+      e => e.preventDefault()
+    );
+
+    document.addEventListener(
+      "drop",
+      e => {
+
+        e.preventDefault();
+
+        if (
+          e.dataTransfer?.files?.length
+        ) {
+
+          addFiles(
+            Array.from(
+              e.dataTransfer.files
+            )
+          );
+
+        }
+
       }
+    );
+
+  }
+
+
+  /* =========================================
+     AUTH
+  ========================================= */
+
+  function showAuth() {
+
+    $("authScreen")
+      .classList
+      .add("show");
+
+  }
+
+
+  function hideAuth() {
+
+    $("authScreen")
+      .classList
+      .remove("show");
+
+  }
+
+
+  function setAuthError(message) {
+
+    const el = $("authError");
+
+    el.textContent = message;
+
+    el.style.display =
+      message ? "block" : "none";
+
+  }
+
+
+  function switchAuthMode() {
+
+    state.authMode =
+      state.authMode === "login"
+        ? "signup"
+        : "login";
+
+    const signup =
+      state.authMode === "signup";
+
+    $("authTitle").textContent =
+      signup
+        ? "إنشاء حساب"
+        : "تسجيل الدخول";
+
+    $("authSubtitle").textContent =
+      signup
+        ? "أنشئ حسابك وابدأ باستخدام Ayham AI"
+        : "ادخل لحسابك حتى تستخدم Ayham AI";
+
+    $("authName").style.display =
+      signup ? "block" : "none";
+
+    $("authMainBtn").textContent =
+      signup
+        ? "إنشاء الحساب"
+        : "تسجيل الدخول";
+
+    $("authSwitch").textContent =
+      signup
+        ? "عندي حساب بالفعل"
+        : "إنشاء حساب جديد";
+
+    setAuthError("");
+
+  }
+
+
+  async function handleAuth() {
+
+    const email =
+      $("authEmail").value.trim();
+
+    const password =
+      $("authPassword").value;
+
+    const name =
+      $("authName").value.trim();
+
+    if (!email || !password) {
+
+      setAuthError(
+        "اكتب البريد الإلكتروني وكلمة المرور."
+      );
 
       return;
+
     }
 
+    setAuthError("");
 
-    if (state.authMode === "signup") {
+    const button =
+      $("authMainBtn");
 
-      const { data, error } =
-        await db.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              display_name:
-                name || email.split("@")[0]
+    button.disabled = true;
+
+    try {
+
+      if (
+        state.authMode === "signup"
+      ) {
+
+        const {
+          data,
+          error
+        } =
+          await db.auth.signUp({
+
+            email,
+
+            password,
+
+            options: {
+
+              data: {
+
+                display_name:
+                  name ||
+                  email.split("@")[0]
+
+              }
+
             }
-          }
-        });
 
-      if (error) {
-        throw error;
+          });
+
+        if (error)
+          throw error;
+
+        if (!data.session) {
+
+          setAuthError(
+            "تم إنشاء الحساب. إذا كان تأكيد البريد مفعلاً، افتح بريدك الإلكتروني."
+          );
+
+        }
+
+      } else {
+
+        const {
+          data,
+          error
+        } =
+          await db.auth.signInWithPassword({
+
+            email,
+
+            password
+
+          });
+
+        if (error)
+          throw error;
+
+        if (data.user) {
+
+          await startApp(
+            data.user
+          );
+
+        }
+
       }
 
-      if (data?.session) {
-        return;
-      }
+    } catch (error) {
 
-      showAuthError(
-        "تم إنشاء الحساب. إذا كان تأكيد البريد مفعلاً، افتح بريدك وأكد الحساب ثم سجّل الدخول."
+      setAuthError(
+        error?.message ||
+        "حدث خطأ. حاول مرة ثانية."
       );
 
-      setAuthMode("login");
+    } finally {
 
-      return;
+      button.disabled = false;
+
     }
 
+  }
 
-    if (state.authMode === "reset") {
 
-      const { error } =
-        await db.auth.resetPasswordForEmail(
-          email,
-          {
-            redirectTo:
-              window.location.origin +
-              window.location.pathname
-          }
-        );
+  async function resetPassword() {
 
-      if (error) {
-        throw error;
-      }
+    const email =
+      $("authEmail").value.trim();
 
-      showAuthError(
-        "تم إرسال رابط استعادة كلمة المرور إلى بريدك."
+    if (!email) {
+
+      setAuthError(
+        "اكتب بريدك الإلكتروني أولاً."
       );
 
       return;
+
     }
 
-  } catch (error) {
+    const {
+      error
+    } =
+      await db.auth.resetPasswordForEmail(
+        email,
+        {
+          redirectTo:
+            window.location.origin +
+            window.location.pathname
+        }
+      );
 
-    console.error("Auth error:", error);
+    if (error) {
 
-    showAuthError(
-      friendlyError(error)
+      setAuthError(
+        error.message
+      );
+
+      return;
+
+    }
+
+    setAuthError(
+      "تم إرسال رابط إعادة كلمة المرور إلى بريدك."
     );
 
-  } finally {
-
-    button.disabled = false;
-    button.textContent = oldText;
-
-  }
-}
-
-
-/* =========================================================
-   PROFILE
-========================================================= */
-
-async function loadProfile() {
-
-  if (!state.user) {
-    return;
   }
 
-  const { data, error } =
-    await db
+
+  /* =========================================
+     APP START
+  ========================================= */
+
+  async function startApp(user) {
+
+    state.user = user;
+
+    hideAuth();
+
+    await loadProfile();
+
+    updateAccount();
+
+    await loadConversations();
+
+    if (
+      state.conversations.length
+    ) {
+
+      await openConversation(
+        state.conversations[0].id
+      );
+
+    } else {
+
+      createNewChat();
+
+    }
+
+  }
+
+
+  async function loadProfile() {
+
+    const {
+      data,
+      error
+    } =
+      await db
       .from("profiles")
       .select("id, display_name")
       .eq("id", state.user.id)
       .maybeSingle();
 
-  if (error) {
-    console.error(
-      "Profile error:",
-      error
-    );
-    return;
-  }
+    if (!error) {
 
-  state.profile = data;
+      state.profile =
+        data;
 
-  const name =
-    data?.display_name ||
-    state.user.email?.split("@")[0] ||
-    "المستخدم";
-
-  $("accountName").textContent = name;
-
-  $("accountEmail").textContent =
-    state.user.email || "";
-
-  $("avatar").textContent =
-    name
-      .trim()
-      .charAt(0)
-      .toUpperCase() || "AI";
-}
-
-
-/* =========================================================
-   CONVERSATIONS
-========================================================= */
-
-async function loadConversations() {
-
-  if (!state.user) {
-    return;
-  }
-
-  const { data, error } =
-    await db
-      .from("conversations")
-      .select(
-        "id, user_id, title, messages, created_at, updated_at"
-      )
-      .eq("user_id", state.user.id)
-      .order("updated_at", {
-        ascending: false
-      });
-
-  if (error) {
-    console.error(
-      "Conversations error:",
-      error
-    );
-
-    showToast(
-      "تعذر تحميل المحادثات.",
-      true
-    );
-
-    return;
-  }
-
-  state.conversations =
-    Array.isArray(data)
-      ? data
-      : [];
-
-  renderConversationList();
-
-  if (
-    state.currentId &&
-    state.conversations.some(
-      c => c.id === state.currentId
-    )
-  ) {
-    const current =
-      state.conversations.find(
-        c => c.id === state.currentId
-      );
-
-    state.messages =
-      Array.isArray(current.messages)
-        ? current.messages
-        : [];
-
-    renderMessages();
-  }
-}
-
-
-function renderConversationList() {
-
-  const list =
-    $("conversationList");
-
-  list.innerHTML = "";
-
-  if (!state.conversations.length) {
-
-    const empty =
-      document.createElement("div");
-
-    empty.style.cssText =
-      "padding:20px 10px;color:#666;font-size:13px;text-align:center;";
-
-    empty.textContent =
-      "ماكو محادثات بعد";
-
-    list.appendChild(empty);
-
-    return;
-  }
-
-  state.conversations.forEach(
-    conversation => {
-
-      const row =
-        document.createElement("div");
-
-      row.className =
-        "conversation-item" +
-        (
-          conversation.id === state.currentId
-            ? " active"
-            : ""
-        );
-
-      const title =
-        document.createElement("div");
-
-      title.className =
-        "conversation-title-text";
-
-      title.textContent =
-        conversation.title ||
-        "محادثة جديدة";
-
-      title.onclick = () => {
-        openConversation(
-          conversation.id
-        );
-      };
-
-      const deleteButton =
-        document.createElement("button");
-
-      deleteButton.className =
-        "delete-chat";
-
-      deleteButton.textContent =
-        "×";
-
-      deleteButton.title =
-        "حذف المحادثة";
-
-      deleteButton.onclick = async event => {
-
-        event.stopPropagation();
-
-        await deleteConversation(
-          conversation.id
-        );
-      };
-
-      row.appendChild(title);
-      row.appendChild(deleteButton);
-
-      row.onclick = () => {
-        openConversation(
-          conversation.id
-        );
-      };
-
-      list.appendChild(row);
-    }
-  );
-}
-
-
-async function openConversation(id) {
-
-  const conversation =
-    state.conversations.find(
-      c => c.id === id
-    );
-
-  if (!conversation) {
-    return;
-  }
-
-  state.currentId =
-    conversation.id;
-
-  state.messages =
-    Array.isArray(conversation.messages)
-      ? conversation.messages
-      : [];
-
-  $("topTitle").textContent =
-    conversation.title ||
-    "Ayham AI";
-
-  renderConversationList();
-  renderMessages();
-
-  closeMobileSidebar();
-}
-
-
-async function createConversation(
-  firstMessage = null
-) {
-
-  if (!state.user) {
-    return null;
-  }
-
-  const title =
-    firstMessage
-      ? firstMessage
-          .replace(/\s+/g, " ")
-          .trim()
-          .slice(0, 45)
-      : "محادثة جديدة";
-
-  const { data, error } =
-    await db
-      .from("conversations")
-      .insert({
-        user_id: state.user.id,
-        title:
-          title || "محادثة جديدة",
-        messages: []
-      })
-      .select(
-        "id, user_id, title, messages, created_at, updated_at"
-      )
-      .single();
-
-  if (error) {
-    console.error(
-      "Create conversation:",
-      error
-    );
-
-    showToast(
-      "تعذر إنشاء المحادثة.",
-      true
-    );
-
-    return null;
-  }
-
-  state.conversations.unshift(data);
-
-  state.currentId =
-    data.id;
-
-  state.messages = [];
-
-  $("topTitle").textContent =
-    data.title;
-
-  renderConversationList();
-
-  renderMessages();
-
-  return data;
-}
-
-
-async function saveCurrentConversation() {
-
-  if (
-    !state.user ||
-    !state.currentId
-  ) {
-    return;
-  }
-
-  const conversation =
-    state.conversations.find(
-      c => c.id === state.currentId
-    );
-
-  if (!conversation) {
-    return;
-  }
-
-  const { data, error } =
-    await db
-      .from("conversations")
-      .update({
-        messages: state.messages,
-        title:
-          conversation.title ||
-          "محادثة جديدة",
-        updated_at:
-          new Date().toISOString()
-      })
-      .eq("id", state.currentId)
-      .eq("user_id", state.user.id)
-      .select(
-        "id, user_id, title, messages, created_at, updated_at"
-      )
-      .single();
-
-  if (error) {
-
-    console.error(
-      "Save conversation:",
-      error
-    );
-
-    showToast(
-      "تعذر حفظ المحادثة.",
-      true
-    );
-
-    return;
-  }
-
-  const index =
-    state.conversations.findIndex(
-      c => c.id === state.currentId
-    );
-
-  if (index !== -1) {
-    state.conversations[index] =
-      data;
-  }
-
-  state.conversations.sort(
-    (a, b) =>
-      new Date(b.updated_at) -
-      new Date(a.updated_at)
-  );
-
-  renderConversationList();
-}
-
-
-async function deleteConversation(id) {
-
-  if (!state.user) {
-    return;
-  }
-
-  const ok =
-    confirm(
-      "هل تريد حذف هذه المحادثة؟"
-    );
-
-  if (!ok) {
-    return;
-  }
-
-  const { error } =
-    await db
-      .from("conversations")
-      .delete()
-      .eq("id", id)
-      .eq("user_id", state.user.id);
-
-  if (error) {
-
-    console.error(
-      "Delete conversation:",
-      error
-    );
-
-    showToast(
-      "تعذر حذف المحادثة.",
-      true
-    );
-
-    return;
-  }
-
-  state.conversations =
-    state.conversations.filter(
-      c => c.id !== id
-    );
-
-  if (state.currentId === id) {
-
-    state.currentId = null;
-    state.messages = [];
-
-    $("topTitle").textContent =
-      "Ayham AI";
-
-    renderMessages();
-  }
-
-  renderConversationList();
-}
-
-
-/* =========================================================
-   MESSAGES UI
-========================================================= */
-
-function renderMessages() {
-
-  const container =
-    $("messages");
-
-  container.innerHTML = "";
-
-  if (!state.messages.length) {
-
-    const welcome =
-      document.createElement("div");
-
-    welcome.className =
-      "welcome";
-
-    welcome.innerHTML = `
-      <div class="welcome-logo">AI</div>
-      <h1>شلون أگدر أساعدك؟</h1>
-      <p>
-        اسألني عن أي شي، اكتب كود، اطلب شرح أو فكرة.
-      </p>
-    `;
-
-    container.appendChild(
-      welcome
-    );
-
-    return;
-  }
-
-  state.messages.forEach(
-    message => {
-
-      if (
-        !message ||
-        !message.role ||
-        typeof message.content !== "string"
-      ) {
-        return;
-      }
-
-      addMessageElement(
-        message.role,
-        message.content
-      );
-    }
-  );
-
-  scrollToBottom();
-}
-
-
-function addMessageElement(
-  role,
-  content
-) {
-
-  const container =
-    $("messages");
-
-  const message =
-    document.createElement("div");
-
-  message.className =
-    "message " +
-    (
-      role === "user"
-        ? "user"
-        : "assistant"
-    );
-
-  const avatar =
-    document.createElement("div");
-
-  avatar.className =
-    "message-avatar";
-
-  avatar.textContent =
-    role === "user"
-      ? "أنت"
-      : "AI";
-
-  const body =
-    document.createElement("div");
-
-  body.className =
-    "message-content";
-
-  body.textContent =
-    content;
-
-  message.appendChild(
-    avatar
-  );
-
-  message.appendChild(
-    body
-  );
-
-  container.appendChild(
-    message
-  );
-
-  return message;
-}
-
-
-function addTypingMessage() {
-
-  const container =
-    $("messages");
-
-  const message =
-    document.createElement("div");
-
-  message.className =
-    "message assistant";
-
-  message.id =
-    "typingMessage";
-
-  message.innerHTML = `
-    <div class="message-avatar">
-      AI
-    </div>
-
-    <div class="message-content">
-      <div class="typing">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
-  `;
-
-  container.appendChild(
-    message
-  );
-
-  scrollToBottom();
-}
-
-
-function removeTypingMessage() {
-
-  const typing =
-    $("typingMessage");
-
-  if (typing) {
-    typing.remove();
-  }
-}
-
-
-function scrollToBottom() {
-
-  const area =
-    $("chatArea");
-
-  setTimeout(() => {
-    area.scrollTop =
-      area.scrollHeight;
-  }, 30);
-}
-
-
-/* =========================================================
-   AI
-========================================================= */
-
-async function callAIChat() {
-
-  if (!state.user) {
-    throw new Error(
-      "لازم تسجل الدخول أولاً."
-    );
-  }
-
-  if (!state.messages.length) {
-    throw new Error(
-      "ماكو رسائل للإرسال."
-    );
-  }
-
-  const sessionResult =
-    await db.auth.getSession();
-
-  const session =
-    sessionResult?.data?.session;
-
-  if (!session?.access_token) {
-    throw new Error(
-      "جلسة الدخول منتهية. سجّل الدخول مرة ثانية."
-    );
-  }
-
-  /*
-    نرسل الرسائل إلى Edge Function.
-    الـ Edge Function هو المسؤول عن OpenRouter.
-  */
-
-  const { data, error } =
-    await db.functions.invoke(
-      "ai-chat",
-      {
-        body: {
-          messages:
-            state.messages.slice(-20)
-        },
-        headers: {
-          Authorization:
-            `Bearer ${session.access_token}`
-        }
-      }
-    );
-
-  if (error) {
-
-    console.error(
-      "Edge Function invoke error:",
-      error
-    );
-
-    throw new Error(
-      "فشل الاتصال بـ ai-chat. تأكد أن Edge Function منشورة وأن اسمها ai-chat."
-    );
-  }
-
-  if (!data) {
-    throw new Error(
-      "خدمة الذكاء الاصطناعي لم ترجع بيانات."
-    );
-  }
-
-  if (data.error) {
-    throw new Error(
-      data.error
-    );
-  }
-
-  const reply =
-    data.reply ||
-    data.answer ||
-    data.message ||
-    data.content;
-
-  if (
-    typeof reply !== "string" ||
-    !reply.trim()
-  ) {
-    console.error(
-      "Invalid AI response:",
-      data
-    );
-
-    throw new Error(
-      "الذكاء الاصطناعي لم يرجع جواباً."
-    );
-  }
-
-  return reply.trim();
-}
-
-
-/* =========================================================
-   SEND MESSAGE
-========================================================= */
-
-async function sendMessage() {
-
-  if (state.sending) {
-    return;
-  }
-
-  if (!state.user) {
-    showToast(
-      "لازم تسجل الدخول أولاً.",
-      true
-    );
-    return;
-  }
-
-  const input =
-    $("messageInput");
-
-  const text =
-    input.value.trim();
-
-  if (!text) {
-    return;
-  }
-
-  state.sending = true;
-
-  $("sendButton").disabled =
-    true;
-
-  input.disabled =
-    true;
-
-  try {
-
-    /*
-      إذا ما عندنا محادثة حالية،
-      ننشئ وحدة جديدة.
-    */
-
-    if (!state.currentId) {
-
-      const created =
-        await createConversation(
-          text
-        );
-
-      if (!created) {
-        throw new Error(
-          "تعذر إنشاء المحادثة."
-        );
-      }
     }
 
-    /*
-      إضافة رسالة المستخدم
-    */
-
-    state.messages.push({
-      role: "user",
-      content: text
-    });
-
-    input.value = "";
-
-    autoResizeTextarea();
-
-    renderMessages();
-
-    await saveCurrentConversation();
-
-    addTypingMessage();
-
-    /*
-      استدعاء الذكاء الاصطناعي
-    */
-
-    const reply =
-      await callAIChat();
-
-    removeTypingMessage();
-
-    /*
-      إضافة رد AI
-    */
-
-    state.messages.push({
-      role: "assistant",
-      content: reply
-    });
-
-    renderMessages();
-
-    await saveCurrentConversation();
-
-  } catch (error) {
-
-    console.error(
-      "Send message error:",
-      error
-    );
-
-    removeTypingMessage();
-
-    showToast(
-      friendlyError(error),
-      true
-    );
-
-  } finally {
-
-    state.sending = false;
-
-    $("sendButton").disabled =
-      false;
-
-    input.disabled =
-      false;
-
-    input.focus();
-  }
-}
-
-
-/* =========================================================
-   NEW CHAT
-========================================================= */
-
-async function newChat() {
-
-  state.currentId = null;
-  state.messages = [];
-
-  $("topTitle").textContent =
-    "Ayham AI";
-
-  renderMessages();
-
-  closeMobileSidebar();
-
-  $("messageInput").focus();
-}
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-async function logout() {
-
-  const { error } =
-    await db.auth.signOut();
-
-  if (error) {
-    showToast(
-      friendlyError(error),
-      true
-    );
   }
 
-  state.user = null;
-  state.profile = null;
-  state.conversations = [];
-  state.currentId = null;
-  state.messages = [];
 
-  $("app").classList.add(
-    "hidden"
-  );
+  function updateAccount() {
 
-  $("authScreen").classList.remove(
-    "hidden"
-  );
+    const name =
+      state.profile?.display_name ||
+      state.user?.email?.split("@")[0] ||
+      "مستخدم";
 
-  $("emailInput").value = "";
-  $("passwordInput").value = "";
-  $("nameInput").value = "";
+    $("accountName")
+      .textContent = name;
 
-  setAuthMode("login");
-}
+    $("accountEmail")
+      .textContent =
+      state.user?.email || "";
 
+    $("accountAvatar")
+      .textContent =
+      name
+        .charAt(0)
+        .toUpperCase();
 
-/* =========================================================
-   INITIALIZE USER
-========================================================= */
-
-async function initializeUser(
-  user
-) {
-
-  state.user = user;
-
-  $("authScreen").classList.add(
-    "hidden"
-  );
-
-  $("app").classList.remove(
-    "hidden"
-  );
-
-  await loadProfile();
-
-  await loadConversations();
-
-  /*
-    إذا ما عنده محادثة،
-    نخلي الصفحة الرئيسية فاضية.
-  */
-
-  if (!state.currentId) {
-    state.messages = [];
-    renderMessages();
   }
-}
 
 
-/* =========================================================
-   SESSION
-========================================================= */
+  /* =========================================
+     CONVERSATIONS
+  ========================================= */
 
-async function checkSession() {
-
-  try {
+  async function loadConversations() {
 
     const {
       data,
       error
-    } = await db.auth.getSession();
+    } =
+      await db
+      .from("conversations")
+      .select(
+        "id,title,messages,created_at,updated_at"
+      )
+      .eq(
+        "user_id",
+        state.user.id
+      )
+      .order(
+        "updated_at",
+        {
+          ascending: false
+        }
+      );
 
     if (error) {
-      throw error;
-    }
 
-    if (data?.session?.user) {
-
-      await initializeUser(
-        data.session.user
-      );
-
-    } else {
-
-      $("authScreen").classList.remove(
-        "hidden"
-      );
-
-      $("app").classList.add(
-        "hidden"
-      );
-
-    }
-
-  } catch (error) {
-
-    console.error(
-      "Session error:",
-      error
-    );
-
-    showAuthError(
-      friendlyError(error)
-    );
-  }
-}
-
-
-/* =========================================================
-   AUTH STATE CHANGE
-========================================================= */
-
-db.auth.onAuthStateChange(
-  async (event, session) => {
-
-    console.log(
-      "Auth event:",
-      event
-    );
-
-    if (
-      session?.user &&
-      (
-        event === "SIGNED_IN" ||
-        event === "INITIAL_SESSION" ||
-        event === "TOKEN_REFRESHED"
-      )
-    ) {
-
-      /*
-        ننتظر حتى لا تتداخل عملية
-        تغيير الحالة مع Supabase.
-      */
-
-      setTimeout(
-        async () => {
-          await initializeUser(
-            session.user
-          );
-        },
-        0
-      );
+      console.error(error);
 
       return;
+
     }
 
-    if (event === "SIGNED_OUT") {
+    state.conversations =
+      data || [];
 
-      state.user = null;
-      state.profile = null;
-      state.conversations = [];
-      state.currentId = null;
-      state.messages = [];
+    renderChatList();
 
-      $("app").classList.add(
-        "hidden"
-      );
-
-      $("authScreen").classList.remove(
-        "hidden"
-      );
-
-      setAuthMode("login");
-    }
   }
-);
 
 
-/* =========================================================
-   TEXTAREA
-========================================================= */
+  function renderChatList() {
 
-function autoResizeTextarea() {
+    const list =
+      $("chatList");
 
-  const input =
-    $("messageInput");
+    list.innerHTML = "";
 
-  input.style.height =
-    "auto";
+    state.conversations
+      .forEach(chat => {
 
-  input.style.height =
-    Math.min(
-      input.scrollHeight,
-      170
-    ) + "px";
-}
+        const button =
+          document.createElement("button");
 
+        button.className =
+          "chat-item" +
+          (
+            chat.id ===
+            state.currentId
+              ? " active"
+              : ""
+          );
 
-/* =========================================================
-   MOBILE SIDEBAR
-========================================================= */
+        button.innerHTML = `
+          <span>💬</span>
+          <span class="chat-title"></span>
+        `;
 
-function openMobileSidebar() {
+        button
+          .querySelector(".chat-title")
+          .textContent =
+          chat.title ||
+          "محادثة جديدة";
 
-  $("sidebar").classList.add(
-    "open"
-  );
-}
+        button.onclick =
+          () => {
 
+            openConversation(
+              chat.id
+            );
 
-function closeMobileSidebar() {
+            closeSidebar();
 
-  $("sidebar").classList.remove(
-    "open"
-  );
-}
+          };
 
+        list.appendChild(button);
 
-/* =========================================================
-   EVENTS
-========================================================= */
+      });
 
-$("authButton").addEventListener(
-  "click",
-  handleAuth
-);
-
-
-$("forgotButton").addEventListener(
-  "click",
-  () => {
-    setAuthMode("reset");
   }
-);
 
 
-$("switchAuthButton").addEventListener(
-  "click",
-  () => {
+  async function createNewChat() {
+
+    state.currentId = null;
+
+    state.messages = [];
+
+    renderMessages();
+
+    $("topTitle")
+      .textContent =
+      "محادثة جديدة";
+
+    renderChatList();
+
+    messageInput.focus();
+
+    closeSidebar();
+
+  }
+
+
+  async function openConversation(id) {
+
+    const chat =
+      state.conversations
+        .find(
+          item => item.id === id
+        );
+
+    if (!chat)
+      return;
+
+    state.currentId = id;
+
+    state.messages =
+      Array.isArray(chat.messages)
+        ? chat.messages
+        : [];
+
+    $("topTitle")
+      .textContent =
+      chat.title ||
+      "محادثة";
+
+    renderMessages();
+
+    renderChatList();
+
+  }
+
+
+  async function ensureConversation() {
+
+    if (state.currentId)
+      return state.currentId;
+
+    const firstUserMessage =
+      state.messages
+        .find(
+          message =>
+            message.role === "user"
+        );
+
+    let title =
+      firstUserMessage?.content ||
+      "محادثة جديدة";
 
     if (
-      state.authMode === "signup"
+      Array.isArray(title)
     ) {
-      setAuthMode("login");
-    } else {
-      setAuthMode("signup");
+
+      title =
+        title
+          .find(
+            item =>
+              item.type === "text"
+          )
+          ?.text ||
+        "محادثة جديدة";
+
     }
+
+    title =
+      String(title)
+        .replace(/\s+/g, " ")
+        .slice(0, 45);
+
+    const {
+      data,
+      error
+    } =
+      await db
+      .from("conversations")
+      .insert({
+
+        user_id:
+          state.user.id,
+
+        title:
+
+          title ||
+          "محادثة جديدة",
+
+        messages:
+          state.messages
+
+      })
+      .select()
+      .single();
+
+    if (error)
+      throw error;
+
+    state.currentId =
+      data.id;
+
+    state.conversations.unshift(
+      data
+    );
+
+    return data.id;
+
   }
-);
 
 
-$("logoutButton").addEventListener(
-  "click",
-  logout
-);
+  async function saveConversation() {
 
+    if (!state.currentId)
+      return;
 
-$("newChatButton").addEventListener(
-  "click",
-  newChat
-);
+    const {
+      error
+    } =
+      await db
+      .from("conversations")
+      .update({
 
+        messages:
+          state.messages,
 
-$("sendButton").addEventListener(
-  "click",
-  sendMessage
-);
+        updated_at:
+          new Date().toISOString()
 
-
-$("mobileMenu").addEventListener(
-  "click",
-  () => {
-
-    if (
-      $("sidebar").classList.contains(
-        "open"
+      })
+      .eq(
+        "id",
+        state.currentId
       )
-    ) {
-      closeMobileSidebar();
-    } else {
-      openMobileSidebar();
-    }
+      .eq(
+        "user_id",
+        state.user.id
+      );
+
+    if (error)
+      console.error(error);
+
+    await loadConversations();
+
   }
-);
 
 
-$("messageInput").addEventListener(
-  "input",
-  autoResizeTextarea
-);
+  /* =========================================
+     FILES
+  ========================================= */
 
+  function handleFiles(event) {
 
-$("messageInput").addEventListener(
-  "keydown",
-  event => {
+    const files =
+      Array.from(
+        event.target.files || []
+      );
 
-    if (
-      event.key === "Enter" &&
-      !event.shiftKey
-    ) {
+    addFiles(files);
 
-      event.preventDefault();
+    event.target.value = "";
 
-      sendMessage();
-    }
   }
-);
 
 
-/*
-  Enter داخل تسجيل الدخول
-*/
+  function addFiles(files) {
 
-[
-  "emailInput",
-  "passwordInput",
-  "nameInput"
-].forEach(id => {
+    for (const file of files) {
 
-  $(id).addEventListener(
-    "keydown",
-    event => {
+      const error =
+        validateFile(file);
+
+      if (error) {
+
+        alert(error);
+
+        continue;
+
+      }
 
       if (
-        event.key === "Enter"
+        state.pendingFiles.length >= 5
       ) {
 
-        event.preventDefault();
+        alert(
+          "تگدر ترسل 5 ملفات كحد أقصى بالرسالة."
+        );
 
-        handleAuth();
+        break;
+
       }
+
+      state.pendingFiles.push(file);
+
     }
-  );
-});
+
+    renderPreviews();
+
+  }
 
 
-/* =========================================================
-   START
-========================================================= */
+  function validateFile(file) {
 
-setAuthMode("login");
+    const maxImage =
+      10 * 1024 * 1024;
 
-checkSession();
+    const maxAudio =
+      25 * 1024 * 1024;
+
+    const maxVideo =
+      50 * 1024 * 1024;
+
+    const maxFile =
+      20 * 1024 * 1024;
+
+    if (file.type.startsWith("image/")) {
+
+      if (file.size > maxImage)
+        return "الصورة أكبر من 10MB.";
+
+      return null;
+
+    }
+
+    if (file.type.startsWith("video/")) {
+
+      if (file.size > maxVideo)
+        return "الفيديو أكبر من 50MB.";
+
+      return null;
+
+    }
+
+    if (file.type.startsWith("audio/")) {
+
+      if (file.size > maxAudio)
+        return "الصوت أكبر من 25MB.";
+
+      return null;
+
+    }
+
+    if (
+      file.type === "application/pdf" ||
+      /\.(doc|docx|txt|csv|md)$/i.test(
+        file.name
+      )
+    ) {
+
+      if (file.size > maxFile)
+        return "الملف أكبر من 20MB.";
+
+      return null;
+
+    }
+
+    return "نوع الملف غير مدعوم.";
+
+  }
+
+
+  function renderPreviews() {
+
+    previewStrip.innerHTML = "";
+
+    if (
+      !state.pendingFiles.length
+    ) {
+
+      previewStrip
+        .classList
+        .remove("has-items");
+
+      return;
+
+    }
+
+    previewStrip
+      .classList
+      .add("has-items");
+
+    state.pendingFiles
+      .forEach(
+        (file, index) => {
+
+          const box =
+            document.createElement("div");
+
+          box.className =
+            "preview";
+
+          const remove =
+            document.createElement("button");
+
+          remove.className =
+            "remove-preview";
+
+          remove.textContent =
+            "×";
+
+          remove.onclick =
+            () => {
+
+              state.pendingFiles
+                .splice(index, 1);
+
+              renderPreviews();
+
+            };
+
+          if (
+            file.type.startsWith(
+              "image/"
+            )
+          ) {
+
+            const img =
+              document.createElement("img");
+
+            img.src =
+              URL.createObjectURL(
+                file
+              );
+
+            box.appendChild(img);
+
+          } else if (
+            file.type.startsWith(
+              "video/"
+            )
+          ) {
+
+            const video =
+              document.createElement(
+                "video"
+              );
+
+            video.src =
+              URL.createObjectURL(
+                file
+              );
+
+            video.muted = true;
+
+            box.appendChild(video);
+
+          } else {
+
+            const div =
+              document.createElement("div");
+
+            div.className =
+              "preview-file";
+
+            div.textContent =
+              file.name;
+
+            box.appendChild(div);
+
+          }
+
+          box.appendChild(remove);
+
+          previewStrip.appendChild(
+            box
+          );
+
+        }
+      );
+
+  }
+
+
+  async function uploadFile(file) {
+
+    const safeName =
+      file.name
+        .replace(
+          /[^a-zA-Z0-9._-]/g,
+          "_"
+        )
+        .slice(-100);
+
+    const path =
+      `${state.user.id}/${crypto.randomUUID()}-${safeName}`;
+
+    const {
+      error
+    } =
+      await db
+      .storage
+      .from("chat-files")
+      .upload(
+        path,
+        file,
+        {
+          cacheControl: "3600",
+          upsert: false,
+          contentType:
+            file.type ||
+            "application/octet-stream"
+        }
+      );
+
+    if (error)
+      throw error;
+
+    return {
+
+      path,
+
+      name:
+        file.name,
+
+      type:
+        file.type ||
+        "application/octet-stream",
+
+      size:
+        file.size
+
+    };
+
+  }
+
+
+  async function getSignedUrl(path) {
+
+    const {
+      data,
+      error
+    } =
+      await db
+      .storage
+      .from("chat-files")
+      .createSignedUrl(
+        path,
+        3600
+      );
+
+    if (error)
+      throw error;
+
+    return data.signedUrl;
+
+  }
+
+
+  /* =========================================
+     SEND
+  ========================================= */
+
+  async function sendMessage() {
+
+    if (state.sending)
+      return;
+
+    const text =
+      messageInput.value.trim();
+
+    if (
+      !text &&
+      !state.pendingFiles.length
+    ) {
+
+      return;
+
+    }
+
+    state.sending = true;
+
+    sendBtn.disabled = true;
+
+    try {
+
+      const uploaded = [];
+
+      for (
+        const file
+        of state.pendingFiles
+      ) {
+
+        const meta =
+          await uploadFile(file);
+
+        uploaded.push(meta);
+
+      }
+
+      const attachments = [];
+
+      for (
+        const item
+        of uploaded
+      ) {
+
+        attachments.push({
+
+          ...item,
+
+          url:
+            await getSignedUrl(
+              item.path
+            )
+
+        });
+
+      }
+
+      const userMessage = {
+
+        role: "user",
+
+        content:
+          text,
+
+        attachments,
+
+        created_at:
+          new Date().toISOString()
+
+      };
+
+      state.messages.push(
+        userMessage
+      );
+
+      messageInput.value = "";
+
+      state.pendingFiles = [];
+
+      renderPreviews();
+
+      renderMessages();
+
+      await ensureConversation();
+
+      await saveConversation();
+
+      showTyping();
+
+      const reply =
+        await callAIChat(
+          text,
+          attachments
+        );
+
+      removeTyping();
+
+      state.messages.push({
+
+        role: "assistant",
+
+        content:
+          reply,
+
+        created_at:
+          new Date().toISOString()
+
+      });
+
+      renderMessages();
+
+      await saveConversation();
+
+    } catch (error) {
+
+      console.error(error);
+
+      removeTyping();
+
+      state.messages.push({
+
+        role: "assistant",
+
+        content:
+          "صار خطأ أثناء الإرسال. تأكد من الملف أو جرّب مرة ثانية."
+
+      });
+
+      renderMessages();
+
+    } finally {
+
+      state.sending = false;
+
+      sendBtn.disabled = false;
+
+    }
+
+  }
+
+
+  /* =========================================
+     AI
+  ========================================= */
+
+  async function callAIChat(
+    text,
+    attachments
+  ) {
+
+    const cleanMessages =
+      state.messages
+        .slice(-20)
+        .map(
+          message => ({
+
+            role:
+              message.role,
+
+            content:
+              message.content || "",
+
+            attachments:
+              message.attachments || []
+
+          })
+        );
+
+    const {
+      data,
+      error
+    } =
+      await db.functions.invoke(
+        "ai-chat",
+        {
+          body: {
+
+            message:
+              text,
+
+            messages:
+              cleanMessages,
+
+            attachments
+
+          }
+        }
+      );
+
+    if (error) {
+
+      console.error(
+        "Edge Function:",
+        error
+      );
+
+      throw new Error(
+        error.message ||
+        "AI error"
+      );
+
+    }
+
+    if (
+      !data ||
+      typeof data.reply !== "string"
+    ) {
+
+      throw new Error(
+        data?.error ||
+        "لم يرجع الذكاء الاصطناعي جواباً."
+      );
+
+    }
+
+    return data.reply;
+
+  }
+
+
+  /* =========================================
+     RENDER MESSAGES
+  ========================================= */
+
+  function renderMessages() {
+
+    messagesInner.innerHTML = "";
+
+    if (!state.messages.length) {
+
+      messagesInner.innerHTML = `
+
+        <div id="welcome" class="welcome">
+
+          <div class="welcome-logo">
+            A
+          </div>
+
+          <h1>
+            شلون أگدر أساعدك؟
+          </h1>
+
+          <p>
+            اسألني عن أي شيء، أو أرسل صورة أو ملف أو فيديو أو تسجيل صوتي.
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+    state.messages
+      .forEach(
+        (message, index) => {
+
+          renderMessage(
+            message,
+            index
+          );
+
+        }
+      );
+
+    scrollBottom();
+
+  }
+
+
+  function renderMessage(
+    message,
+    index
+  ) {
+
+    const wrapper =
+      document.createElement("div");
+
+    wrapper.className =
+      "message " +
+      (
+        message.role === "user"
+          ? "user"
+          : "assistant"
+      );
+
+    const avatar =
+      document.createElement("div");
+
+    avatar.className =
+      "message-avatar";
+
+    avatar.textContent =
+      message.role === "user"
+        ? "أ"
+        : "A";
+
+    const body =
+      document.createElement("div");
+
+    body.className =
+      "message-body";
+
+    const name =
+      document.createElement("div");
+
+    name.className =
+      "message-name";
+
+    name.textContent =
+      message.role === "user"
+        ? "أنت"
+        : "Ayham AI";
+
+    const content =
+      document.createElement("div");
+
+    content.className =
+      "message-content";
+
+    content.textContent =
+      message.content || "";
+
+    body.appendChild(name);
+
+    if (
+      message.attachments?.length
+    ) {
+
+      const grid =
+        document.createElement("div");
+
+      grid.className =
+        "attachment-grid";
+
+      message.attachments
+        .forEach(
+          attachment => {
+
+            renderAttachment(
+              grid,
+              attachment
+            );
+
+          }
+        );
+
+      body.appendChild(grid);
+
+    }
+
+    body.appendChild(content);
+
+    if (
+      message.role ===
+      "assistant"
+    ) {
+
+      const actions =
+        document.createElement("div");
+
+      actions.className =
+        "assistant-actions";
+
+      const copy =
+        document.createElement("button");
+
+      copy.textContent =
+        "نسخ";
+
+      copy.onclick =
+        async () => {
+
+          await navigator.clipboard.writeText(
+            message.content || ""
+          );
+
+          copy.textContent =
+            "تم النسخ ✓";
+
+          setTimeout(
+            () =>
+              copy.textContent =
+              "نسخ",
+            1200
+          );
+
+        };
+
+      actions.appendChild(copy);
+
+      body.appendChild(actions);
+
+    }
+
+    wrapper.appendChild(avatar);
+
+    wrapper.appendChild(body);
+
+    messagesInner.appendChild(
+      wrapper
+    );
+
+  }
+
+
+  function renderAttachment(
+    container,
+    attachment
+  ) {
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "attachment-card";
+
+    const type =
+      attachment.type || "";
+
+    const url =
+      attachment.url;
+
+    if (
+      type.startsWith("image/")
+    ) {
+
+      const img =
+        document.createElement("img");
+
+      img.src = url;
+
+      img.alt =
+        attachment.name;
+
+      card.appendChild(img);
+
+    } else if (
+      type.startsWith("video/")
+    ) {
+
+      const video =
+        document.createElement("video");
+
+      video.src = url;
+
+      video.controls = true;
+
+      card.appendChild(video);
+
+    } else if (
+      type.startsWith("audio/")
+    ) {
+
+      const audio =
+        document.createElement("audio");
+
+      audio.src = url;
+
+      audio.controls = true;
+
+      card.appendChild(audio);
+
+    } else {
+
+      const link =
+        document.createElement("a");
+
+      link.href = url;
+
+      link.target = "_blank";
+
+      link.style.textDecoration =
+        "none";
+
+      link.style.color =
+        "white";
+
+      link.innerHTML = `
+
+        <div class="file-card">
+
+          <div class="file-icon">
+            📄
+          </div>
+
+          <div class="file-name"></div>
+
+        </div>
+
+      `;
+
+      link
+        .querySelector(".file-name")
+        .textContent =
+        attachment.name;
+
+      card.appendChild(link);
+
+    }
+
+    container.appendChild(card);
+
+  }
+
+
+  /* =========================================
+     TYPING
+  ========================================= */
+
+  function showTyping() {
+
+    removeTyping();
+
+    const wrapper =
+      document.createElement("div");
+
+    wrapper.id =
+      "typingMessage";
+
+    wrapper.className =
+      "message assistant";
+
+    wrapper.innerHTML = `
+
+      <div class="message-avatar">
+        A
+      </div>
+
+      <div class="message-body">
+
+        <div class="message-name">
+          Ayham AI
+        </div>
+
+        <div class="typing">
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </div>
+
+      </div>
+
+    `;
+
+    messagesInner.appendChild(
+      wrapper
+    );
+
+    scrollBottom();
+
+  }
+
+
+  function removeTyping() {
+
+    $("typingMessage")
+      ?.remove();
+
+  }
+
+
+  function scrollBottom() {
+
+    const box =
+      $("messages");
+
+    requestAnimationFrame(
+      () => {
+
+        box.scrollTop =
+          box.scrollHeight;
+
+      }
+    );
+
+  }
+
+
+  /* =========================================
+     AUDIO RECORDING
+  ========================================= */
+
+  async function toggleRecording() {
+
+    if (state.recording) {
+
+      stopRecording();
+
+      return;
+
+    }
+
+    try {
+
+      const stream =
+        await navigator.mediaDevices
+          .getUserMedia({
+            audio: true
+          });
+
+      const recorder =
+        new MediaRecorder(
+          stream
+        );
+
+      state.mediaRecorder =
+        recorder;
+
+      state.audioChunks = [];
+
+      recorder.ondataavailable =
+        event => {
+
+          if (
+            event.data.size
+          ) {
+
+            state.audioChunks.push(
+              event.data
+            );
+
+          }
+
+        };
+
+      recorder.onstop =
+        async () => {
+
+          stream
+            .getTracks()
+            .forEach(
+              track =>
+                track.stop()
+            );
+
+          const blob =
+            new Blob(
+              state.audioChunks,
+              {
+                type:
+                  recorder.mimeType ||
+                  "audio/webm"
+              }
+            );
+
+          const extension =
+            recorder.mimeType
+              ?.includes("ogg")
+              ? "ogg"
+              : "webm";
+
+          const file =
+            new File(
+              [blob],
+              `voice-${Date.now()}.${extension}`,
+              {
+                type:
+                  blob.type
+              }
+            );
+
+          addFiles([file]);
+
+        };
+
+      recorder.start();
+
+      state.recording = true;
+
+      $("micBtn")
+        .classList
+        .add("recording");
+
+      $("micBtn")
+        .textContent = "⏹️";
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "ما گدرت أوصل للمايكروفون. تأكد من صلاحية المايك."
+      );
+
+    }
+
+  }
+
+
+  function stopRecording() {
+
+    if (
+      state.mediaRecorder &&
+      state.recording
+    ) {
+
+      state.mediaRecorder.stop();
+
+    }
+
+    state.recording = false;
+
+    $("micBtn")
+      .classList
+      .remove("recording");
+
+    $("micBtn")
+      .textContent = "🎙️";
+
+  }
+
+
+  /* =========================================
+     UI
+  ========================================= */
+
+  function autoResize() {
+
+    messageInput.style.height =
+      "auto";
+
+    messageInput.style.height =
+      Math.min(
+        messageInput.scrollHeight,
+        180
+      ) + "px";
+
+  }
+
+
+  function openSidebar() {
+
+    $("sidebar")
+      .classList
+      .add("open");
+
+    $("overlay")
+      .classList
+      .add("show");
+
+  }
+
+
+  function closeSidebar() {
+
+    $("sidebar")
+      .classList
+      .remove("open");
+
+    $("overlay")
+      .classList
+      .remove("show");
+
+  }
 
 </script>
 
