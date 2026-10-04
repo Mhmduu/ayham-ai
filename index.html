@@ -3,659 +3,1368 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#080d1c">
-  <title>Ayham AI | أيهم AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1020">
+  <title>Ayham AI - مساعدك الذكي</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root {
-      color-scheme: dark;
-      --bg: #080d1c;
-      --panel: #111a2e;
-      --line: #273552;
-      --cyan: #42e8d5;
-      --blue: #70a7ff;
-      --text: #f4f7ff;
-      --muted: #a8b5ce;
-      --red: #ff8e9d;
+      --bg: #080d19;
+      --panel: #10182a;
+      --panel2: #151f35;
+      --border: #25334c;
+      --text: #edf4ff;
+      --muted: #9aabc5;
+      --cyan: #45e0d0;
+      --blue: #5c8cff;
+      --purple: #9a76ff;
+      --danger: #ff697f;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       min-height: 100vh;
-      padding: 22px;
-      display: grid;
-      place-items: center;
-      font-family: system-ui, Tahoma, Arial, sans-serif;
-      color: var(--text);
       background:
-        radial-gradient(ellipse at top right, #18294b, transparent 48%),
-        radial-gradient(ellipse at bottom left, #241744, transparent 42%),
+        radial-gradient(ellipse at top right, #172746 0%, transparent 42%),
         var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
     }
 
-    button, input { font: inherit; }
+    button, input, textarea {
+      font: inherit;
+    }
 
-    button { cursor: pointer; }
+    button {
+      cursor: pointer;
+    }
 
     button:disabled {
-      opacity: .6;
-      cursor: wait;
+      opacity: .55;
+      cursor: not-allowed;
     }
 
-    .wrap {
-      width: min(100%, 460px);
-      margin: auto;
+    .hidden {
+      display: none !important;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .small {
+      font-size: 12px;
     }
 
     .brand {
-      text-align: center;
-      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .logo {
-      width: 72px;
-      height: 72px;
-      border-radius: 23px;
-      margin: 0 auto 12px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
       display: grid;
       place-items: center;
-      font-size: 32px;
+      flex-shrink: 0;
+      color: #06121b;
+      font-size: 22px;
       font-weight: 900;
-      color: #06111e;
-      background: linear-gradient(135deg, var(--cyan), var(--blue));
-      box-shadow: 0 0 35px #42e8d533;
+      background: linear-gradient(135deg, var(--cyan), var(--blue), var(--purple));
+      box-shadow: 0 0 28px #45e0d044;
     }
 
-    h1 { font-size: 29px; margin: 0 0 5px; }
-    h2 { font-size: 22px; margin-top: 0; }
-
-    .brand p, .hint, footer { color: var(--muted); }
-
-    .card {
-      border: 1px solid #ffffff18;
-      background: linear-gradient(145deg, #121c31ee, #0d1426f2);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 24px 80px #0007;
+    .brand h1 {
+      margin: 0;
+      font-size: 23px;
+      letter-spacing: .2px;
     }
 
-    .tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      background: #080e1d;
-      border: 1px solid var(--line);
-      padding: 4px;
-      border-radius: 14px;
-      gap: 4px;
-      margin-bottom: 22px;
-    }
-
-    .tabs button {
-      border: 0;
-      background: transparent;
+    .brand p {
+      margin: 3px 0 0;
       color: var(--muted);
-      padding: 11px;
-      border-radius: 10px;
+      font-size: 12px;
     }
 
-    .tabs button.active {
-      background: #21314e;
-      color: white;
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--panel2);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 11px 14px;
+      transition: .2s;
+    }
+
+    .btn:hover {
+      border-color: var(--cyan);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(110deg, #32cbbf, #5688ff);
+      color: #06111e;
+      border: 0;
+      font-weight: 800;
+    }
+
+    .btn-danger {
+      color: var(--danger);
+    }
+
+    .field {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 13px 14px;
+      outline: none;
+      color: var(--text);
+      background: #080f1e;
+    }
+
+    .field:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px #45e0d018;
     }
 
     label {
       display: block;
-      font-size: 14px;
-      margin: 14px 0 7px;
+      font-size: 13px;
+      color: #c8d5eb;
+      margin-bottom: 7px;
     }
 
-    input {
+    .auth-wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+    }
+
+    .auth-card {
       width: 100%;
-      border: 1px solid var(--line);
-      background: #080f20;
-      color: white;
-      padding: 13px 14px;
-      border-radius: 12px;
-      outline: none;
+      max-width: 430px;
+      padding: 27px;
+      background: #10182aeF;
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      box-shadow: 0 25px 90px #0007;
     }
 
-    input:focus { border-color: var(--cyan); }
-
-    .primary {
-      width: 100%;
-      margin-top: 20px;
-      border: 0;
-      border-radius: 13px;
-      padding: 14px;
-      font-weight: 800;
-      color: #06111e;
-      background: linear-gradient(100deg, var(--cyan), var(--blue));
+    .auth-card .brand {
+      margin-bottom: 26px;
     }
 
-    .secondary {
-      width: 100%;
-      margin-top: 10px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px;
-      color: white;
-      background: #101a2c;
+    .auth-card h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
     }
 
-    .message {
-      display: none;
-      padding: 12px;
-      border-radius: 12px;
-      margin-top: 15px;
-      font-size: 14px;
+    .auth-card .intro {
+      margin: 0 0 23px;
+      color: var(--muted);
       line-height: 1.8;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .auth-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .auth-actions button {
+      width: 100%;
+    }
+
+    .link-btn {
+      border: 0;
+      background: none;
+      color: var(--cyan);
+      padding: 8px;
+    }
+
+    .status {
+      padding: 12px;
+      margin-top: 14px;
+      border-radius: 12px;
+      background: #18243a;
+      color: #c7e5ff;
+      line-height: 1.7;
+      font-size: 13px;
       overflow-wrap: anywhere;
     }
 
-    .message.show { display: block; }
-    .error { background: #481e2a; color: #ffd7dd; }
-    .success { background: #123b32; color: #d4ffea; }
-
-    .hint {
-      font-size: 12px;
-      line-height: 1.8;
-      margin-bottom: 0;
+    .status.error {
+      color: #ffc0ca;
+      background: #351923;
     }
 
-    .account { display: none; }
-    .account.show { display: block; }
-
-    .balance {
-      padding: 18px;
-      margin: 18px 0;
-      border-radius: 16px;
-      border: 1px solid #42e8d544;
-      background: linear-gradient(135deg, #12383b88, #192c4c88);
-      text-align: center;
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 285px minmax(0, 1fr);
     }
 
-    .balance small { color: var(--muted); }
-    .balance strong {
-      display: block;
-      font-size: 32px;
-      color: var(--cyan);
-      margin-top: 7px;
+    .sidebar {
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 20px 15px;
+      background: #0c1323ee;
+      border-left: 1px solid var(--border);
+      overflow: hidden;
     }
 
-    .signout {
+    .sidebar .brand h1 {
+      font-size: 20px;
+    }
+
+    .new-chat {
       width: 100%;
-      margin-top: 14px;
-      border: 1px solid var(--line);
-      background: transparent;
-      color: white;
-      border-radius: 12px;
-      padding: 11px;
-    }
-
-    footer {
       text-align: center;
-      font-size: 12px;
-      margin-top: 18px;
     }
 
-    .hidden { display: none !important; }
+    .section-label {
+      color: var(--muted);
+      font-size: 12px;
+      padding: 0 7px;
+    }
+
+    .conversation-list {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .conversation-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 5px;
+    }
+
+    .conversation-item.active {
+      background: #17243a;
+      border-color: #2b4564;
+    }
+
+    .conversation-open {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      background: none;
+      color: var(--text);
+      text-align: right;
+      padding: 8px 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .delete-chat {
+      border: 0;
+      background: transparent;
+      color: #9aaac0;
+      padding: 7px;
+      border-radius: 8px;
+    }
+
+    .delete-chat:hover {
+      color: var(--danger);
+      background: #341923;
+    }
+
+    .account-card {
+      padding: 14px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #162740, #191c39);
+      border: 1px solid var(--border);
+    }
+
+    .account-email {
+      direction: ltr;
+      text-align: right;
+      overflow-wrap: anywhere;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .credit-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    .credit-number {
+      color: var(--cyan);
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 17px 22px;
+      border-bottom: 1px solid var(--border);
+      background: #0b1120b8;
+    }
+
+    .topbar-title {
+      font-weight: 750;
+    }
+
+    .topbar-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    .chat-area {
+      flex: 1;
+      width: 100%;
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 25px 22px 16px;
+    }
+
+    .welcome {
+      max-width: 650px;
+      margin: 12vh auto 35px;
+      text-align: center;
+    }
+
+    .welcome-logo {
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 20px;
+      border-radius: 26px;
+      display: grid;
+      place-items: center;
+      font-size: 36px;
+      font-weight: 900;
+      color: #07121d;
+      background: linear-gradient(135deg, var(--cyan), var(--blue), var(--purple));
+      box-shadow: 0 0 50px #5c8cff25;
+    }
+
+    .welcome h2 {
+      font-size: clamp(27px, 5vw, 39px);
+      margin: 0 0 12px;
+    }
+
+    .welcome p {
+      color: var(--muted);
+      line-height: 1.9;
+      margin: 0 auto 24px;
+    }
+
+    .suggestions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      text-align: right;
+    }
+
+    .suggestion {
+      padding: 14px;
+      min-height: 80px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      color: var(--text);
+      background: #111b2e;
+      text-align: right;
+      line-height: 1.7;
+    }
+
+    .suggestion:hover {
+      border-color: var(--cyan);
+      background: #14253a;
+    }
+
+    .suggestion span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .messages {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      padding-bottom: 25px;
+    }
+
+    .message {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      line-height: 1.9;
+      min-width: 0;
+    }
+
+    .message.user {
+      flex-direction: row-reverse;
+    }
+
+    .avatar {
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 800;
+      background: #182740;
+      border: 1px solid #2b4160;
+    }
+
+    .message.assistant .avatar {
+      color: var(--cyan);
+    }
+
+    .message.user .avatar {
+      color: #fff;
+      background: #29376a;
+    }
+
+    .message-content {
+      min-width: 0;
+      max-width: calc(100% - 48px);
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+
+    .message.user .message-content {
+      padding: 10px 14px;
+      background: #192944;
+      border: 1px solid #2b4566;
+      border-radius: 17px 5px 17px 17px;
+    }
+
+    .message.assistant .message-content {
+      padding: 4px 0;
+    }
+
+    .message-role {
+      font-size: 12px;
+      font-weight: 750;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .composer-wrap {
+      position: sticky;
+      bottom: 0;
+      padding: 14px 20px 17px;
+      background: linear-gradient(0deg, var(--bg) 75%, transparent);
+    }
+
+    .composer {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      border: 1px solid #344766;
+      border-radius: 20px;
+      padding: 10px;
+      background: #111a2b;
+      box-shadow: 0 15px 50px #0004;
+    }
+
+    .composer textarea {
+      display: block;
+      width: 100%;
+      min-height: 48px;
+      max-height: 180px;
+      resize: vertical;
+      border: 0;
+      outline: 0;
+      color: var(--text);
+      background: transparent;
+      padding: 10px;
+      line-height: 1.7;
+    }
+
+    .composer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 5px 5px 0;
+    }
+
+    .send-btn {
+      min-width: 100px;
+    }
+
+    .disclaimer {
+      text-align: center;
+      font-size: 11px;
+      color: #73839d;
+      margin: 10px auto 0;
+      max-width: 850px;
+      line-height: 1.7;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      max-width: 450px;
+      margin: auto;
+      z-index: 100;
+      padding: 14px 17px;
+      border-radius: 14px;
+      background: #1b2d43;
+      border: 1px solid #405977;
+      box-shadow: 0 12px 45px #0008;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .sidebar {
+        position: fixed;
+        z-index: 20;
+        top: 0;
+        right: 0;
+        width: min(310px, 88vw);
+        transform: translateX(110%);
+        transition: transform .25s ease;
+        box-shadow: -15px 0 50px #0008;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .mobile-menu {
+        display: inline-block;
+      }
+
+      .topbar {
+        padding: 13px 14px;
+      }
+
+      .chat-area {
+        padding: 16px 14px;
+      }
+
+      .composer-wrap {
+        padding: 10px 10px 13px;
+      }
+
+      .suggestions {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome {
+        margin-top: 7vh;
+      }
+
+      .auth-card {
+        padding: 22px;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <main class="wrap">
 
-    <header class="brand">
-      <div class="logo">A</div>
-      <h1>Ayham AI</h1>
-      <p>مساحتك الذكية، خطوة بخطوة ✨</p>
-    </header>
-
-    <!-- تسجيل الدخول وإنشاء الحساب -->
-    <section class="card" id="authCard">
-      <div class="tabs">
-        <button id="loginTab" class="active" type="button">
-          تسجيل الدخول
-        </button>
-        <button id="signupTab" type="button">
-          إنشاء حساب
-        </button>
+  <!-- تسجيل الدخول -->
+  <section id="authView" class="auth-wrap">
+    <div class="auth-card">
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1>Ayham AI</h1>
+          <p>مساعدك الذكي بالعربي</p>
+        </div>
       </div>
+
+      <h2 id="authTitle">أهلاً بيك 👋</h2>
+      <p id="authIntro" class="intro">
+        سجّل دخولك حتى تبدأ محادثاتك وتحفظها بحسابك.
+      </p>
 
       <form id="authForm">
-        <label for="email">البريد الإلكتروني</label>
-        <input
-          id="email"
-          type="email"
-          autocomplete="email"
-          placeholder="name@example.com"
-          required
-        >
+        <div id="nameGroup" class="form-group hidden">
+          <label for="displayName">الاسم</label>
+          <input id="displayName" class="field" maxlength="80"
+            autocomplete="name" placeholder="اكتب اسمك">
+        </div>
 
-        <label for="password">كلمة المرور</label>
-        <input
-          id="password"
-          type="password"
-          autocomplete="current-password"
-          minlength="6"
-          placeholder="6 أحرف على الأقل"
-          required
-        >
+        <div class="form-group">
+          <label for="email">البريد الإلكتروني</label>
+          <input id="email" class="field" type="email"
+            autocomplete="email" required placeholder="name@example.com">
+        </div>
 
-        <button class="primary" id="submitBtn" type="submit">
-          تسجيل الدخول
-        </button>
+        <div id="passwordGroup" class="form-group">
+          <label for="password">كلمة المرور</label>
+          <input id="password" class="field" type="password"
+            autocomplete="current-password" minlength="6"
+            required placeholder="ستة أحرف على الأقل">
+        </div>
+
+        <div class="auth-actions">
+          <button id="authSubmit" class="btn btn-primary" type="submit">
+            تسجيل الدخول
+          </button>
+          <button id="toggleAuth" class="btn" type="button">
+            إنشاء حساب جديد
+          </button>
+          <button id="forgotPassword" class="link-btn" type="button">
+            نسيت كلمة المرور؟
+          </button>
+        </div>
       </form>
 
-      <button class="secondary" id="resetBtn" type="button">
-        نسيت كلمة المرور؟
-      </button>
+      <div id="authStatus" class="status hidden" role="status"></div>
 
-      <div id="message" class="message" role="status"></div>
-
-      <p class="hint">
-        حافظ على سرية كلمة المرور ولا تشاركها مع أي شخص.
+      <p class="muted small" style="line-height:1.8;margin-top:20px">
+        باستخدامك للتطبيق، احتفظ ببيانات دخولك ولا تشارك كلمة المرور مع أحد.
       </p>
-    </section>
+    </div>
+  </section>
 
-    <!-- صفحة الحساب -->
-    <section class="card account" id="accountCard">
-      <h2>أهلاً بيك في Ayham AI ✨</h2>
-      <p id="userEmail"></p>
+  <!-- واجهة المحادثات -->
+  <section id="appView" class="app hidden">
 
-      <div class="balance">
-        <small>رصيد نقاط حسابك</small>
-        <strong id="credits">جاري التحميل...</strong>
+    <aside id="sidebar" class="sidebar">
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1>Ayham AI</h1>
+          <p>ذكاء اصطناعي • مساحة محادثاتك</p>
+        </div>
       </div>
 
-      <p class="hint">
-        هذا رصيد حسابك التجريبي. استخدام النقاط داخل خدمات الذكاء
-        الاصطناعي يحتاج إلى ربط خدمة الذكاء الاصطناعي ونظام خصم آمن.
-      </p>
-
-      <button class="secondary" id="refreshBtn" type="button">
-        تحديث الرصيد
+      <button id="newChatBtn" class="btn btn-primary new-chat">
+        ＋ محادثة جديدة
       </button>
 
-      <div id="accountMessage" class="message" role="status"></div>
+      <div class="section-label">محادثاتك السابقة</div>
+      <div id="conversationList" class="conversation-list">
+        <p class="muted small">جاري تحميل المحادثات...</p>
+      </div>
 
-      <button class="signout" id="signoutBtn" type="button">
-        تسجيل الخروج
-      </button>
-    </section>
+      <div class="account-card">
+        <div style="font-weight:750">حسابك</div>
+        <div id="accountEmail" class="account-email"></div>
+        <div class="credit-line">
+          <span>رصيدك الحالي</span>
+          <span id="creditNumber" class="credit-number">--</span>
+        </div>
+        <div class="credit-line">
+          <span class="muted small">الرصيد المتاح</span>
+          <span class="muted small">نقطة</span>
+        </div>
+        <button id="refreshAccount" class="btn" style="width:100%;margin-top:12px">
+          تحديث الرصيد
+        </button>
+        <button id="logoutBtn" class="btn btn-danger" style="width:100%;margin-top:8px">
+          تسجيل الخروج
+        </button>
+      </div>
+    </aside>
 
-    <footer>Ayham AI · تطوير أيهم نزار</footer>
-  </main>
+    <main class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:11px">
+          <button id="menuBtn" class="btn mobile-menu" aria-label="القائمة">☰</button>
+          <div>
+            <div id="chatTitle" class="topbar-title">محادثة جديدة</div>
+            <div class="topbar-subtitle">مساحة Ayham AI الخاصة بيك</div>
+          </div>
+        </div>
+        <button id="headerNewChat" class="btn">＋ جديد</button>
+      </header>
 
-  <script type="module">
-    import { createClient } from
-      'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+      <div id="chatArea" class="chat-area">
+        <div id="welcome" class="welcome">
+          <div class="welcome-logo">A</div>
+          <h2>شلون أگدر أساعدك؟</h2>
+          <p>
+            أهلاً بيك في Ayham AI. اكتب سؤالك وابدأ محادثة جديدة.
+            تگدر تحفظ محادثاتك وترجعلها بأي وقت.
+          </p>
 
-    // إعدادات مشروع Supabase
-    const SUPABASE_URL =
-      'https://yyhykirxcsbgfddjyuti.supabase.co';
+          <div class="suggestions">
+            <button class="suggestion" data-prompt="علّمني البرمجة من الصفر خطوة بخطوة">
+              💻 تعلّم البرمجة
+              <span>ابدأ من الصفر وبطريقة سهلة</span>
+            </button>
+            <button class="suggestion" data-prompt="ساعدني أكتب إعلان باللهجة العراقية">
+              ✍️ كتابة إعلان
+              <span>اكتب محتوى مرتب وجذاب</span>
+            </button>
+            <button class="suggestion" data-prompt="ترجم لي النصوص واشرح معناها بالعربي">
+              🌐 ترجمة وشرح
+              <span>افهم النصوص بطريقة بسيطة</span>
+            </button>
+            <button class="suggestion" data-prompt="اقترح لي أفكار مشاريع وتطبيقات أگدر أنفذها">
+              💡 أفكار جديدة
+              <span>أفكار لمشاريع وتطبيقات</span>
+            </button>
+          </div>
+        </div>
 
-    const SUPABASE_KEY =
-      'sb_publishable_ulGr0S06yyfBBzsiJqSeRQ_p3sO5dxh';
+        <div id="messages" class="messages"></div>
+      </div>
 
-    const supabase = createClient(
+      <div class="composer-wrap">
+        <form id="composerForm" class="composer">
+          <textarea id="messageInput" maxlength="12000"
+            placeholder="اكتب رسالتك هنا..." aria-label="رسالتك"></textarea>
+          <div class="composer-bottom">
+            <span class="muted small">Enter للإرسال • Shift + Enter لسطر جديد</span>
+            <button id="sendBtn" class="btn btn-primary send-btn" type="submit">
+              إرسال ↑
+            </button>
+          </div>
+        </form>
+        <div class="disclaimer">
+          تنبيه: حفظ الرسائل يعمل حالياً، أما الردود الفعلية من نموذج الذكاء الاصطناعي
+          فتحتاج إلى تفعيل اتصال النموذج الآمن.
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <div id="toast" class="toast hidden" role="status"></div>
+
+  <script>
+    "use strict";
+
+    // إعدادات مشروع Supabase الخاص بك
+    const SUPABASE_URL = "https://yyhykirxcsbgfddjyuti.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_ulGr0S06yyfBBzsiJqSeRQ_p3sO5dxh";
+
+    const db = window.supabase.createClient(
       SUPABASE_URL,
-      SUPABASE_KEY
+      SUPABASE_ANON_KEY
     );
 
-    // عناصر الصفحة
-    const authCard = document.querySelector('#authCard');
-    const accountCard = document.querySelector('#accountCard');
-    const form = document.querySelector('#authForm');
-    const emailInput = document.querySelector('#email');
-    const passwordInput = document.querySelector('#password');
-    const submitBtn = document.querySelector('#submitBtn');
-    const loginTab = document.querySelector('#loginTab');
-    const signupTab = document.querySelector('#signupTab');
-    const message = document.querySelector('#message');
-    const accountMessage = document.querySelector('#accountMessage');
-    const credits = document.querySelector('#credits');
+    const $ = (id) => document.getElementById(id);
 
-    let mode = 'login';
-    let currentUserId = null;
-    let loadNumber = 0;
+    const state = {
+      user: null,
+      profile: null,
+      conversations: [],
+      currentId: null,
+      messages: [],
+      authMode: "login",
+      sending: false
+    };
 
-    function showMessage(element, text, type = 'error') {
-      element.textContent = text;
-      element.className = 'message show ' + type;
+    let toastTimer = null;
+
+    function showToast(message, isError = false) {
+      const el = $("toast");
+      el.textContent = message;
+      el.classList.remove("hidden");
+      el.style.borderColor = isError ? "#a33c52" : "#405977";
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        el.classList.add("hidden");
+      }, 4500);
     }
 
-    function clearMessage(element) {
-      element.textContent = '';
-      element.className = 'message';
+    function setStatus(message, isError = false) {
+      const el = $("authStatus");
+      el.textContent = message;
+      el.classList.remove("hidden");
+      el.classList.toggle("error", isError);
     }
 
-    function setMode(newMode) {
-      mode = newMode;
-
-      loginTab.classList.toggle('active', mode === 'login');
-      signupTab.classList.toggle('active', mode === 'signup');
-
-      submitBtn.textContent =
-        mode === 'login' ? 'تسجيل الدخول' : 'إنشاء حساب';
-
-      passwordInput.autocomplete =
-        mode === 'login' ? 'current-password' : 'new-password';
-
-      clearMessage(message);
+    function clearStatus() {
+      $("authStatus").textContent = "";
+      $("authStatus").classList.add("hidden");
+      $("authStatus").classList.remove("error");
     }
 
-    function showAuth() {
-      currentUserId = null;
-      loadNumber++;
+    function explainError(error) {
+      const message = String(error?.message || error || "حدث خطأ غير معروف");
 
-      accountCard.classList.remove('show');
-      authCard.style.display = 'block';
-      clearMessage(accountMessage);
+      if (/Invalid login credentials/i.test(message)) {
+        return "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
+      }
+
+      if (/Email not confirmed/i.test(message)) {
+        return "لازم تأكد بريدك الإلكتروني من الرسالة اللي وصلتك.";
+      }
+
+      if (/User already registered/i.test(message)) {
+        return "هذا البريد مسجّل من قبل. جرّب تسجيل الدخول.";
+      }
+
+      if (/Failed to fetch|NetworkError/i.test(message)) {
+        return "تعذّر الاتصال. تأكد من الإنترنت وحاول مرة ثانية.";
+      }
+
+      return message;
     }
 
-    function showAccount(user) {
-      currentUserId = user.id;
-
-      authCard.style.display = 'none';
-      accountCard.classList.add('show');
-
-      document.querySelector('#userEmail').textContent =
-        user.email || 'حسابك';
-
-      loadCredits(user.id);
+    function setBusy(button, busy, busyText, normalText) {
+      button.disabled = busy;
+      button.textContent = busy ? busyText : normalText;
     }
 
-    // تحميل الرصيد من جدول profiles
-    async function loadCredits(userId) {
-      const thisLoad = ++loadNumber;
+    function setAuthMode(mode) {
+      state.authMode = mode;
+      clearStatus();
 
-      credits.textContent = 'جاري تحميل الرصيد...';
-      clearMessage(accountMessage);
+      const signup = mode === "signup";
+      const reset = mode === "reset";
 
-      try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('credits')
-          .eq('id', userId)
-          .maybeSingle();
+      $("nameGroup").classList.toggle("hidden", !signup);
+      $("passwordGroup").classList.toggle("hidden", reset);
+      $("password").required = !reset;
 
-        // تجاهل أي نتيجة قديمة لحساب سابق
-        if (
-          thisLoad !== loadNumber ||
-          currentUserId !== userId
-        ) {
-          return;
-        }
+      $("authTitle").textContent = signup
+        ? "إنشاء حساب جديد"
+        : reset
+          ? "استعادة كلمة المرور"
+          : "أهلاً بيك 👋";
 
-        if (error) {
-          console.error('Supabase profile error:', error);
+      $("authIntro").textContent = signup
+        ? "أنشئ حسابك حتى تحفظ محادثاتك وترجع إلها."
+        : reset
+          ? "اكتب بريدك الإلكتروني حتى نرسل لك رابط الاستعادة."
+          : "سجّل دخولك حتى تبدأ محادثاتك وتحفظها بحسابك.";
 
-          credits.textContent = 'تعذر تحميل الرصيد';
+      $("authSubmit").textContent = signup
+        ? "إنشاء الحساب"
+        : reset
+          ? "إرسال رابط الاستعادة"
+          : "تسجيل الدخول";
 
-          showMessage(
-            accountMessage,
-            'فشل تحميل الرصيد: ' + error.message
-          );
-          return;
-        }
+      $("toggleAuth").textContent = signup
+        ? "عندي حساب، تسجيل الدخول"
+        : "إنشاء حساب جديد";
 
-        if (!data) {
-          credits.textContent = 'غير متوفر';
+      $("forgotPassword").classList.toggle("hidden", signup || reset);
 
-          showMessage(
-            accountMessage,
-            'ما لقينا ملف الرصيد لهذا الحساب. تأكد من وجود سجل في جدول profiles.'
-          );
-          return;
-        }
-
-        credits.textContent =
-          Number(data.credits ?? 0).toLocaleString('en-US');
-
-        showMessage(
-          accountMessage,
-          'تم تحميل رصيد حسابك بنجاح.',
-          'success'
-        );
-
-      } catch (error) {
-        console.error('Unexpected profile error:', error);
-
-        if (thisLoad !== loadNumber) return;
-
-        credits.textContent = 'تعذر تحميل الرصيد';
-
-        showMessage(
-          accountMessage,
-          'حدث خطأ بالاتصال. تأكد من الإنترنت ثم حدّث الرصيد.'
-        );
-      }
+      $("password").autocomplete = signup ? "new-password" : "current-password";
     }
 
-    function translateError(error) {
-      const text = String(error?.message || '').toLowerCase();
+    $("toggleAuth").addEventListener("click", () => {
+      setAuthMode(state.authMode === "signup" ? "login" : "signup");
+    });
 
-      if (text.includes('invalid login credentials')) {
-        return 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
-      }
+    $("forgotPassword").addEventListener("click", () => {
+      setAuthMode("reset");
+    });
 
-      if (text.includes('email not confirmed')) {
-        return 'لازم تأكد بريدك الإلكتروني من رابط التأكيد.';
-      }
-
-      if (text.includes('user already registered')) {
-        return 'هذا البريد مسجل سابقاً. سجّل الدخول بدلاً من إنشاء حساب جديد.';
-      }
-
-      if (text.includes('password should be at least')) {
-        return 'كلمة المرور لازم تكون 6 أحرف على الأقل.';
-      }
-
-      if (text.includes('rate limit')) {
-        return 'حاولت مرات كثيرة. انتظر قليلاً ثم حاول مرة ثانية.';
-      }
-
-      if (text.includes('network') || text.includes('fetch')) {
-        return 'تعذر الاتصال. تأكد من الإنترنت وحاول مرة ثانية.';
-      }
-
-      return error?.message || 'صار خطأ غير متوقع. حاول مرة ثانية.';
-    }
-
-    loginTab.addEventListener('click', () => setMode('login'));
-    signupTab.addEventListener('click', () => setMode('signup'));
-
-    // تسجيل الدخول أو إنشاء حساب
-    form.addEventListener('submit', async (event) => {
+    $("authForm").addEventListener("submit", async (event) => {
       event.preventDefault();
+      clearStatus();
 
-      clearMessage(message);
+      const email = $("email").value.trim();
+      const password = $("password").value;
+      const name = $("displayName").value.trim();
+      const button = $("authSubmit");
+      const mode = state.authMode;
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'لحظة من فضلك...';
-
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
+      setBusy(button, true, "يرجى الانتظار...", button.textContent);
 
       try {
-        if (mode === 'signup') {
-          const { data, error } = await supabase.auth.signUp({
+        if (mode === "signup") {
+          const { data, error } = await db.auth.signUp({
             email,
             password,
             options: {
               data: {
-                display_name: email.split('@')[0]
+                display_name: name || email.split("@")[0]
               }
             }
           });
 
           if (error) throw error;
 
-          if (data.session && data.user) {
-            showAccount(data.user);
+          if (data.session) {
+            showToast("تم إنشاء الحساب بنجاح.");
           } else {
-            showMessage(
-              message,
-              'تم إنشاء طلب الحساب. افتح بريدك الإلكتروني واضغط رابط التأكيد، وبعدها ارجع وسجّل الدخول.',
-              'success'
+            setStatus(
+              "تم إرسال طلب إنشاء الحساب. إذا كان تأكيد البريد مفعّلاً، افتح رسالة التأكيد ثم ارجع وسجّل الدخول."
             );
-
-            setMode('login');
           }
 
-        } else {
-          const { data, error } =
-            await supabase.auth.signInWithPassword({
-              email,
-              password
-            });
+        } else if (mode === "reset") {
+          const { error } = await db.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + window.location.pathname
+          });
 
           if (error) throw error;
 
-          if (!data.user) {
-            throw new Error('تم تسجيل الدخول لكن لم يتم العثور على بيانات الحساب.');
-          }
+          setStatus("إذا كان البريد مسجلاً، راح توصلك رسالة لاستعادة كلمة المرور.");
 
-          showAccount(data.user);
+        } else {
+          const { error } = await db.auth.signInWithPassword({
+            email,
+            password
+          });
+
+          if (error) throw error;
+
+          showToast("تم تسجيل الدخول بنجاح.");
         }
 
       } catch (error) {
-        console.error('Authentication error:', error);
+        setStatus(explainError(error), true);
+      } finally {
+        button.disabled = false;
+        setAuthMode(mode);
+      }
+    });
 
-        showMessage(message, translateError(error));
+    function showApp(isLoggedIn) {
+      $("authView").classList.toggle("hidden", isLoggedIn);
+      $("appView").classList.toggle("hidden", !isLoggedIn);
+    }
+
+    function safeText(value, fallback = "") {
+      return typeof value === "string" ? value : fallback;
+    }
+
+    async function loadProfile() {
+      if (!state.user) return;
+
+      const { data, error } = await db
+        .from("profiles")
+        .select("id, display_name, credits")
+        .eq("id", state.user.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error("Profile error:", error);
+        $("creditNumber").textContent = "—";
+        showToast("تعذّر تحميل الرصيد. تحقق من صلاحيات جدول profiles.", true);
+        return;
+      }
+
+      state.profile = data;
+
+      $("accountEmail").textContent = state.user.email || "";
+      $("creditNumber").textContent = data
+        ? String(data.credits ?? 0)
+        : "—";
+    }
+
+    async function loadConversations() {
+      if (!state.user) return;
+
+      $("conversationList").replaceChildren();
+
+      const loading = document.createElement("p");
+      loading.className = "muted small";
+      loading.textContent = "جاري تحميل المحادثات...";
+      $("conversationList").appendChild(loading);
+
+      const { data, error } = await db
+        .from("conversations")
+        .select("id, user_id, title, messages, created_at, updated_at")
+        .eq("user_id", state.user.id)
+        .order("updated_at", { ascending: false })
+        .limit(100);
+
+      if (error) {
+        console.error("Conversation load error:", error);
+        $("conversationList").replaceChildren();
+
+        const errorText = document.createElement("p");
+        errorText.className = "muted small";
+        errorText.textContent =
+          "تعذّر تحميل المحادثات. تحقق من أعمدة الجدول وسياسات RLS.";
+        $("conversationList").appendChild(errorText);
+
+        showToast(explainError(error), true);
+        return;
+      }
+
+      state.conversations = data || [];
+      renderConversationList();
+    }
+
+    function renderConversationList() {
+      const list = $("conversationList");
+      list.replaceChildren();
+
+      if (state.conversations.length === 0) {
+        const empty = document.createElement("p");
+        empty.className = "muted small";
+        empty.textContent = "ما عندك محادثات محفوظة بعد.";
+        list.appendChild(empty);
+        return;
+      }
+
+      for (const conversation of state.conversations) {
+        const item = document.createElement("div");
+        item.className = "conversation-item";
+        if (conversation.id === state.currentId) {
+          item.classList.add("active");
+        }
+
+        const open = document.createElement("button");
+        open.className = "conversation-open";
+        open.type = "button";
+        open.textContent = safeText(conversation.title, "محادثة جديدة");
+        open.title = open.textContent;
+        open.addEventListener("click", () => openConversation(conversation.id));
+
+        const del = document.createElement("button");
+        del.className = "delete-chat";
+        del.type = "button";
+        del.textContent = "×";
+        del.title = "حذف المحادثة";
+        del.setAttribute("aria-label", "حذف المحادثة");
+
+        del.addEventListener("click", async () => {
+          const confirmed = window.confirm("متأكد تريد تحذف هاي المحادثة؟");
+          if (!confirmed) return;
+
+          const { error } = await db
+            .from("conversations")
+            .delete()
+            .eq("id", conversation.id)
+            .eq("user_id", state.user.id);
+
+          if (error) {
+            showToast("تعذّر حذف المحادثة: " + explainError(error), true);
+            return;
+          }
+
+          if (state.currentId === conversation.id) {
+            startNewChat();
+          }
+
+          await loadConversations();
+          showToast("تم حذف المحادثة.");
+        });
+
+        item.append(open, del);
+        list.appendChild(item);
+      }
+    }
+
+    function renderMessages() {
+      const container = $("messages");
+      container.replaceChildren();
+
+      $("welcome").classList.toggle("hidden", state.messages.length > 0);
+
+      for (const message of state.messages) {
+        const role = message.role === "user" ? "user" : "assistant";
+
+        const row = document.createElement("div");
+        row.className = "message " + role;
+
+        const avatar = document.createElement("div");
+        avatar.className = "avatar";
+        avatar.textContent = role === "user" ? "أنت" : "AI";
+
+        const content = document.createElement("div");
+        content.className = "message-content";
+
+        const label = document.createElement("div");
+        label.className = "message-role";
+        label.textContent = role === "user" ? "أنت" : "Ayham AI";
+
+        const text = document.createElement("div");
+        text.textContent = safeText(message.content);
+
+        content.append(label, text);
+        row.append(avatar, content);
+        container.appendChild(row);
+      }
+
+      requestAnimationFrame(() => {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth"
+        });
+      });
+    }
+
+    async function openConversation(id) {
+      const conversation = state.conversations.find((item) => item.id === id);
+      if (!conversation) return;
+
+      state.currentId = conversation.id;
+      state.messages = Array.isArray(conversation.messages)
+        ? conversation.messages
+            .filter((m) => m && typeof m.content === "string")
+            .map((m) => ({
+              role: m.role === "user" ? "user" : "assistant",
+              content: m.content
+            }))
+        : [];
+
+      $("chatTitle").textContent =
+        safeText(conversation.title, "محادثة جديدة");
+
+      renderMessages();
+      renderConversationList();
+      $("sidebar").classList.remove("open");
+    }
+
+    function startNewChat() {
+      state.currentId = null;
+      state.messages = [];
+      $("chatTitle").textContent = "محادثة جديدة";
+      $("messageInput").value = "";
+      renderMessages();
+      renderConversationList();
+      $("messageInput").focus();
+      $("sidebar").classList.remove("open");
+    }
+
+    async function saveConversation() {
+      if (!state.user) throw new Error("سجّل الدخول أولاً.");
+
+      const firstUserMessage = state.messages.find((m) => m.role === "user");
+      const title = firstUserMessage
+        ? firstUserMessage.content.slice(0, 65)
+        : "محادثة جديدة";
+
+      const payload = {
+        user_id: state.user.id,
+        title,
+        messages: state.messages,
+        updated_at: new Date().toISOString()
+      };
+
+      let result;
+
+      if (state.currentId) {
+        result = await db
+          .from("conversations")
+          .update(payload)
+          .eq("id", state.currentId)
+          .eq("user_id", state.user.id)
+          .select("id, user_id, title, messages, created_at, updated_at")
+          .single();
+      } else {
+        result = await db
+          .from("conversations")
+          .insert(payload)
+          .select("id, user_id, title, messages, created_at, updated_at")
+          .single();
+      }
+
+      if (result.error) throw result.error;
+
+      state.currentId = result.data.id;
+      $("chatTitle").textContent = title;
+
+      const index = state.conversations.findIndex(
+        (c) => c.id === result.data.id
+      );
+
+      if (index >= 0) {
+        state.conversations[index] = result.data;
+      } else {
+        state.conversations.unshift(result.data);
+      }
+
+      state.conversations.sort((a, b) =>
+        String(b.updated_at || "").localeCompare(String(a.updated_at || ""))
+      );
+
+      renderConversationList();
+    }
+
+    async function sendMessage(text) {
+      const content = text.trim();
+      if (!content || state.sending) return;
+
+      state.sending = true;
+      $("sendBtn").disabled = true;
+      $("messageInput").value = "";
+
+      state.messages.push({
+        role: "user",
+        content
+      });
+
+      renderMessages();
+
+      try {
+        await saveConversation();
+
+        showToast(
+          "تم حفظ رسالتك. ربط ردود الذكاء الاصطناعي يحتاج إعداد خدمة النموذج."
+        );
+
+      } catch (error) {
+        console.error("Save error:", error);
+
+        showToast(
+          "تعذّر حفظ المحادثة: " + explainError(error),
+          true
+        );
 
       } finally {
-        submitBtn.disabled = false;
-
-        submitBtn.textContent =
-          mode === 'login' ? 'تسجيل الدخول' : 'إنشاء حساب';
+        state.sending = false;
+        $("sendBtn").disabled = false;
+        $("messageInput").focus();
       }
-    });
-
-    // استعادة كلمة المرور
-    document.querySelector('#resetBtn').addEventListener(
-      'click',
-      async () => {
-        const email = emailInput.value.trim();
-
-        if (!email) {
-          showMessage(
-            message,
-            'اكتب بريدك الإلكتروني أولاً، وبعدها اضغط نسيت كلمة المرور.'
-          );
-          emailInput.focus();
-          return;
-        }
-
-        const button = document.querySelector('#resetBtn');
-        button.disabled = true;
-        button.textContent = 'جاري الإرسال...';
-
-        try {
-          const { error } = await supabase.auth.resetPasswordForEmail(
-            email,
-            {
-              redirectTo: window.location.origin +
-                window.location.pathname
-            }
-          );
-
-          if (error) throw error;
-
-          showMessage(
-            message,
-            'إذا كان البريد مسجلاً، راح توصلك رسالة لاستعادة كلمة المرور. افحص البريد ومجلد الرسائل غير المرغوب بها.',
-            'success'
-          );
-
-        } catch (error) {
-          showMessage(message, translateError(error));
-
-        } finally {
-          button.disabled = false;
-          button.textContent = 'نسيت كلمة المرور؟';
-        }
-      }
-    );
-
-    // تحديث الرصيد يدوياً
-    document.querySelector('#refreshBtn').addEventListener(
-      'click',
-      async () => {
-        if (currentUserId) {
-          await loadCredits(currentUserId);
-        }
-      }
-    );
-
-    // تسجيل الخروج
-    document.querySelector('#signoutBtn').addEventListener(
-      'click',
-      async () => {
-        const button = document.querySelector('#signoutBtn');
-
-        button.disabled = true;
-        button.textContent = 'جاري تسجيل الخروج...';
-
-        try {
-          const { error } = await supabase.auth.signOut();
-
-          if (error) throw error;
-
-          showAuth();
-
-        } catch (error) {
-          showMessage(accountMessage, translateError(error));
-
-        } finally {
-          button.disabled = false;
-          button.textContent = 'تسجيل الخروج';
-        }
-      }
-    );
-
-    // مراقبة حالة تسجيل الدخول
-    // setTimeout يمنع تنفيذ عمليات Supabase داخل callback مباشرة
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'INITIAL_SESSION') return;
-
-      setTimeout(() => {
-        if (session?.user) {
-          if (currentUserId !== session.user.id) {
-            showAccount(session.user);
-          }
-        } else {
-          showAuth();
-        }
-      }, 0);
-    });
-
-    // استعادة الجلسة الموجودة عند فتح الموقع
-    try {
-      const { data, error } = await supabase.auth.getSession();
-
-      if (error) throw error;
-
-      if (data.session?.user) {
-        showAccount(data.session.user);
-      } else {
-        showAuth();
-      }
-
-    } catch (error) {
-      console.error('Session error:', error);
-
-      showAuth();
-
-      showMessage(
-        message,
-        'تعذر التحقق من الجلسة. تأكد من الإنترنت ثم حدّث الصفحة.'
-      );
     }
+
+    $("composerForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      await sendMessage($("messageInput").value);
+    });
+
+    $("messageInput").addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        $("composerForm").requestSubmit();
+      }
+    });
+
+    document.querySelectorAll("[data-prompt]").forEach((button) => {
+      button.addEventListener("click", () => {
+        $("messageInput").value = button.dataset.prompt || "";
+        $("messageInput").focus();
+      });
+    });
+
+    $("newChatBtn").addEventListener("click", startNewChat);
+    $("headerNewChat").addEventListener("click", startNewChat);
+
+    $("menuBtn").addEventListener("click", () => {
+      $("sidebar").classList.toggle("open");
+    });
+
+    $("refreshAccount").addEventListener("click", async () => {
+      await loadProfile();
+      showToast("تم تحديث بيانات الحساب.");
+    });
+
+    $("logoutBtn").addEventListener("click", async () => {
+      const confirmed = window.confirm("تريد تسجيل الخروج من حسابك؟");
+      if (!confirmed) return;
+
+      const { error } = await db.auth.signOut();
+
+      if (error) {
+        showToast(explainError(error), true);
+      } else {
+        state.user = null;
+        state.profile = null;
+        state.conversations = [];
+        state.currentId = null;
+        state.messages = [];
+        showApp(false);
+        setAuthMode("login");
+        showToast("تم تسجيل الخروج.");
+      }
+    });
+
+    async function initializeUser(user) {
+      state.user = user;
+      state.currentId = null;
+      state.messages = [];
+      showApp(true);
+
+      $("accountEmail").textContent = user.email || "";
+      $("creditNumber").textContent = "…";
+
+      await Promise.all([
+        loadProfile(),
+        loadConversations()
+      ]);
+
+      startNewChat();
+    }
+
+    // تهيئة جلسة المستخدم الحالية
+    async function initialize() {
+      try {
+        const { data, error } = await db.auth.getSession();
+        if (error) throw error;
+
+        if (data.session?.user) {
+          await initializeUser(data.session.user);
+        } else {
+          showApp(false);
+        }
+      } catch (error) {
+        console.error(error);
+        showApp(false);
+        setStatus("تعذّر الاتصال بخدمة الحسابات: " + explainError(error), true);
+      }
+    }
+
+    db.auth.onAuthStateChange((event, session) => {
+      if (event === "PASSWORD_RECOVERY") {
+        setStatus(
+          "تم فتح جلسة استعادة كلمة المرور. لإكمال الاستعادة، يلزم إضافة نموذج تغيير كلمة المرور."
+        );
+      }
+
+      if (event === "SIGNED_OUT") {
+        showApp(false);
+      }
+
+      if (event === "SIGNED_IN" && session?.user) {
+        setTimeout(() => {
+          if (state.user?.id !== session.user.id) {
+            initializeUser(session.user);
+          }
+        }, 0);
+      }
+    });
+
+    setAuthMode("login");
+    initialize();
   </script>
+
 </body>
 </html>
