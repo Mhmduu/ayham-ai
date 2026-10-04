@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -37,7 +36,9 @@
       font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
     }
 
-    button, input, textarea {
+    button,
+    input,
+    textarea {
       font: inherit;
     }
 
@@ -78,7 +79,12 @@
       color: #06121b;
       font-size: 22px;
       font-weight: 900;
-      background: linear-gradient(135deg, var(--cyan), var(--blue), var(--purple));
+      background: linear-gradient(
+        135deg,
+        var(--cyan),
+        var(--blue),
+        var(--purple)
+      );
       box-shadow: 0 0 28px #45e0d044;
     }
 
@@ -380,7 +386,12 @@
       font-size: 36px;
       font-weight: 900;
       color: #07121d;
-      background: linear-gradient(135deg, var(--cyan), var(--blue), var(--purple));
+      background: linear-gradient(
+        135deg,
+        var(--cyan),
+        var(--blue),
+        var(--purple)
+      );
       box-shadow: 0 0 50px #5c8cff25;
     }
 
@@ -489,6 +500,41 @@
       font-weight: 750;
       color: var(--muted);
       margin-bottom: 4px;
+    }
+
+    .typing {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 0;
+    }
+
+    .typing span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      animation: typing .9s infinite alternate;
+    }
+
+    .typing span:nth-child(2) {
+      animation-delay: .2s;
+    }
+
+    .typing span:nth-child(3) {
+      animation-delay: .4s;
+    }
+
+    @keyframes typing {
+      from {
+        opacity: .2;
+        transform: translateY(2px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(-2px);
+      }
     }
 
     .composer-wrap {
@@ -614,11 +660,17 @@
 
 <body>
 
-  <!-- تسجيل الدخول -->
+  <!-- =========================
+       تسجيل الدخول
+  ========================== -->
+
   <section id="authView" class="auth-wrap">
+
     <div class="auth-card">
+
       <div class="brand">
         <div class="logo">A</div>
+
         <div>
           <h1>Ayham AI</h1>
           <p>مساعدك الذكي بالعربي</p>
@@ -626,744 +678,2572 @@
       </div>
 
       <h2 id="authTitle">أهلاً بيك 👋</h2>
+
       <p id="authIntro" class="intro">
         سجّل دخولك حتى تبدأ محادثاتك وتحفظها بحسابك.
       </p>
 
       <form id="authForm">
+
         <div id="nameGroup" class="form-group hidden">
           <label for="displayName">الاسم</label>
-          <input id="displayName" class="field" maxlength="80"
-            autocomplete="name" placeholder="اكتب اسمك">
+
+          <input
+            id="displayName"
+            class="field"
+            maxlength="80"
+            autocomplete="name"
+            placeholder="اكتب اسمك"
+          >
         </div>
 
         <div class="form-group">
-          <label for="email">البريد الإلكتروني</label>
-          <input id="email" class="field" type="email"
-            autocomplete="email" required placeholder="name@example.com">
+
+          <label for="email">
+            البريد الإلكتروني
+          </label>
+
+          <input
+            id="email"
+            class="field"
+            type="email"
+            autocomplete="email"
+            required
+            placeholder="name@example.com"
+          >
+
         </div>
 
         <div id="passwordGroup" class="form-group">
-          <label for="password">كلمة المرور</label>
-          <input id="password" class="field" type="password"
-            autocomplete="current-password" minlength="6"
-            required placeholder="ستة أحرف على الأقل">
+
+          <label for="password">
+            كلمة المرور
+          </label>
+
+          <input
+            id="password"
+            class="field"
+            type="password"
+            autocomplete="current-password"
+            minlength="6"
+            required
+            placeholder="ستة أحرف على الأقل"
+          >
+
         </div>
 
         <div class="auth-actions">
-          <button id="authSubmit" class="btn btn-primary" type="submit">
+
+          <button
+            id="authSubmit"
+            class="btn btn-primary"
+            type="submit"
+          >
             تسجيل الدخول
           </button>
-          <button id="toggleAuth" class="btn" type="button">
+
+          <button
+            id="toggleAuth"
+            class="btn"
+            type="button"
+          >
             إنشاء حساب جديد
           </button>
-          <button id="forgotPassword" class="link-btn" type="button">
+
+          <button
+            id="forgotPassword"
+            class="link-btn"
+            type="button"
+          >
             نسيت كلمة المرور؟
           </button>
+
         </div>
+
       </form>
 
-      <div id="authStatus" class="status hidden" role="status"></div>
+      <div
+        id="authStatus"
+        class="status hidden"
+        role="status"
+      ></div>
 
-      <p class="muted small" style="line-height:1.8;margin-top:20px">
+      <p
+        class="muted small"
+        style="line-height:1.8;margin-top:20px"
+      >
         باستخدامك للتطبيق، احتفظ ببيانات دخولك ولا تشارك كلمة المرور مع أحد.
       </p>
+
     </div>
+
   </section>
 
-  <!-- واجهة المحادثات -->
+
+  <!-- =========================
+       التطبيق
+  ========================== -->
+
   <section id="appView" class="app hidden">
 
     <aside id="sidebar" class="sidebar">
+
       <div class="brand">
-        <div class="logo">A</div>
+
+        <div class="logo">
+          A
+        </div>
+
         <div>
           <h1>Ayham AI</h1>
           <p>ذكاء اصطناعي • مساحة محادثاتك</p>
         </div>
+
       </div>
 
-      <button id="newChatBtn" class="btn btn-primary new-chat">
+
+      <button
+        id="newChatBtn"
+        class="btn btn-primary new-chat"
+      >
         ＋ محادثة جديدة
       </button>
 
-      <div class="section-label">محادثاتك السابقة</div>
-      <div id="conversationList" class="conversation-list">
-        <p class="muted small">جاري تحميل المحادثات...</p>
+
+      <div class="section-label">
+        محادثاتك السابقة
       </div>
+
+
+      <div
+        id="conversationList"
+        class="conversation-list"
+      >
+        <p class="muted small">
+          جاري تحميل المحادثات...
+        </p>
+      </div>
+
 
       <div class="account-card">
-        <div style="font-weight:750">حسابك</div>
-        <div id="accountEmail" class="account-email"></div>
-        <div class="credit-line">
-          <span>رصيدك الحالي</span>
-          <span id="creditNumber" class="credit-number">--</span>
+
+        <div style="font-weight:750">
+          حسابك
         </div>
+
+        <div
+          id="accountEmail"
+          class="account-email"
+        ></div>
+
         <div class="credit-line">
-          <span class="muted small">الرصيد المتاح</span>
-          <span class="muted small">نقطة</span>
+
+          <span>
+            رصيدك الحالي
+          </span>
+
+          <span
+            id="creditNumber"
+            class="credit-number"
+          >
+            --
+          </span>
+
         </div>
-        <button id="refreshAccount" class="btn" style="width:100%;margin-top:12px">
+
+        <div class="credit-line">
+
+          <span class="muted small">
+            الرصيد المتاح
+          </span>
+
+          <span class="muted small">
+            نقطة
+          </span>
+
+        </div>
+
+
+        <button
+          id="refreshAccount"
+          class="btn"
+          style="width:100%;margin-top:12px"
+        >
           تحديث الرصيد
         </button>
-        <button id="logoutBtn" class="btn btn-danger" style="width:100%;margin-top:8px">
+
+
+        <button
+          id="logoutBtn"
+          class="btn btn-danger"
+          style="width:100%;margin-top:8px"
+        >
           تسجيل الخروج
         </button>
+
       </div>
+
     </aside>
 
+
     <main class="main">
+
       <header class="topbar">
-        <div style="display:flex;align-items:center;gap:11px">
-          <button id="menuBtn" class="btn mobile-menu" aria-label="القائمة">☰</button>
+
+        <div
+          style="display:flex;align-items:center;gap:11px"
+        >
+
+          <button
+            id="menuBtn"
+            class="btn mobile-menu"
+            aria-label="القائمة"
+          >
+            ☰
+          </button>
+
           <div>
-            <div id="chatTitle" class="topbar-title">محادثة جديدة</div>
-            <div class="topbar-subtitle">مساحة Ayham AI الخاصة بيك</div>
+
+            <div
+              id="chatTitle"
+              class="topbar-title"
+            >
+              محادثة جديدة
+            </div>
+
+            <div class="topbar-subtitle">
+              مساحة Ayham AI الخاصة بيك
+            </div>
+
           </div>
+
         </div>
-        <button id="headerNewChat" class="btn">＋ جديد</button>
+
+
+        <button
+          id="headerNewChat"
+          class="btn"
+        >
+          ＋ جديد
+        </button>
+
       </header>
 
-      <div id="chatArea" class="chat-area">
-        <div id="welcome" class="welcome">
-          <div class="welcome-logo">A</div>
-          <h2>شلون أگدر أساعدك؟</h2>
+
+      <div
+        id="chatArea"
+        class="chat-area"
+      >
+
+        <div
+          id="welcome"
+          class="welcome"
+        >
+
+          <div class="welcome-logo">
+            A
+          </div>
+
+          <h2>
+            شلون أگدر أساعدك؟
+          </h2>
+
           <p>
-            أهلاً بيك في Ayham AI. اكتب سؤالك وابدأ محادثة جديدة.
+            أهلاً بيك في Ayham AI.
+            اكتب سؤالك وابدأ محادثة جديدة.
             تگدر تحفظ محادثاتك وترجعلها بأي وقت.
           </p>
 
+
           <div class="suggestions">
-            <button class="suggestion" data-prompt="علّمني البرمجة من الصفر خطوة بخطوة">
+
+            <button
+              class="suggestion"
+              data-prompt="علّمني البرمجة من الصفر خطوة بخطوة"
+            >
               💻 تعلّم البرمجة
-              <span>ابدأ من الصفر وبطريقة سهلة</span>
+
+              <span>
+                ابدأ من الصفر وبطريقة سهلة
+              </span>
             </button>
-            <button class="suggestion" data-prompt="ساعدني أكتب إعلان باللهجة العراقية">
+
+
+            <button
+              class="suggestion"
+              data-prompt="ساعدني أكتب إعلان باللهجة العراقية"
+            >
               ✍️ كتابة إعلان
-              <span>اكتب محتوى مرتب وجذاب</span>
+
+              <span>
+                اكتب محتوى مرتب وجذاب
+              </span>
             </button>
-            <button class="suggestion" data-prompt="ترجم لي النصوص واشرح معناها بالعربي">
+
+
+            <button
+              class="suggestion"
+              data-prompt="ترجم لي النصوص واشرح معناها بالعربي"
+            >
               🌐 ترجمة وشرح
-              <span>افهم النصوص بطريقة بسيطة</span>
+
+              <span>
+                افهم النصوص بطريقة بسيطة
+              </span>
             </button>
-            <button class="suggestion" data-prompt="اقترح لي أفكار مشاريع وتطبيقات أگدر أنفذها">
+
+
+            <button
+              class="suggestion"
+              data-prompt="اقترح لي أفكار مشاريع وتطبيقات أگدر أنفذها"
+            >
               💡 أفكار جديدة
-              <span>أفكار لمشاريع وتطبيقات</span>
+
+              <span>
+                أفكار لمشاريع وتطبيقات
+              </span>
             </button>
+
           </div>
+
         </div>
 
-        <div id="messages" class="messages"></div>
+
+        <div
+          id="messages"
+          class="messages"
+        ></div>
+
       </div>
+
 
       <div class="composer-wrap">
-        <form id="composerForm" class="composer">
-          <textarea id="messageInput" maxlength="12000"
-            placeholder="اكتب رسالتك هنا..." aria-label="رسالتك"></textarea>
+
+        <form
+          id="composerForm"
+          class="composer"
+        >
+
+          <textarea
+            id="messageInput"
+            maxlength="12000"
+            placeholder="اكتب رسالتك هنا..."
+            aria-label="رسالتك"
+          ></textarea>
+
+
           <div class="composer-bottom">
-            <span class="muted small">Enter للإرسال • Shift + Enter لسطر جديد</span>
-            <button id="sendBtn" class="btn btn-primary send-btn" type="submit">
+
+            <span class="muted small">
+              Enter للإرسال • Shift + Enter لسطر جديد
+            </span>
+
+            <button
+              id="sendBtn"
+              class="btn btn-primary send-btn"
+              type="submit"
+            >
               إرسال ↑
             </button>
+
           </div>
+
         </form>
+
+
         <div class="disclaimer">
-          تنبيه: حفظ الرسائل يعمل حالياً، أما الردود الفعلية من نموذج الذكاء الاصطناعي
-          فتحتاج إلى تفعيل اتصال النموذج الآمن.
+
+          Ayham AI يستخدم خدمة الذكاء الاصطناعي للرد على رسائلك.
+          لا تشارك معلومات حساسة أو كلمات مرور.
+
         </div>
+
       </div>
+
     </main>
+
   </section>
 
-  <div id="toast" class="toast hidden" role="status"></div>
+
+  <div
+    id="toast"
+    class="toast hidden"
+    role="status"
+  ></div>
+
 
   <script>
     "use strict";
 
-    // إعدادات مشروع Supabase الخاص بك
-    const SUPABASE_URL = "https://yyhykirxcsbgfddjyuti.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_ulGr0S06yyfBBzsiJqSeRQ_p3sO5dxh";
 
-    const db = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY
-    );
+    /* =========================================
+       إعداد Supabase
+    ========================================= */
 
-    const $ = (id) => document.getElementById(id);
+    const SUPABASE_URL =
+      "https://yyhykirxcsbgfddjyuti.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_ulGr0S06yyfBBzsiJqSeRQ_p3sO5dxh";
+
+
+    const db =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
+
+
+    /* =========================================
+       حالة التطبيق
+    ========================================= */
+
+    const $ = (id) =>
+      document.getElementById(id);
+
 
     const state = {
+
       user: null,
+
       profile: null,
+
       conversations: [],
+
       currentId: null,
+
       messages: [],
+
       authMode: "login",
+
       sending: false
+
     };
+
 
     let toastTimer = null;
 
+
+    /* =========================================
+       Toast
+    ========================================= */
+
     function showToast(message, isError = false) {
+
       const el = $("toast");
+
       el.textContent = message;
+
       el.classList.remove("hidden");
-      el.style.borderColor = isError ? "#a33c52" : "#405977";
+
+      el.style.borderColor =
+        isError
+          ? "#a33c52"
+          : "#405977";
+
 
       clearTimeout(toastTimer);
+
+
       toastTimer = setTimeout(() => {
+
         el.classList.add("hidden");
+
       }, 4500);
+
     }
+
+
+    /* =========================================
+       Auth Status
+    ========================================= */
 
     function setStatus(message, isError = false) {
+
       const el = $("authStatus");
+
       el.textContent = message;
+
       el.classList.remove("hidden");
-      el.classList.toggle("error", isError);
+
+      el.classList.toggle(
+        "error",
+        isError
+      );
     }
+
 
     function clearStatus() {
+
       $("authStatus").textContent = "";
-      $("authStatus").classList.add("hidden");
-      $("authStatus").classList.remove("error");
+
+      $("authStatus")
+        .classList
+        .add("hidden");
+
+      $("authStatus")
+        .classList
+        .remove("error");
     }
 
-    function explainError(error) {
-      const message = String(error?.message || error || "حدث خطأ غير معروف");
 
-      if (/Invalid login credentials/i.test(message)) {
+    /* =========================================
+       شرح الأخطاء
+    ========================================= */
+
+    function explainError(error) {
+
+      const message =
+        String(
+          error?.message ||
+          error ||
+          "حدث خطأ غير معروف"
+        );
+
+
+      if (
+        /Invalid login credentials/i
+          .test(message)
+      ) {
         return "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
       }
 
-      if (/Email not confirmed/i.test(message)) {
+
+      if (
+        /Email not confirmed/i
+          .test(message)
+      ) {
         return "لازم تأكد بريدك الإلكتروني من الرسالة اللي وصلتك.";
       }
 
-      if (/User already registered/i.test(message)) {
+
+      if (
+        /User already registered/i
+          .test(message)
+      ) {
         return "هذا البريد مسجّل من قبل. جرّب تسجيل الدخول.";
       }
 
-      if (/Failed to fetch|NetworkError/i.test(message)) {
+
+      if (
+        /Failed to fetch|NetworkError/i
+          .test(message)
+      ) {
         return "تعذّر الاتصال. تأكد من الإنترنت وحاول مرة ثانية.";
       }
+
+
+      if (
+        /FunctionsHttpError/i
+          .test(message)
+      ) {
+        return "صار خطأ أثناء تشغيل دالة الذكاء الاصطناعي.";
+      }
+
 
       return message;
     }
 
-    function setBusy(button, busy, busyText, normalText) {
+
+    /* =========================================
+       Button Loading
+    ========================================= */
+
+    function setBusy(
+      button,
+      busy,
+      busyText,
+      normalText
+    ) {
+
       button.disabled = busy;
-      button.textContent = busy ? busyText : normalText;
+
+      button.textContent =
+        busy
+          ? busyText
+          : normalText;
     }
+
+
+    /* =========================================
+       Auth Mode
+    ========================================= */
 
     function setAuthMode(mode) {
+
       state.authMode = mode;
+
       clearStatus();
 
-      const signup = mode === "signup";
-      const reset = mode === "reset";
 
-      $("nameGroup").classList.toggle("hidden", !signup);
-      $("passwordGroup").classList.toggle("hidden", reset);
-      $("password").required = !reset;
+      const signup =
+        mode === "signup";
 
-      $("authTitle").textContent = signup
-        ? "إنشاء حساب جديد"
-        : reset
-          ? "استعادة كلمة المرور"
-          : "أهلاً بيك 👋";
+      const reset =
+        mode === "reset";
 
-      $("authIntro").textContent = signup
-        ? "أنشئ حسابك حتى تحفظ محادثاتك وترجع إلها."
-        : reset
-          ? "اكتب بريدك الإلكتروني حتى نرسل لك رابط الاستعادة."
-          : "سجّل دخولك حتى تبدأ محادثاتك وتحفظها بحسابك.";
 
-      $("authSubmit").textContent = signup
-        ? "إنشاء الحساب"
-        : reset
-          ? "إرسال رابط الاستعادة"
-          : "تسجيل الدخول";
-
-      $("toggleAuth").textContent = signup
-        ? "عندي حساب، تسجيل الدخول"
-        : "إنشاء حساب جديد";
-
-      $("forgotPassword").classList.toggle("hidden", signup || reset);
-
-      $("password").autocomplete = signup ? "new-password" : "current-password";
-    }
-
-    $("toggleAuth").addEventListener("click", () => {
-      setAuthMode(state.authMode === "signup" ? "login" : "signup");
-    });
-
-    $("forgotPassword").addEventListener("click", () => {
-      setAuthMode("reset");
-    });
-
-    $("authForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      clearStatus();
-
-      const email = $("email").value.trim();
-      const password = $("password").value;
-      const name = $("displayName").value.trim();
-      const button = $("authSubmit");
-      const mode = state.authMode;
-
-      setBusy(button, true, "يرجى الانتظار...", button.textContent);
-
-      try {
-        if (mode === "signup") {
-          const { data, error } = await db.auth.signUp({
-            email,
-            password,
-            options: {
-              data: {
-                display_name: name || email.split("@")[0]
-              }
-            }
-          });
-
-          if (error) throw error;
-
-          if (data.session) {
-            showToast("تم إنشاء الحساب بنجاح.");
-          } else {
-            setStatus(
-              "تم إرسال طلب إنشاء الحساب. إذا كان تأكيد البريد مفعّلاً، افتح رسالة التأكيد ثم ارجع وسجّل الدخول."
-            );
-          }
-
-        } else if (mode === "reset") {
-          const { error } = await db.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin + window.location.pathname
-          });
-
-          if (error) throw error;
-
-          setStatus("إذا كان البريد مسجلاً، راح توصلك رسالة لاستعادة كلمة المرور.");
-
-        } else {
-          const { error } = await db.auth.signInWithPassword({
-            email,
-            password
-          });
-
-          if (error) throw error;
-
-          showToast("تم تسجيل الدخول بنجاح.");
-        }
-
-      } catch (error) {
-        setStatus(explainError(error), true);
-      } finally {
-        button.disabled = false;
-        setAuthMode(mode);
-      }
-    });
-
-    function showApp(isLoggedIn) {
-      $("authView").classList.toggle("hidden", isLoggedIn);
-      $("appView").classList.toggle("hidden", !isLoggedIn);
-    }
-
-    function safeText(value, fallback = "") {
-      return typeof value === "string" ? value : fallback;
-    }
-
-    async function loadProfile() {
-      if (!state.user) return;
-
-      const { data, error } = await db
-        .from("profiles")
-        .select("id, display_name, credits")
-        .eq("id", state.user.id)
-        .maybeSingle();
-
-      if (error) {
-        console.error("Profile error:", error);
-        $("creditNumber").textContent = "—";
-        showToast("تعذّر تحميل الرصيد. تحقق من صلاحيات جدول profiles.", true);
-        return;
-      }
-
-      state.profile = data;
-
-      $("accountEmail").textContent = state.user.email || "";
-      $("creditNumber").textContent = data
-        ? String(data.credits ?? 0)
-        : "—";
-    }
-
-    async function loadConversations() {
-      if (!state.user) return;
-
-      $("conversationList").replaceChildren();
-
-      const loading = document.createElement("p");
-      loading.className = "muted small";
-      loading.textContent = "جاري تحميل المحادثات...";
-      $("conversationList").appendChild(loading);
-
-      const { data, error } = await db
-        .from("conversations")
-        .select("id, user_id, title, messages, created_at, updated_at")
-        .eq("user_id", state.user.id)
-        .order("updated_at", { ascending: false })
-        .limit(100);
-
-      if (error) {
-        console.error("Conversation load error:", error);
-        $("conversationList").replaceChildren();
-
-        const errorText = document.createElement("p");
-        errorText.className = "muted small";
-        errorText.textContent =
-          "تعذّر تحميل المحادثات. تحقق من أعمدة الجدول وسياسات RLS.";
-        $("conversationList").appendChild(errorText);
-
-        showToast(explainError(error), true);
-        return;
-      }
-
-      state.conversations = data || [];
-      renderConversationList();
-    }
-
-    function renderConversationList() {
-      const list = $("conversationList");
-      list.replaceChildren();
-
-      if (state.conversations.length === 0) {
-        const empty = document.createElement("p");
-        empty.className = "muted small";
-        empty.textContent = "ما عندك محادثات محفوظة بعد.";
-        list.appendChild(empty);
-        return;
-      }
-
-      for (const conversation of state.conversations) {
-        const item = document.createElement("div");
-        item.className = "conversation-item";
-        if (conversation.id === state.currentId) {
-          item.classList.add("active");
-        }
-
-        const open = document.createElement("button");
-        open.className = "conversation-open";
-        open.type = "button";
-        open.textContent = safeText(conversation.title, "محادثة جديدة");
-        open.title = open.textContent;
-        open.addEventListener("click", () => openConversation(conversation.id));
-
-        const del = document.createElement("button");
-        del.className = "delete-chat";
-        del.type = "button";
-        del.textContent = "×";
-        del.title = "حذف المحادثة";
-        del.setAttribute("aria-label", "حذف المحادثة");
-
-        del.addEventListener("click", async () => {
-          const confirmed = window.confirm("متأكد تريد تحذف هاي المحادثة؟");
-          if (!confirmed) return;
-
-          const { error } = await db
-            .from("conversations")
-            .delete()
-            .eq("id", conversation.id)
-            .eq("user_id", state.user.id);
-
-          if (error) {
-            showToast("تعذّر حذف المحادثة: " + explainError(error), true);
-            return;
-          }
-
-          if (state.currentId === conversation.id) {
-            startNewChat();
-          }
-
-          await loadConversations();
-          showToast("تم حذف المحادثة.");
-        });
-
-        item.append(open, del);
-        list.appendChild(item);
-      }
-    }
-
-    function renderMessages() {
-      const container = $("messages");
-      container.replaceChildren();
-
-      $("welcome").classList.toggle("hidden", state.messages.length > 0);
-
-      for (const message of state.messages) {
-        const role = message.role === "user" ? "user" : "assistant";
-
-        const row = document.createElement("div");
-        row.className = "message " + role;
-
-        const avatar = document.createElement("div");
-        avatar.className = "avatar";
-        avatar.textContent = role === "user" ? "أنت" : "AI";
-
-        const content = document.createElement("div");
-        content.className = "message-content";
-
-        const label = document.createElement("div");
-        label.className = "message-role";
-        label.textContent = role === "user" ? "أنت" : "Ayham AI";
-
-        const text = document.createElement("div");
-        text.textContent = safeText(message.content);
-
-        content.append(label, text);
-        row.append(avatar, content);
-        container.appendChild(row);
-      }
-
-      requestAnimationFrame(() => {
-        window.scrollTo({
-          top: document.body.scrollHeight,
-          behavior: "smooth"
-        });
-      });
-    }
-
-    async function openConversation(id) {
-      const conversation = state.conversations.find((item) => item.id === id);
-      if (!conversation) return;
-
-      state.currentId = conversation.id;
-      state.messages = Array.isArray(conversation.messages)
-        ? conversation.messages
-            .filter((m) => m && typeof m.content === "string")
-            .map((m) => ({
-              role: m.role === "user" ? "user" : "assistant",
-              content: m.content
-            }))
-        : [];
-
-      $("chatTitle").textContent =
-        safeText(conversation.title, "محادثة جديدة");
-
-      renderMessages();
-      renderConversationList();
-      $("sidebar").classList.remove("open");
-    }
-
-    function startNewChat() {
-      state.currentId = null;
-      state.messages = [];
-      $("chatTitle").textContent = "محادثة جديدة";
-      $("messageInput").value = "";
-      renderMessages();
-      renderConversationList();
-      $("messageInput").focus();
-      $("sidebar").classList.remove("open");
-    }
-
-    async function saveConversation() {
-      if (!state.user) throw new Error("سجّل الدخول أولاً.");
-
-      const firstUserMessage = state.messages.find((m) => m.role === "user");
-      const title = firstUserMessage
-        ? firstUserMessage.content.slice(0, 65)
-        : "محادثة جديدة";
-
-      const payload = {
-        user_id: state.user.id,
-        title,
-        messages: state.messages,
-        updated_at: new Date().toISOString()
-      };
-
-      let result;
-
-      if (state.currentId) {
-        result = await db
-          .from("conversations")
-          .update(payload)
-          .eq("id", state.currentId)
-          .eq("user_id", state.user.id)
-          .select("id, user_id, title, messages, created_at, updated_at")
-          .single();
-      } else {
-        result = await db
-          .from("conversations")
-          .insert(payload)
-          .select("id, user_id, title, messages, created_at, updated_at")
-          .single();
-      }
-
-      if (result.error) throw result.error;
-
-      state.currentId = result.data.id;
-      $("chatTitle").textContent = title;
-
-      const index = state.conversations.findIndex(
-        (c) => c.id === result.data.id
-      );
-
-      if (index >= 0) {
-        state.conversations[index] = result.data;
-      } else {
-        state.conversations.unshift(result.data);
-      }
-
-      state.conversations.sort((a, b) =>
-        String(b.updated_at || "").localeCompare(String(a.updated_at || ""))
-      );
-
-      renderConversationList();
-    }
-
-    async function sendMessage(text) {
-      const content = text.trim();
-      if (!content || state.sending) return;
-
-      state.sending = true;
-      $("sendBtn").disabled = true;
-      $("messageInput").value = "";
-
-      state.messages.push({
-        role: "user",
-        content
-      });
-
-      renderMessages();
-
-      try {
-        await saveConversation();
-
-        showToast(
-          "تم حفظ رسالتك. ربط ردود الذكاء الاصطناعي يحتاج إعداد خدمة النموذج."
+      $("nameGroup")
+        .classList
+        .toggle(
+          "hidden",
+          !signup
         );
 
-      } catch (error) {
-        console.error("Save error:", error);
+
+      $("passwordGroup")
+        .classList
+        .toggle(
+          "hidden",
+          reset
+        );
+
+
+      $("password").required =
+        !reset;
+
+
+      $("authTitle").textContent =
+        signup
+          ? "إنشاء حساب جديد"
+          : reset
+            ? "استعادة كلمة المرور"
+            : "أهلاً بيك 👋";
+
+
+      $("authIntro").textContent =
+        signup
+          ? "أنشئ حسابك حتى تحفظ محادثاتك وترجع إلها."
+          : reset
+            ? "اكتب بريدك الإلكتروني حتى نرسل لك رابط الاستعادة."
+            : "سجّل دخولك حتى تبدأ محادثاتك وتحفظها بحسابك.";
+
+
+      $("authSubmit").textContent =
+        signup
+          ? "إنشاء الحساب"
+          : reset
+            ? "إرسال رابط الاستعادة"
+            : "تسجيل الدخول";
+
+
+      $("toggleAuth").textContent =
+        signup
+          ? "عندي حساب، تسجيل الدخول"
+          : "إنشاء حساب جديد";
+
+
+      $("forgotPassword")
+        .classList
+        .toggle(
+          "hidden",
+          signup || reset
+        );
+
+
+      $("password").autocomplete =
+        signup
+          ? "new-password"
+          : "current-password";
+    }
+
+
+    /* =========================================
+       Toggle Auth
+    ========================================= */
+
+    $("toggleAuth")
+      .addEventListener(
+        "click",
+        () => {
+
+          setAuthMode(
+            state.authMode === "signup"
+              ? "login"
+              : "signup"
+          );
+
+        }
+      );
+
+
+    /* =========================================
+       Forgot Password
+    ========================================= */
+
+    $("forgotPassword")
+      .addEventListener(
+        "click",
+        () => {
+
+          setAuthMode("reset");
+
+        }
+      );
+
+
+    /* =========================================
+       Auth Form
+    ========================================= */
+
+    $("authForm")
+      .addEventListener(
+        "submit",
+        async (event) => {
+
+          event.preventDefault();
+
+          clearStatus();
+
+
+          const email =
+            $("email")
+              .value
+              .trim();
+
+
+          const password =
+            $("password").value;
+
+
+          const name =
+            $("displayName")
+              .value
+              .trim();
+
+
+          const button =
+            $("authSubmit");
+
+
+          const mode =
+            state.authMode;
+
+
+          const normalText =
+            button.textContent;
+
+
+          setBusy(
+            button,
+            true,
+            "يرجى الانتظار...",
+            normalText
+          );
+
+
+          try {
+
+            /* إنشاء حساب */
+
+            if (mode === "signup") {
+
+              const {
+                data,
+                error
+              } =
+                await db.auth.signUp({
+
+                  email,
+
+                  password,
+
+                  options: {
+
+                    data: {
+
+                      display_name:
+                        name ||
+                        email.split("@")[0]
+
+                    }
+
+                  }
+
+                });
+
+
+              if (error)
+                throw error;
+
+
+              if (data.session) {
+
+                showToast(
+                  "تم إنشاء الحساب بنجاح."
+                );
+
+              } else {
+
+                setStatus(
+                  "تم إنشاء الحساب. افتح رسالة تأكيد البريد إذا كانت مفعلة، وبعدها سجّل الدخول."
+                );
+
+              }
+
+
+            }
+
+            /* استعادة كلمة المرور */
+
+            else if (mode === "reset") {
+
+              const {
+                error
+              } =
+                await db.auth
+                  .resetPasswordForEmail(
+                    email,
+                    {
+                      redirectTo:
+                        window.location.origin +
+                        window.location.pathname
+                    }
+                  );
+
+
+              if (error)
+                throw error;
+
+
+              setStatus(
+                "إذا كان البريد مسجلاً، راح توصلك رسالة لاستعادة كلمة المرور."
+              );
+
+
+            }
+
+            /* تسجيل الدخول */
+
+            else {
+
+              const {
+                error
+              } =
+                await db.auth
+                  .signInWithPassword({
+
+                    email,
+
+                    password
+
+                  });
+
+
+              if (error)
+                throw error;
+
+
+              showToast(
+                "تم تسجيل الدخول بنجاح."
+              );
+
+            }
+
+
+          } catch (error) {
+
+            console.error(
+              "Auth Error:",
+              error
+            );
+
+
+            setStatus(
+              explainError(error),
+              true
+            );
+
+
+          } finally {
+
+            button.disabled = false;
+
+            setAuthMode(mode);
+
+          }
+
+        }
+      );
+
+
+    /* =========================================
+       إظهار التطبيق
+    ========================================= */
+
+    function showApp(isLoggedIn) {
+
+      $("authView")
+        .classList
+        .toggle(
+          "hidden",
+          isLoggedIn
+        );
+
+
+      $("appView")
+        .classList
+        .toggle(
+          "hidden",
+          !isLoggedIn
+        );
+    }
+
+
+    /* =========================================
+       حماية النص
+    ========================================= */
+
+    function safeText(
+      value,
+      fallback = ""
+    ) {
+
+      return typeof value === "string"
+        ? value
+        : fallback;
+
+    }
+
+
+    /* =========================================
+       تحميل Profile
+    ========================================= */
+
+    async function loadProfile() {
+
+      if (!state.user)
+        return;
+
+
+      const {
+        data,
+        error
+      } =
+        await db
+          .from("profiles")
+          .select(
+            "id, display_name, credits"
+          )
+          .eq(
+            "id",
+            state.user.id
+          )
+          .maybeSingle();
+
+
+      if (error) {
+
+        console.error(
+          "Profile error:",
+          error
+        );
+
+
+        $("creditNumber")
+          .textContent = "—";
+
 
         showToast(
-          "تعذّر حفظ المحادثة: " + explainError(error),
+          "تعذّر تحميل الرصيد. تحقق من صلاحيات جدول profiles.",
           true
         );
 
-      } finally {
-        state.sending = false;
-        $("sendBtn").disabled = false;
-        $("messageInput").focus();
+
+        return;
+
       }
+
+
+      state.profile = data;
+
+
+      $("accountEmail")
+        .textContent =
+        state.user.email || "";
+
+
+      $("creditNumber")
+        .textContent =
+        data
+          ? String(data.credits ?? 0)
+          : "—";
+
     }
 
-    $("composerForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      await sendMessage($("messageInput").value);
-    });
 
-    $("messageInput").addEventListener("keydown", (event) => {
-      if (event.key === "Enter" && !event.shiftKey) {
-        event.preventDefault();
-        $("composerForm").requestSubmit();
-      }
-    });
+    /* =========================================
+       تحميل المحادثات
+    ========================================= */
 
-    document.querySelectorAll("[data-prompt]").forEach((button) => {
-      button.addEventListener("click", () => {
-        $("messageInput").value = button.dataset.prompt || "";
-        $("messageInput").focus();
-      });
-    });
+    async function loadConversations() {
 
-    $("newChatBtn").addEventListener("click", startNewChat);
-    $("headerNewChat").addEventListener("click", startNewChat);
+      if (!state.user)
+        return;
 
-    $("menuBtn").addEventListener("click", () => {
-      $("sidebar").classList.toggle("open");
-    });
 
-    $("refreshAccount").addEventListener("click", async () => {
-      await loadProfile();
-      showToast("تم تحديث بيانات الحساب.");
-    });
+      $("conversationList")
+        .replaceChildren();
 
-    $("logoutBtn").addEventListener("click", async () => {
-      const confirmed = window.confirm("تريد تسجيل الخروج من حسابك؟");
-      if (!confirmed) return;
 
-      const { error } = await db.auth.signOut();
+      const loading =
+        document.createElement("p");
+
+
+      loading.className =
+        "muted small";
+
+
+      loading.textContent =
+        "جاري تحميل المحادثات...";
+
+
+      $("conversationList")
+        .appendChild(loading);
+
+
+      const {
+        data,
+        error
+      } =
+        await db
+          .from("conversations")
+          .select(
+            "id, user_id, title, messages, created_at, updated_at"
+          )
+          .eq(
+            "user_id",
+            state.user.id
+          )
+          .order(
+            "updated_at",
+            {
+              ascending: false
+            }
+          )
+          .limit(100);
+
 
       if (error) {
-        showToast(explainError(error), true);
-      } else {
-        state.user = null;
-        state.profile = null;
-        state.conversations = [];
-        state.currentId = null;
-        state.messages = [];
-        showApp(false);
-        setAuthMode("login");
-        showToast("تم تسجيل الخروج.");
-      }
-    });
 
-    async function initializeUser(user) {
-      state.user = user;
-      state.currentId = null;
-      state.messages = [];
+        console.error(
+          "Conversation load error:",
+          error
+        );
+
+
+        $("conversationList")
+          .replaceChildren();
+
+
+        const errorText =
+          document.createElement("p");
+
+
+        errorText.className =
+          "muted small";
+
+
+        errorText.textContent =
+          "تعذّر تحميل المحادثات. تحقق من أعمدة الجدول وسياسات RLS.";
+
+
+        $("conversationList")
+          .appendChild(errorText);
+
+
+        showToast(
+          explainError(error),
+          true
+        );
+
+
+        return;
+
+      }
+
+
+      state.conversations =
+        data || [];
+
+
+      renderConversationList();
+
+    }
+
+
+    /* =========================================
+       عرض قائمة المحادثات
+    ========================================= */
+
+    function renderConversationList() {
+
+      const list =
+        $("conversationList");
+
+
+      list.replaceChildren();
+
+
+      if (
+        state.conversations.length === 0
+      ) {
+
+        const empty =
+          document.createElement("p");
+
+
+        empty.className =
+          "muted small";
+
+
+        empty.textContent =
+          "ما عندك محادثات محفوظة بعد.";
+
+
+        list.appendChild(empty);
+
+        return;
+      }
+
+
+      for (
+        const conversation
+        of state.conversations
+      ) {
+
+        const item =
+          document.createElement("div");
+
+
+        item.className =
+          "conversation-item";
+
+
+        if (
+          conversation.id ===
+          state.currentId
+        ) {
+
+          item.classList.add("active");
+
+        }
+
+
+        const open =
+          document.createElement("button");
+
+
+        open.className =
+          "conversation-open";
+
+
+        open.type =
+          "button";
+
+
+        open.textContent =
+          safeText(
+            conversation.title,
+            "محادثة جديدة"
+          );
+
+
+        open.title =
+          open.textContent;
+
+
+        open.addEventListener(
+          "click",
+          () => {
+
+            openConversation(
+              conversation.id
+            );
+
+          }
+        );
+
+
+        const del =
+          document.createElement("button");
+
+
+        del.className =
+          "delete-chat";
+
+
+        del.type =
+          "button";
+
+
+        del.textContent =
+          "×";
+
+
+        del.title =
+          "حذف المحادثة";
+
+
+        del.setAttribute(
+          "aria-label",
+          "حذف المحادثة"
+        );
+
+
+        del.addEventListener(
+          "click",
+          async () => {
+
+            const confirmed =
+              window.confirm(
+                "متأكد تريد تحذف هاي المحادثة؟"
+              );
+
+
+            if (!confirmed)
+              return;
+
+
+            const {
+              error
+            } =
+              await db
+                .from("conversations")
+                .delete()
+                .eq(
+                  "id",
+                  conversation.id
+                )
+                .eq(
+                  "user_id",
+                  state.user.id
+                );
+
+
+            if (error) {
+
+              showToast(
+                "تعذّر حذف المحادثة: " +
+                explainError(error),
+                true
+              );
+
+              return;
+
+            }
+
+
+            if (
+              state.currentId ===
+              conversation.id
+            ) {
+
+              startNewChat();
+
+            }
+
+
+            await loadConversations();
+
+
+            showToast(
+              "تم حذف المحادثة."
+            );
+
+          }
+        );
+
+
+        item.append(
+          open,
+          del
+        );
+
+
+        list.appendChild(item);
+
+      }
+
+    }
+
+
+    /* =========================================
+       عرض الرسائل
+    ========================================= */
+
+    function renderMessages() {
+
+      const container =
+        $("messages");
+
+
+      container.replaceChildren();
+
+
+      $("welcome")
+        .classList
+        .toggle(
+          "hidden",
+          state.messages.length > 0
+        );
+
+
+      for (
+        const message
+        of state.messages
+      ) {
+
+        const role =
+          message.role === "user"
+            ? "user"
+            : "assistant";
+
+
+        const row =
+          document.createElement("div");
+
+
+        row.className =
+          "message " + role;
+
+
+        const avatar =
+          document.createElement("div");
+
+
+        avatar.className =
+          "avatar";
+
+
+        avatar.textContent =
+          role === "user"
+            ? "أنت"
+            : "AI";
+
+
+        const content =
+          document.createElement("div");
+
+
+        content.className =
+          "message-content";
+
+
+        const label =
+          document.createElement("div");
+
+
+        label.className =
+          "message-role";
+
+
+        label.textContent =
+          role === "user"
+            ? "أنت"
+            : "Ayham AI";
+
+
+        const text =
+          document.createElement("div");
+
+
+        text.textContent =
+          safeText(message.content);
+
+
+        content.append(
+          label,
+          text
+        );
+
+
+        row.append(
+          avatar,
+          content
+        );
+
+
+        container.appendChild(row);
+
+      }
+
+
+      requestAnimationFrame(() => {
+
+        window.scrollTo({
+
+          top:
+            document.body.scrollHeight,
+
+          behavior:
+            "smooth"
+
+        });
+
+      });
+
+    }
+
+
+    /* =========================================
+       مؤشر الكتابة
+    ========================================= */
+
+    function showTyping() {
+
+      const row =
+        document.createElement("div");
+
+
+      row.id =
+        "typingIndicator";
+
+
+      row.className =
+        "message assistant";
+
+
+      const avatar =
+        document.createElement("div");
+
+
+      avatar.className =
+        "avatar";
+
+
+      avatar.textContent =
+        "AI";
+
+
+      const content =
+        document.createElement("div");
+
+
+      content.className =
+        "message-content";
+
+
+      const label =
+        document.createElement("div");
+
+
+      label.className =
+        "message-role";
+
+
+      label.textContent =
+        "Ayham AI";
+
+
+      const typing =
+        document.createElement("div");
+
+
+      typing.className =
+        "typing";
+
+
+      typing.innerHTML =
+        "<span></span><span></span><span></span>";
+
+
+      content.append(
+        label,
+        typing
+      );
+
+
+      row.append(
+        avatar,
+        content
+      );
+
+
+      $("messages")
+        .appendChild(row);
+
+
+      requestAnimationFrame(() => {
+
+        window.scrollTo({
+
+          top:
+            document.body.scrollHeight,
+
+          behavior:
+            "smooth"
+
+        });
+
+      });
+
+    }
+
+
+    function hideTyping() {
+
+      const typing =
+        $("typingIndicator");
+
+
+      if (typing)
+        typing.remove();
+
+    }
+
+
+    /* =========================================
+       فتح محادثة
+    ========================================= */
+
+    async function openConversation(id) {
+
+      const conversation =
+        state.conversations.find(
+          item =>
+            item.id === id
+        );
+
+
+      if (!conversation)
+        return;
+
+
+      state.currentId =
+        conversation.id;
+
+
+      state.messages =
+        Array.isArray(
+          conversation.messages
+        )
+          ? conversation.messages
+              .filter(
+                m =>
+                  m &&
+                  typeof m.content ===
+                    "string"
+              )
+              .map(m => ({
+
+                role:
+                  m.role === "user"
+                    ? "user"
+                    : "assistant",
+
+                content:
+                  m.content
+
+              }))
+          : [];
+
+
+      $("chatTitle")
+        .textContent =
+        safeText(
+          conversation.title,
+          "محادثة جديدة"
+        );
+
+
+      renderMessages();
+
+
+      renderConversationList();
+
+
+      $("sidebar")
+        .classList
+        .remove("open");
+
+    }
+
+
+    /* =========================================
+       محادثة جديدة
+    ========================================= */
+
+    function startNewChat() {
+
+      state.currentId =
+        null;
+
+
+      state.messages =
+        [];
+
+
+      $("chatTitle")
+        .textContent =
+        "محادثة جديدة";
+
+
+      $("messageInput")
+        .value = "";
+
+
+      renderMessages();
+
+
+      renderConversationList();
+
+
+      $("messageInput")
+        .focus();
+
+
+      $("sidebar")
+        .classList
+        .remove("open");
+
+    }
+
+
+    /* =========================================
+       حفظ المحادثة
+    ========================================= */
+
+    async function saveConversation() {
+
+      if (!state.user)
+        throw new Error(
+          "سجّل الدخول أولاً."
+        );
+
+
+      const firstUserMessage =
+        state.messages.find(
+          m =>
+            m.role === "user"
+        );
+
+
+      const title =
+        firstUserMessage
+          ? firstUserMessage.content
+              .slice(0, 65)
+          : "محادثة جديدة";
+
+
+      const payload = {
+
+        user_id:
+          state.user.id,
+
+        title:
+
+          title,
+
+        messages:
+          state.messages,
+
+        updated_at:
+          new Date().toISOString()
+
+      };
+
+
+      let result;
+
+
+      /* تحديث محادثة موجودة */
+
+      if (state.currentId) {
+
+        result =
+          await db
+            .from("conversations")
+            .update(payload)
+            .eq(
+              "id",
+              state.currentId
+            )
+            .eq(
+              "user_id",
+              state.user.id
+            )
+            .select(
+              "id, user_id, title, messages, created_at, updated_at"
+            )
+            .single();
+
+
+      }
+
+      /* إنشاء محادثة جديدة */
+
+      else {
+
+        result =
+          await db
+            .from("conversations")
+            .insert(payload)
+            .select(
+              "id, user_id, title, messages, created_at, updated_at"
+            )
+            .single();
+
+      }
+
+
+      if (result.error)
+        throw result.error;
+
+
+      state.currentId =
+        result.data.id;
+
+
+      $("chatTitle")
+        .textContent =
+        title;
+
+
+      const index =
+        state.conversations.findIndex(
+          c =>
+            c.id ===
+            result.data.id
+        );
+
+
+      if (index >= 0) {
+
+        state.conversations[index] =
+          result.data;
+
+      } else {
+
+        state.conversations.unshift(
+          result.data
+        );
+
+      }
+
+
+      state.conversations.sort(
+        (a, b) =>
+          String(
+            b.updated_at || ""
+          ).localeCompare(
+            String(
+              a.updated_at || ""
+            )
+          )
+      );
+
+
+      renderConversationList();
+
+    }
+
+
+    /* =========================================
+       استخراج رد ai-chat
+    ========================================= */
+
+    function extractAIReply(data) {
+
+      if (!data)
+        return null;
+
+
+      /* الرد المباشر */
+
+      if (
+        typeof data === "string"
+      ) {
+        return data;
+      }
+
+
+      /* أكثر الأسماء الشائعة */
+
+      const possibleFields = [
+
+        "reply",
+
+        "response",
+
+        "content",
+
+        "message",
+
+        "text",
+
+        "answer",
+
+        "output"
+
+      ];
+
+
+      for (
+        const field
+        of possibleFields
+      ) {
+
+        if (
+          typeof data[field] ===
+          "string" &&
+          data[field].trim()
+        ) {
+
+          return data[field];
+
+        }
+
+      }
+
+
+      /* إذا كانت الدالة ترجع OpenAI format */
+
+      if (
+        data.choices &&
+        Array.isArray(
+          data.choices
+        ) &&
+        data.choices[0]
+      ) {
+
+        const choice =
+          data.choices[0];
+
+
+        if (
+          choice.message &&
+          typeof choice.message.content ===
+            "string"
+        ) {
+
+          return choice.message.content;
+
+        }
+
+
+        if (
+          typeof choice.text ===
+          "string"
+        ) {
+
+          return choice.text;
+
+        }
+
+      }
+
+
+      return null;
+
+    }
+
+
+    /* =========================================
+       استدعاء ai-chat
+    ========================================= */
+
+    async function callAIChat(userMessage) {
+
+      if (!state.user) {
+
+        throw new Error(
+          "لازم تسجل الدخول أولاً."
+        );
+
+      }
+
+
+      /*
+       * نرسل آخر المحادثة للدالة.
+       *
+       * مهم:
+       * لا نرسل مفتاح OpenAI أو أي API Key
+       * من المتصفح.
+       *
+       * المفتاح يجب يكون داخل Edge Function.
+       */
+
+      const requestBody = {
+
+        message:
+          userMessage,
+
+        messages:
+          state.messages,
+
+        user_id:
+          state.user.id,
+
+        conversation_id:
+          state.currentId
+
+      };
+
+
+      console.log(
+        "Calling ai-chat:",
+        requestBody
+      );
+
+
+      const {
+        data,
+        error
+      } =
+        await db.functions.invoke(
+          "ai-chat",
+          {
+            body:
+              requestBody
+          }
+        );
+
+
+      if (error) {
+
+        console.error(
+          "ai-chat function error:",
+          error
+        );
+
+
+        throw new Error(
+          error.message ||
+          "تعذر تشغيل دالة ai-chat."
+        );
+
+      }
+
+
+      console.log(
+        "ai-chat response:",
+        data
+      );
+
+
+      const reply =
+        extractAIReply(data);
+
+
+      if (!reply) {
+
+        console.error(
+          "Unknown ai-chat response:",
+          data
+        );
+
+
+        throw new Error(
+          "دالة ai-chat اشتغلت لكن لم ترجع نص للرد."
+        );
+
+      }
+
+
+      return reply;
+
+    }
+
+
+    /* =========================================
+       إرسال الرسالة
+    ========================================= */
+
+    async function sendMessage(text) {
+
+      const content =
+        text.trim();
+
+
+      if (
+        !content ||
+        state.sending
+      ) {
+
+        return;
+
+      }
+
+
+      if (!state.user) {
+
+        showToast(
+          "لازم تسجل دخول أولاً.",
+          true
+        );
+
+        return;
+
+      }
+
+
+      state.sending =
+        true;
+
+
+      $("sendBtn")
+        .disabled =
+        true;
+
+
+      $("messageInput")
+        .value = "";
+
+
+      /*
+       * إضافة رسالة المستخدم
+       */
+
+      state.messages.push({
+
+        role:
+          "user",
+
+        content:
+          content
+
+      });
+
+
+      renderMessages();
+
+
+      try {
+
+        /*
+         * نحفظ الرسالة قبل الاتصال
+         * حتى ما تضيع إذا صار خطأ.
+         */
+
+        await saveConversation();
+
+
+        /*
+         * إظهار "Ayham AI يكتب..."
+         */
+
+        showTyping();
+
+
+        /*
+         * استدعاء Edge Function
+         */
+
+        const aiReply =
+          await callAIChat(
+            content
+          );
+
+
+        hideTyping();
+
+
+        /*
+         * إضافة رد AI
+         */
+
+        state.messages.push({
+
+          role:
+            "assistant",
+
+          content:
+            aiReply
+
+        });
+
+
+        /*
+         * عرض الرد
+         */
+
+        renderMessages();
+
+
+        /*
+         * حفظ الرد داخل Supabase
+         */
+
+        await saveConversation();
+
+
+        /*
+         * تحديث الرصيد
+         * إذا كانت الدالة خصمت الرصيد.
+         */
+
+        await loadProfile();
+
+
+      } catch (error) {
+
+        console.error(
+          "AI Chat Error:",
+          error
+        );
+
+
+        hideTyping();
+
+
+        /*
+         * إذا فشل AI، لا نخلي الرسالة
+         * بدون توضيح للمستخدم.
+         */
+
+        const errorMessage =
+          explainError(error);
+
+
+        state.messages.push({
+
+          role:
+            "assistant",
+
+          content:
+            "عذراً، ما گدرت أحصل على رد من الذكاء الاصطناعي.\n\n" +
+            errorMessage
+
+        });
+
+
+        renderMessages();
+
+
+        showToast(
+          errorMessage,
+          true
+        );
+
+
+      } finally {
+
+        state.sending =
+          false;
+
+
+        $("sendBtn")
+          .disabled =
+          false;
+
+
+        $("messageInput")
+          .focus();
+
+      }
+
+    }
+
+
+    /* =========================================
+       إرسال الفورم
+    ========================================= */
+
+    $("composerForm")
+      .addEventListener(
+        "submit",
+        async event => {
+
+          event.preventDefault();
+
+
+          await sendMessage(
+            $("messageInput").value
+          );
+
+        }
+      );
+
+
+    /* =========================================
+       Enter للإرسال
+    ========================================= */
+
+    $("messageInput")
+      .addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key === "Enter" &&
+            !event.shiftKey
+          ) {
+
+            event.preventDefault();
+
+            $("composerForm")
+              .requestSubmit();
+
+          }
+
+        }
+      );
+
+
+    /* =========================================
+       الاقتراحات
+    ========================================= */
+
+    document
+      .querySelectorAll(
+        "[data-prompt]"
+      )
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            $("messageInput")
+              .value =
+              button.dataset.prompt ||
+              "";
+
+
+            $("messageInput")
+              .focus();
+
+          }
+        );
+
+      });
+
+
+    /* =========================================
+       محادثة جديدة
+    ========================================= */
+
+    $("newChatBtn")
+      .addEventListener(
+        "click",
+        startNewChat
+      );
+
+
+    $("headerNewChat")
+      .addEventListener(
+        "click",
+        startNewChat
+      );
+
+
+    /* =========================================
+       القائمة بالموبايل
+    ========================================= */
+
+    $("menuBtn")
+      .addEventListener(
+        "click",
+        () => {
+
+          $("sidebar")
+            .classList
+            .toggle("open");
+
+        }
+      );
+
+
+    /* =========================================
+       تحديث الحساب
+    ========================================= */
+
+    $("refreshAccount")
+      .addEventListener(
+        "click",
+        async () => {
+
+          try {
+
+            await loadProfile();
+
+            showToast(
+              "تم تحديث بيانات الحساب."
+            );
+
+          } catch (error) {
+
+            showToast(
+              explainError(error),
+              true
+            );
+
+          }
+
+        }
+      );
+
+
+    /* =========================================
+       تسجيل الخروج
+    ========================================= */
+
+    $("logoutBtn")
+      .addEventListener(
+        "click",
+        async () => {
+
+          const confirmed =
+            window.confirm(
+              "تريد تسجيل الخروج من حسابك؟"
+            );
+
+
+          if (!confirmed)
+            return;
+
+
+          const {
+            error
+          } =
+            await db.auth.signOut();
+
+
+          if (error) {
+
+            showToast(
+              explainError(error),
+              true
+            );
+
+            return;
+
+          }
+
+
+          state.user =
+            null;
+
+
+          state.profile =
+            null;
+
+
+          state.conversations =
+            [];
+
+
+          state.currentId =
+            null;
+
+
+          state.messages =
+            [];
+
+
+          showApp(false);
+
+
+          setAuthMode(
+            "login"
+          );
+
+
+          showToast(
+            "تم تسجيل الخروج."
+          );
+
+        }
+      );
+
+
+    /* =========================================
+       تهيئة المستخدم
+    ========================================= */
+
+    async function initializeUser(
+      user
+    ) {
+
+      state.user =
+        user;
+
+
+      state.currentId =
+        null;
+
+
+      state.messages =
+        [];
+
+
       showApp(true);
 
-      $("accountEmail").textContent = user.email || "";
-      $("creditNumber").textContent = "…";
 
-      await Promise.all([
-        loadProfile(),
-        loadConversations()
-      ]);
+      $("accountEmail")
+        .textContent =
+        user.email || "";
+
+
+      $("creditNumber")
+        .textContent =
+        "…";
+
+
+      try {
+
+        await Promise.all([
+
+          loadProfile(),
+
+          loadConversations()
+
+        ]);
+
+
+      } catch (error) {
+
+        console.error(
+          "Initialize user error:",
+          error
+        );
+
+      }
+
 
       startNewChat();
+
     }
 
-    // تهيئة جلسة المستخدم الحالية
+
+    /* =========================================
+       التهيئة
+    ========================================= */
+
     async function initialize() {
-      try {
-        const { data, error } = await db.auth.getSession();
-        if (error) throw error;
 
-        if (data.session?.user) {
-          await initializeUser(data.session.user);
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await db.auth
+            .getSession();
+
+
+        if (error)
+          throw error;
+
+
+        if (
+          data.session?.user
+        ) {
+
+          await initializeUser(
+            data.session.user
+          );
+
         } else {
+
           showApp(false);
+
         }
+
+
       } catch (error) {
-        console.error(error);
+
+        console.error(
+          "Initialize error:",
+          error
+        );
+
+
         showApp(false);
-        setStatus("تعذّر الاتصال بخدمة الحسابات: " + explainError(error), true);
+
+
+        setStatus(
+          "تعذّر الاتصال بخدمة الحسابات: " +
+          explainError(error),
+          true
+        );
+
       }
+
     }
 
-    db.auth.onAuthStateChange((event, session) => {
-      if (event === "PASSWORD_RECOVERY") {
-        setStatus(
-          "تم فتح جلسة استعادة كلمة المرور. لإكمال الاستعادة، يلزم إضافة نموذج تغيير كلمة المرور."
-        );
-      }
 
-      if (event === "SIGNED_OUT") {
-        showApp(false);
-      }
+    /* =========================================
+       مراقبة تسجيل الدخول
+    ========================================= */
 
-      if (event === "SIGNED_IN" && session?.user) {
-        setTimeout(() => {
-          if (state.user?.id !== session.user.id) {
-            initializeUser(session.user);
+    db.auth
+      .onAuthStateChange(
+        (event, session) => {
+
+          console.log(
+            "Auth event:",
+            event
+          );
+
+
+          if (
+            event ===
+            "PASSWORD_RECOVERY"
+          ) {
+
+            setStatus(
+              "تم فتح جلسة استعادة كلمة المرور. لإكمال الاستعادة، أضف نموذج تغيير كلمة المرور."
+            );
+
           }
-        }, 0);
-      }
-    });
 
-    setAuthMode("login");
+
+          if (
+            event ===
+            "SIGNED_OUT"
+          ) {
+
+            state.user =
+              null;
+
+            showApp(false);
+
+          }
+
+
+          if (
+            event ===
+              "SIGNED_IN" &&
+            session?.user
+          ) {
+
+            setTimeout(
+              () => {
+
+                if (
+                  state.user?.id !==
+                  session.user.id
+                ) {
+
+                  initializeUser(
+                    session.user
+                  );
+
+                }
+
+              },
+              0
+            );
+
+          }
+
+        }
+      );
+
+
+    /* =========================================
+       بدء التطبيق
+    ========================================= */
+
+    setAuthMode(
+      "login"
+    );
+
+
     initialize();
+
   </script>
 
 </body>
