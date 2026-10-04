@@ -1,46 +1,52 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-
+  <meta charset="UTF-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
-  >
-
-  <meta name="theme-color" content="#212121">
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
 
   <title>Ayham AI</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* =========================================================
-       RESET
-    ========================================================= */
-
     * {
       box-sizing: border-box;
     }
 
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
+    :root {
+      --bg: #080808;
+      --panel: #111111;
+      --panel2: #171717;
+      --panel3: #202020;
+      --border: #292929;
+      --text: #f5f5f5;
+      --muted: #9b9b9b;
+      --white: #ffffff;
+      --danger: #ff7272;
+      --user: #252525;
     }
 
+    html,
     body {
-      background: #212121;
-      color: #ececec;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
       font-family:
-        Arial,
-        "Noto Sans Arabic",
         system-ui,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
+        Arial,
         sans-serif;
+    }
+
+    body {
       overflow: hidden;
     }
 
@@ -58,855 +64,657 @@
       display: none !important;
     }
 
-    /* =========================================================
+    /* =========================
        AUTH
-    ========================================================= */
+    ========================= */
 
     #authScreen {
       position: fixed;
       inset: 0;
-      background: #212121;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      z-index: 999;
+      background:
+        radial-gradient(
+          circle at top,
+          #171717 0,
+          #080808 55%
+        );
       overflow-y: auto;
     }
 
     .auth-card {
-      width: min(420px, 100%);
-      background: #2f2f2f;
-      border: 1px solid #454545;
-      border-radius: 18px;
-      padding: 30px;
-      box-shadow: 0 25px 80px rgba(0, 0, 0, .35);
+      width: 100%;
+      max-width: 470px;
+      background: #111114;
+      border: 1px solid #29292e;
+      border-radius: 28px;
+      padding: 34px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.45);
     }
 
-    .auth-logo {
-      width: 58px;
-      height: 58px;
-      margin: 0 auto 18px;
-      border-radius: 16px;
+    .logo-box {
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 20px;
+      border-radius: 24px;
       background: #fff;
       color: #111;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 21px;
+      font-size: 30px;
       font-weight: 900;
     }
 
     .auth-title {
-      margin: 0;
       text-align: center;
-      font-size: 25px;
-      font-weight: 700;
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 8px;
     }
 
     .auth-subtitle {
-      margin: 8px 0 25px;
       text-align: center;
-      color: #aaa;
-      font-size: 14px;
-      line-height: 1.7;
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 28px;
     }
 
-    .auth-error {
-      background: rgba(239, 68, 68, .12);
-      border: 1px solid rgba(239, 68, 68, .3);
-      color: #ff8e8e;
-      border-radius: 10px;
-      padding: 11px;
-      margin-bottom: 15px;
-      font-size: 13px;
-      line-height: 1.6;
+    .field {
+      margin-bottom: 18px;
     }
 
-    .auth-field {
-      margin-bottom: 15px;
-    }
-
-    .auth-field label {
+    .field label {
       display: block;
+      margin-bottom: 9px;
+      font-size: 15px;
       color: #ddd;
-      font-size: 13px;
-      margin-bottom: 7px;
     }
 
-    .auth-field input {
+    .field input {
       width: 100%;
-      height: 46px;
-      border: 1px solid #505050;
-      border-radius: 10px;
-      background: #212121;
-      color: #fff;
-      padding: 0 13px;
+      height: 58px;
+      border-radius: 16px;
+      border: 1px solid #333;
       outline: none;
+      background: #f0f3fb;
+      color: #111;
+      padding: 0 17px;
+      font-size: 17px;
+      direction: ltr;
+      text-align: left;
     }
 
-    .auth-field input:focus {
+    .field input:focus {
       border-color: #777;
     }
 
-    .auth-main-btn {
+    .auth-button {
       width: 100%;
-      height: 46px;
+      height: 58px;
       border: 0;
-      border-radius: 10px;
+      border-radius: 16px;
       background: #fff;
       color: #111;
-      font-weight: 700;
+      font-size: 18px;
+      font-weight: 800;
       margin-top: 4px;
     }
 
-    .auth-main-btn:disabled {
-      opacity: .55;
+    .auth-button:disabled {
+      opacity: 0.55;
       cursor: not-allowed;
     }
 
-    .auth-secondary-btn {
+    .auth-secondary {
       width: 100%;
-      height: 44px;
-      border: 1px solid #4d4d4d;
-      border-radius: 10px;
+      height: 58px;
+      margin-top: 12px;
+      border-radius: 16px;
+      border: 1px solid #303030;
       background: transparent;
-      color: #ddd;
-      margin-top: 10px;
+      color: #eee;
     }
 
     .auth-link {
       display: block;
-      margin: 17px auto 0;
-      border: 0;
-      background: transparent;
-      color: #aaa;
-      font-size: 13px;
+      text-align: center;
+      margin-top: 22px;
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
     }
 
     .auth-link:hover {
       color: #fff;
     }
 
-    /* =========================================================
+    .auth-error {
+      background: rgba(255, 70, 70, 0.11);
+      border: 1px solid rgba(255, 90, 90, 0.35);
+      color: #ff8b8b;
+      padding: 13px 15px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* =========================
        APP
-    ========================================================= */
+    ========================= */
 
     #app {
       width: 100%;
-      height: 100%;
+      height: 100dvh;
       display: flex;
+      background: var(--bg);
     }
 
-    /* =========================================================
-       SIDEBAR
-    ========================================================= */
-
     .sidebar {
-      width: 275px;
-      flex: 0 0 275px;
+      width: 280px;
+      flex-shrink: 0;
       height: 100%;
-      background: #171717;
-      border-left: 1px solid #303030;
+      background: #0d0d0d;
+      border-left: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      padding: 10px;
-      position: relative;
+      padding: 14px;
       z-index: 20;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 8px 7px 14px;
+      gap: 11px;
+      padding: 10px 8px 18px;
     }
 
-    .brand-logo {
+    .brand-icon {
       width: 38px;
       height: 38px;
-      border-radius: 11px;
+      border-radius: 12px;
       background: #fff;
       color: #111;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
       font-weight: 900;
     }
 
     .brand-name {
-      font-size: 15px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .new-chat {
+      width: 100%;
+      height: 48px;
+      border: 1px solid #303030;
+      background: #181818;
+      color: #fff;
+      border-radius: 14px;
+      margin-bottom: 15px;
       font-weight: 700;
     }
 
-    .brand-subtitle {
-      color: #858585;
-      font-size: 11px;
-      margin-top: 2px;
+    .new-chat:hover {
+      background: #222;
     }
 
-    .new-chat-btn {
-      width: 100%;
-      height: 43px;
-      background: #242424;
-      border: 1px solid #383838;
-      border-radius: 10px;
-      color: #eee;
-      text-align: right;
-      padding: 0 13px;
-      margin-bottom: 12px;
-    }
-
-    .new-chat-btn:hover {
-      background: #2c2c2c;
-    }
-
-    .sidebar-title {
+    .conversation-title {
       color: #777;
-      font-size: 11px;
-      padding: 7px 9px;
+      font-size: 12px;
+      padding: 8px 8px;
     }
 
-    .conversation-list {
+    #conversationList {
       flex: 1;
       overflow-y: auto;
       min-height: 0;
-      padding: 3px;
     }
 
     .conversation-item {
       position: relative;
+      width: 100%;
+      min-height: 45px;
       display: flex;
       align-items: center;
-      gap: 4px;
-      width: 100%;
-      min-height: 43px;
-      margin-bottom: 2px;
-      padding: 0 6px 0 5px;
-      border: 0;
-      border-radius: 9px;
+      gap: 8px;
+      padding: 10px 11px;
+      margin-bottom: 4px;
+      border-radius: 11px;
+      border: 1px solid transparent;
       background: transparent;
-      color: #d5d5d5;
+      color: #ddd;
       text-align: right;
     }
 
-    .conversation-item:hover,
-    .conversation-item.active {
-      background: #2a2a2a;
+    .conversation-item:hover {
+      background: #181818;
     }
 
-    .conversation-title {
+    .conversation-item.active {
+      background: #202020;
+      border-color: #292929;
+    }
+
+    .conversation-name {
       flex: 1;
       min-width: 0;
-      white-space: nowrap;
       overflow: hidden;
+      white-space: nowrap;
       text-overflow: ellipsis;
-      font-size: 13px;
+      font-size: 14px;
     }
 
-    .conversation-delete {
-      width: 30px;
-      height: 30px;
-      flex: 0 0 30px;
+    .delete-conversation {
+      width: 27px;
+      height: 27px;
+      flex-shrink: 0;
       border: 0;
-      border-radius: 7px;
+      border-radius: 8px;
       background: transparent;
-      color: #888;
+      color: #777;
       opacity: 0;
     }
 
-    .conversation-item:hover .conversation-delete,
-    .conversation-item.active .conversation-delete {
+    .conversation-item:hover .delete-conversation {
       opacity: 1;
     }
 
-    .conversation-delete:hover {
-      background: #3a3a3a;
+    .delete-conversation:hover {
       color: #ff7777;
+      background: #292020;
     }
 
-    .account-box {
-      border-top: 1px solid #303030;
-      padding: 12px 5px 3px;
-      margin-top: 8px;
+    .account {
+      border-top: 1px solid #252525;
+      padding-top: 12px;
     }
 
     .account-email {
       color: #999;
-      font-size: 11px;
-      white-space: nowrap;
+      font-size: 12px;
       overflow: hidden;
+      white-space: nowrap;
       text-overflow: ellipsis;
-      padding: 0 6px 9px;
+      margin-bottom: 10px;
+      padding: 0 5px;
+      direction: ltr;
+      text-align: right;
     }
 
-    .logout-btn {
+    .logout {
       width: 100%;
-      height: 39px;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid #303030;
       background: transparent;
-      border: 1px solid #383838;
-      color: #ccc;
-      border-radius: 9px;
+      color: #ddd;
     }
 
-    .logout-btn:hover {
-      background: #242424;
+    .logout:hover {
+      background: #1c1c1c;
     }
 
-    /* =========================================================
+    /* =========================
        MAIN
-    ========================================================= */
+    ========================= */
 
     .main {
+      position: relative;
       flex: 1;
       min-width: 0;
       height: 100%;
       display: flex;
       flex-direction: column;
-      position: relative;
-      background: #212121;
     }
 
     .topbar {
       height: 58px;
-      flex: 0 0 58px;
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0 16px;
-      border-bottom: 1px solid #303030;
-      position: relative;
-      z-index: 5;
+      border-bottom: 1px solid #191919;
+      background: rgba(8, 8, 8, 0.92);
+      backdrop-filter: blur(15px);
     }
 
-    .mobile-menu-btn {
-      display: none;
+    .mobile-menu {
       position: absolute;
       right: 12px;
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border: 0;
-      border-radius: 9px;
+      border-radius: 11px;
       background: transparent;
-      color: #ddd;
-      font-size: 21px;
-    }
-
-    .mobile-menu-btn:hover {
-      background: #2d2d2d;
+      color: #fff;
+      font-size: 23px;
+      display: none;
     }
 
     .top-title {
-      max-width: 55%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    /* =========================================================
-       CHAT
-    ========================================================= */
-
-    .chat-scroll {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      padding: 20px 15px 150px;
-      scroll-behavior: smooth;
+      font-size: 15px;
+      font-weight: 700;
     }
 
     .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 35px 20px 170px;
+    }
+
+    .messages-inner {
       width: 100%;
-      max-width: 900px;
+      max-width: 850px;
       margin: 0 auto;
     }
 
     .welcome {
-      min-height: calc(100vh - 250px);
+      min-height: calc(100dvh - 220px);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
       text-align: center;
       padding: 20px;
     }
 
     .welcome-logo {
-      width: 64px;
-      height: 64px;
-      border-radius: 19px;
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
       background: #fff;
       color: #111;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
       font-weight: 900;
-      margin-bottom: 18px;
+      font-size: 26px;
+      margin-bottom: 20px;
     }
 
     .welcome h1 {
-      margin: 0;
-      font-size: 27px;
-      font-weight: 700;
+      margin: 0 0 10px;
+      font-size: 31px;
     }
 
     .welcome p {
-      color: #999;
-      font-size: 14px;
-      margin: 10px 0 0;
+      margin: 0;
+      color: #888;
+      font-size: 16px;
     }
 
-    .message-row {
-      width: 100%;
+    .message {
       display: flex;
-      margin-bottom: 26px;
+      gap: 12px;
+      margin-bottom: 28px;
+      line-height: 1.8;
     }
 
-    .message-row.user {
+    .message.user {
       justify-content: flex-start;
     }
 
-    .message-row.assistant {
-      justify-content: flex-end;
-    }
-
-    .message-inner {
-      width: min(100%, 850px);
-      display: flex;
-      gap: 11px;
-    }
-
-    .message-row.user .message-inner {
-      flex-direction: row;
-    }
-
-    .message-row.assistant .message-inner {
-      flex-direction: row-reverse;
+    .message.assistant {
+      justify-content: flex-start;
     }
 
     .avatar {
-      width: 30px;
-      height: 30px;
-      flex: 0 0 30px;
-      border-radius: 9px;
+      width: 34px;
+      height: 34px;
+      flex-shrink: 0;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 10px;
-      font-weight: 800;
-      margin-top: 2px;
-    }
-
-    .user-avatar {
-      background: #3b3b3b;
-      color: #fff;
-    }
-
-    .ai-avatar {
+      font-size: 13px;
+      font-weight: 900;
       background: #fff;
       color: #111;
     }
 
-    .message-content {
-      min-width: 0;
-      max-width: calc(100% - 42px);
-    }
-
-    .message-name {
-      color: #999;
-      font-size: 11px;
-      margin-bottom: 4px;
-    }
-
-    .message-row.user .message-name {
-      text-align: right;
-    }
-
-    .message-row.assistant .message-name {
-      text-align: left;
-    }
-
-    .bubble {
-      color: #ececec;
-      font-size: 15px;
-      line-height: 1.85;
-      overflow-wrap: anywhere;
-    }
-
-    .message-row.user .bubble {
+    .user .avatar {
       background: #303030;
-      border-radius: 16px;
-      padding: 11px 15px;
+      color: #fff;
     }
 
-    .message-row.assistant .bubble {
-      padding: 2px 3px;
+    .message-content {
+      max-width: calc(100% - 50px);
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 16px;
     }
 
-    .bubble p {
-      margin: 0 0 12px;
+    .user .message-content {
+      background: var(--user);
+      padding: 10px 15px;
+      border-radius: 17px;
     }
 
-    .bubble p:last-child {
-      margin-bottom: 0;
+    .assistant .message-content {
+      padding-top: 2px;
     }
-
-    .bubble ul,
-    .bubble ol {
-      margin: 8px 0;
-      padding-right: 24px;
-    }
-
-    .bubble li {
-      margin: 4px 0;
-    }
-
-    .bubble code.inline-code {
-      background: #111;
-      border: 1px solid #3a3a3a;
-      padding: 2px 6px;
-      border-radius: 5px;
-      font-family: monospace;
-      direction: ltr;
-      unicode-bidi: plaintext;
-    }
-
-    .code-wrap {
-      position: relative;
-      margin: 12px 0;
-      border: 1px solid #3b3b3b;
-      border-radius: 10px;
-      background: #111;
-      overflow: hidden;
-      direction: ltr;
-    }
-
-    .code-header {
-      height: 35px;
-      background: #181818;
-      border-bottom: 1px solid #333;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 9px;
-      color: #888;
-      font-size: 11px;
-    }
-
-    .copy-code-btn {
-      border: 0;
-      background: #292929;
-      color: #ccc;
-      border-radius: 6px;
-      padding: 4px 8px;
-      font-size: 10px;
-    }
-
-    .copy-code-btn:hover {
-      background: #3a3a3a;
-    }
-
-    .code-wrap pre {
-      margin: 0;
-      padding: 13px;
-      overflow-x: auto;
-      color: #eee;
-      font-family:
-        Consolas,
-        Monaco,
-        monospace;
-      font-size: 12px;
-      line-height: 1.65;
-      direction: ltr;
-      text-align: left;
-      white-space: pre;
-    }
-
-    .copy-answer {
-      margin-top: 7px;
-      border: 0;
-      background: transparent;
-      color: #777;
-      font-size: 11px;
-      padding: 3px 5px;
-    }
-
-    .copy-answer:hover {
-      color: #ddd;
-    }
-
-    /* =========================================================
-       LOADING
-    ========================================================= */
 
     .typing {
       display: flex;
-      gap: 4px;
-      align-items: center;
-      height: 25px;
+      gap: 5px;
+      padding-top: 9px;
     }
 
     .typing span {
-      width: 6px;
-      height: 6px;
-      background: #aaa;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      animation: typing 1.2s infinite ease-in-out;
+      background: #888;
+      animation: typing 1.1s infinite ease-in-out;
     }
 
     .typing span:nth-child(2) {
-      animation-delay: .15s;
+      animation-delay: 0.15s;
     }
 
     .typing span:nth-child(3) {
-      animation-delay: .3s;
+      animation-delay: 0.3s;
     }
 
     @keyframes typing {
-      0%, 70%, 100% {
+      0%, 60%, 100% {
+        opacity: 0.3;
         transform: translateY(0);
-        opacity: .35;
       }
-
-      35% {
-        transform: translateY(-4px);
+      30% {
         opacity: 1;
+        transform: translateY(-4px);
       }
     }
 
-    /* =========================================================
+    /* =========================
        COMPOSER
-    ========================================================= */
+    ========================= */
 
     .composer-area {
       position: absolute;
-      bottom: 0;
       left: 0;
       right: 0;
-      padding: 12px 15px 17px;
+      bottom: 0;
+      padding: 15px 20px 20px;
       background:
         linear-gradient(
-          to top,
-          #212121 68%,
-          rgba(33,33,33,0)
+          to bottom,
+          transparent,
+          rgba(8, 8, 8, 0.94) 28%,
+          #080808 50%
         );
-      z-index: 4;
     }
 
     .composer {
-      width: min(900px, 100%);
+      width: 100%;
+      max-width: 850px;
       margin: 0 auto;
-      background: #2f2f2f;
-      border: 1px solid #4a4a4a;
-      border-radius: 17px;
+      position: relative;
+    }
+
+    .composer-box {
+      min-height: 60px;
+      border: 1px solid #353535;
+      background: #171719;
+      border-radius: 20px;
       display: flex;
       align-items: flex-end;
       padding: 8px;
-      box-shadow: 0 5px 30px rgba(0,0,0,.18);
+      box-shadow: 0 8px 30px rgba(0,0,0,.25);
     }
 
     #messageInput {
       flex: 1;
       min-width: 0;
-      min-height: 43px;
       max-height: 180px;
+      min-height: 43px;
       resize: none;
       border: 0;
-      outline: 0;
+      outline: none;
       background: transparent;
       color: #fff;
-      padding: 10px 11px;
-      line-height: 1.55;
-      overflow-y: auto;
+      padding: 10px 12px;
+      line-height: 1.6;
+      font-size: 16px;
+      direction: rtl;
     }
 
     #messageInput::placeholder {
-      color: #858585;
+      color: #777;
     }
 
-    .send-btn {
-      width: 42px;
-      height: 42px;
-      flex: 0 0 42px;
+    #sendButton {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
       border: 0;
-      border-radius: 12px;
+      border-radius: 14px;
       background: #fff;
       color: #111;
-      font-size: 21px;
+      font-size: 22px;
       font-weight: 900;
     }
 
-    .send-btn:hover {
-      background: #e8e8e8;
-    }
-
-    .send-btn:disabled {
-      opacity: .45;
+    #sendButton:disabled {
+      opacity: 0.4;
       cursor: not-allowed;
     }
 
     .composer-note {
       text-align: center;
-      color: #777;
-      font-size: 10px;
-      margin-top: 7px;
+      color: #555;
+      font-size: 11px;
+      margin-top: 8px;
     }
 
-    /* =========================================================
-       MOBILE OVERLAY
-    ========================================================= */
-
-    .sidebar-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.5);
-      z-index: 15;
-    }
-
-    /* =========================================================
+    /* =========================
        TOAST
-    ========================================================= */
+    ========================= */
 
     #toast {
       position: fixed;
       left: 50%;
-      bottom: 90px;
-      transform: translate(-50%, 20px);
+      bottom: 95px;
+      transform: translateX(-50%) translateY(15px);
+      max-width: calc(100% - 30px);
+      background: #242424;
+      color: #fff;
+      border: 1px solid #383838;
+      border-radius: 13px;
+      padding: 12px 16px;
+      font-size: 14px;
+      z-index: 100;
       opacity: 0;
       pointer-events: none;
-      background: #303030;
-      color: #eee;
-      border: 1px solid #4a4a4a;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 12px;
-      z-index: 200;
-      transition: .22s;
-      max-width: calc(100% - 30px);
+      transition: 0.25s;
       text-align: center;
     }
 
     #toast.show {
       opacity: 1;
-      transform: translate(-50%, 0);
+      transform: translateX(-50%) translateY(0);
     }
 
     #toast.error {
-      color: #ffaaaa;
-      border-color: #713737;
+      border-color: #693838;
+      color: #ffadad;
     }
 
-    /* =========================================================
-       SCROLLBAR
-    ========================================================= */
-
-    ::-webkit-scrollbar {
-      width: 7px;
-      height: 7px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #444;
-      border-radius: 20px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #555;
-    }
-
-    /* =========================================================
+    /* =========================
        MOBILE
-    ========================================================= */
+    ========================= */
 
     @media (max-width: 760px) {
-
       .sidebar {
         position: fixed;
-        right: 0;
         top: 0;
         bottom: 0;
-        transform: translateX(100%);
-        transition: transform .25s ease;
+        right: 0;
         width: min(290px, 86vw);
-        z-index: 30;
-        box-shadow: -20px 0 50px rgba(0,0,0,.3);
+        transform: translateX(105%);
+        transition: transform 0.25s ease;
+        box-shadow: -20px 0 50px rgba(0,0,0,.4);
       }
 
       .sidebar.open {
         transform: translateX(0);
       }
 
-      .sidebar-overlay.open {
+      .mobile-menu {
         display: block;
       }
 
-      .mobile-menu-btn {
-        display: block;
+      .top-title {
+        font-size: 14px;
       }
 
-      .topbar {
-        height: 55px;
-        flex-basis: 55px;
+      .messages {
+        padding: 25px 13px 155px;
       }
 
-      .chat-scroll {
-        padding: 15px 10px 145px;
-      }
-
-      .message-inner {
-        width: 100%;
+      .message {
+        gap: 9px;
+        margin-bottom: 23px;
       }
 
       .avatar {
-        width: 28px;
-        height: 28px;
-        flex-basis: 28px;
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+        font-size: 11px;
       }
 
       .message-content {
-        max-width: calc(100% - 39px);
-      }
-
-      .bubble {
-        font-size: 14px;
-        line-height: 1.75;
-      }
-
-      .welcome {
-        min-height: calc(100vh - 230px);
-      }
-
-      .welcome h1 {
-        font-size: 23px;
-      }
-
-      .welcome p {
-        font-size: 13px;
+        max-width: calc(100% - 40px);
+        font-size: 15px;
       }
 
       .composer-area {
-        padding: 9px 9px 12px;
+        padding: 10px 10px 13px;
       }
 
-      .composer {
-        border-radius: 15px;
+      .composer-box {
+        border-radius: 18px;
       }
 
-      .composer-note {
-        display: none;
+      .welcome h1 {
+        font-size: 27px;
       }
 
       .auth-card {
-        padding: 24px 19px;
+        padding: 25px 18px;
+        border-radius: 23px;
+      }
+
+      .auth-title {
+        font-size: 28px;
       }
     }
   </style>
@@ -914,155 +722,106 @@
 
 <body>
 
-  <!-- =======================================================
-       AUTH
-  ======================================================== -->
+  <!-- =========================
+       AUTH SCREEN
+  ========================= -->
 
   <section id="authScreen">
 
     <div class="auth-card">
 
-      <div class="auth-logo">
-        AI
+      <div class="logo-box">AI</div>
+
+      <div id="authTitle" class="auth-title">
+        تسجيل الدخول
       </div>
 
-      <h1
-        id="authTitle"
-        class="auth-title"
-      >
-        تسجيل الدخول
-      </h1>
-
-      <p
-        id="authSubtitle"
-        class="auth-subtitle"
-      >
+      <div id="authSubtitle" class="auth-subtitle">
         سجّل دخولك حتى تستخدم Ayham AI
-      </p>
+      </div>
 
-      <div
-        id="authError"
-        class="auth-error hidden"
-      ></div>
+      <div id="authError" class="auth-error hidden"></div>
 
-      <div
-        id="nameField"
-        class="auth-field hidden"
-      >
+      <div id="nameField" class="field hidden">
         <label>الاسم</label>
-
         <input
           id="nameInput"
           type="text"
           placeholder="اسمك"
           autocomplete="name"
-        >
+        />
       </div>
 
-      <div class="auth-field">
+      <div class="field">
         <label>البريد الإلكتروني</label>
-
         <input
           id="emailInput"
           type="email"
-          placeholder="example@email.com"
+          placeholder="example@gmail.com"
           autocomplete="email"
-        >
+        />
       </div>
 
-      <div
-        id="passwordField"
-        class="auth-field"
-      >
+      <div id="passwordField" class="field">
         <label>كلمة المرور</label>
-
         <input
           id="passwordInput"
           type="password"
           placeholder="كلمة المرور"
           autocomplete="current-password"
-        >
+        />
       </div>
 
-      <button
-        id="authButton"
-        class="auth-main-btn"
-      >
+      <button id="authButton" class="auth-button">
         تسجيل الدخول
       </button>
 
       <button
         id="forgotButton"
-        class="auth-secondary-btn"
+        class="auth-secondary"
       >
         نسيت كلمة المرور؟
       </button>
 
-      <button
+      <a
         id="switchAuth"
         class="auth-link"
       >
         إنشاء حساب جديد
-      </button>
+      </a>
 
     </div>
 
   </section>
 
 
-  <!-- =======================================================
+  <!-- =========================
        APP
-  ======================================================== -->
+  ========================= -->
 
-  <div
-    id="app"
-    class="hidden"
-  >
+  <section id="app" class="hidden">
 
-    <aside
-      id="sidebar"
-      class="sidebar"
-    >
+    <aside id="sidebar" class="sidebar">
 
       <div class="brand">
-
-        <div class="brand-logo">
-          AI
-        </div>
-
-        <div>
-          <div class="brand-name">
-            Ayham AI
-          </div>
-
-          <div class="brand-subtitle">
-            مساعدك الذكي
-          </div>
-        </div>
-
+        <div class="brand-icon">AI</div>
+        <div class="brand-name">Ayham AI</div>
       </div>
-
 
       <button
         id="newChatButton"
-        class="new-chat-btn"
+        class="new-chat"
       >
         ＋ محادثة جديدة
       </button>
 
-
-      <div class="sidebar-title">
-        المحادثات
+      <div class="conversation-title">
+        محادثاتك
       </div>
 
+      <div id="conversationList"></div>
 
-      <div
-        id="conversationList"
-        class="conversation-list"
-      ></div>
-
-
-      <div class="account-box">
+      <div class="account">
 
         <div
           id="accountEmail"
@@ -1071,7 +830,7 @@
 
         <button
           id="logoutButton"
-          class="logout-btn"
+          class="logout"
         >
           تسجيل الخروج
         </button>
@@ -1081,25 +840,19 @@
     </aside>
 
 
-    <div
-      id="sidebarOverlay"
-      class="sidebar-overlay"
-    ></div>
-
-
     <main class="main">
 
       <header class="topbar">
 
         <button
-          id="mobileMenuButton"
-          class="mobile-menu-btn"
+          id="mobileMenu"
+          class="mobile-menu"
         >
           ☰
         </button>
 
         <div
-          id="chatTitle"
+          id="topTitle"
           class="top-title"
         >
           محادثة جديدة
@@ -1108,2313 +861,1491 @@
       </header>
 
 
-      <section
-        id="chatScroll"
-        class="chat-scroll"
+      <div
+        id="messages"
+        class="messages"
       >
 
         <div
-          id="messages"
-          class="messages"
+          id="messagesInner"
+          class="messages-inner"
         ></div>
 
-      </section>
+      </div>
 
 
       <div class="composer-area">
 
         <div class="composer">
 
-          <textarea
-            id="messageInput"
-            rows="1"
-            placeholder="اسأل Ayham AI..."
-          ></textarea>
+          <div class="composer-box">
 
-          <button
-            id="sendButton"
-            class="send-btn"
-            title="إرسال"
-          >
-            ↑
-          </button>
+            <textarea
+              id="messageInput"
+              rows="1"
+              placeholder="اكتب رسالتك..."
+              autocomplete="off"
+            ></textarea>
 
-        </div>
+            <button
+              id="sendButton"
+              title="إرسال"
+            >
+              ↑
+            </button>
 
-        <div class="composer-note">
-          Ayham AI قد يخطئ أحياناً. تحقق من المعلومات المهمة.
+          </div>
+
+          <div class="composer-note">
+            Ayham AI قد يخطئ أحياناً، تحقق من المعلومات المهمة.
+          </div>
+
         </div>
 
       </div>
 
     </main>
 
-  </div>
+  </section>
 
 
   <div id="toast"></div>
 
 
-  <script>
-    /* =========================================================
-       SUPABASE
-    ========================================================= */
+<script>
+/* =========================================================
+   SUPABASE
+========================================================= */
 
-    const SUPABASE_URL =
-      "https://yyhykirxcsbgfddjyuti.supabase.co";
+const SUPABASE_URL =
+  "https://yyhykirxcsbgfddjyuti.supabase.co";
 
-    const SUPABASE_ANON_KEY =
-      "sb_publishable_ulGr0S6yyfBBzsiJqSeRQ_p3sO5dxh";
+const SUPABASE_ANON_KEY =
+  "sb_publishable_ulGr0S06yyfBBzsiJqSeRQ_p3sO5dxh";
 
-    const db =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
+const db =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
+    {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    }
+  );
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+const state = {
+  user: null,
+  session: null,
+  conversations: [],
+  currentId: null,
+  messages: [],
+  authMode: "login",
+  sending: false
+};
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+const $ = (id) =>
+  document.getElementById(id);
+
+
+function showToast(message, error = false) {
+
+  const toast = $("toast");
+
+  toast.textContent = message;
+
+  toast.className =
+    "show" + (error ? " error" : "");
+
+  clearTimeout(window.__toastTimer);
+
+  window.__toastTimer =
+    setTimeout(() => {
+      toast.className = "";
+    }, 3500);
+}
+
+
+function showAuthError(message) {
+
+  const box = $("authError");
+
+  box.textContent = message;
+
+  box.classList.remove("hidden");
+}
+
+
+function clearAuthError() {
+
+  $("authError").classList.add("hidden");
+  $("authError").textContent = "";
+}
+
+
+function translateError(error) {
+
+  const message =
+    error?.message ||
+    error?.error_description ||
+    String(error || "");
+
+  if (!message) {
+    return "صار خطأ غير معروف.";
+  }
+
+  if (
+    message.toLowerCase().includes("invalid api key")
+  ) {
+    return "مفتاح Supabase غير صالح أو لا يطابق رابط المشروع. تأكد من SUPABASE_URL و Publishable Key.";
+  }
+
+  if (
+    message.toLowerCase().includes("invalid login credentials")
+  ) {
+    return "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
+  }
+
+  if (
+    message.toLowerCase().includes("email not confirmed")
+  ) {
+    return "لازم تأكد بريدك الإلكتروني أولاً.";
+  }
+
+  if (
+    message.toLowerCase().includes("user already registered")
+  ) {
+    return "هذا البريد مسجل مسبقاً. جرّب تسجيل الدخول.";
+  }
+
+  if (
+    message.toLowerCase().includes("password should be at least")
+  ) {
+    return "كلمة المرور لازم تكون أطول.";
+  }
+
+  if (
+    message.toLowerCase().includes("failed to send a request")
+  ) {
+    return "تعذّر الاتصال بـ Edge Function. تأكد أن ai-chat منشورة وأن اسمها صحيح.";
+  }
+
+  return message;
+}
+
+
+/* =========================================================
+   AUTH UI
+========================================================= */
+
+function updateAuthUI() {
+
+  const register =
+    state.authMode === "register";
+
+  $("authTitle").textContent =
+    register
+      ? "إنشاء حساب"
+      : "تسجيل الدخول";
+
+  $("authSubtitle").textContent =
+    register
+      ? "أنشئ حسابك وابدأ استخدام Ayham AI"
+      : "سجّل دخولك حتى تستخدم Ayham AI";
+
+  $("authButton").textContent =
+    register
+      ? "إنشاء الحساب"
+      : "تسجيل الدخول";
+
+  $("nameField").classList.toggle(
+    "hidden",
+    !register
+  );
+
+  $("forgotButton").classList.toggle(
+    "hidden",
+    register
+  );
+
+  $("passwordInput").autocomplete =
+    register
+      ? "new-password"
+      : "current-password";
+
+  $("switchAuth").textContent =
+    register
+      ? "عندي حساب بالفعل"
+      : "إنشاء حساب جديد";
+}
+
+
+$("switchAuth").addEventListener(
+  "click",
+  () => {
+
+    state.authMode =
+      state.authMode === "login"
+        ? "register"
+        : "login";
+
+    clearAuthError();
+
+    updateAuthUI();
+  }
+);
+
+
+/* =========================================================
+   LOGIN / REGISTER
+========================================================= */
+
+$("authButton").addEventListener(
+  "click",
+  handleAuth
+);
+
+
+$("passwordInput").addEventListener(
+  "keydown",
+  (event) => {
+
+    if (event.key === "Enter") {
+      handleAuth();
+    }
+
+  }
+);
+
+
+$("emailInput").addEventListener(
+  "keydown",
+  (event) => {
+
+    if (event.key === "Enter") {
+      handleAuth();
+    }
+
+  }
+);
+
+
+async function handleAuth() {
+
+  clearAuthError();
+
+  const email =
+    $("emailInput").value.trim();
+
+  const password =
+    $("passwordInput").value;
+
+  const name =
+    $("nameInput").value.trim();
+
+  if (!email) {
+    showAuthError(
+      "اكتب البريد الإلكتروني."
+    );
+    return;
+  }
+
+  if (!password) {
+    showAuthError(
+      "اكتب كلمة المرور."
+    );
+    return;
+  }
+
+  if (
+    state.authMode === "register" &&
+    !name
+  ) {
+    showAuthError(
+      "اكتب اسمك."
+    );
+    return;
+  }
+
+  const button =
+    $("authButton");
+
+  button.disabled = true;
+
+  button.textContent =
+    state.authMode === "register"
+      ? "جاري إنشاء الحساب..."
+      : "جاري تسجيل الدخول...";
+
+  try {
+
+    if (state.authMode === "register") {
+
+      const {
+        data,
+        error
+      } = await db.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            display_name: name
+          }
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (
+        data.user &&
+        !data.session
+      ) {
+
+        showAuthError(
+          "تم إنشاء الحساب. افتح بريدك الإلكتروني واضغط رابط التأكيد، وبعدها سجّل الدخول."
+        );
+
+        return;
+      }
+
+      showToast(
+        "تم إنشاء الحساب بنجاح."
       );
 
+    } else {
 
-    /* =========================================================
-       HELPERS
-    ========================================================= */
+      const {
+        data,
+        error
+      } = await db.auth.signInWithPassword({
+        email,
+        password
+      });
 
-    const $ = (id) =>
-      document.getElementById(id);
+      if (error) {
+        throw error;
+      }
+
+      if (!data.session) {
+        throw new Error(
+          "لم يتم إنشاء جلسة تسجيل الدخول."
+        );
+      }
+
+      showToast(
+        "تم تسجيل الدخول."
+      );
+    }
+
+  } catch (error) {
+
+    console.error("Auth error:", error);
+
+    showAuthError(
+      translateError(error)
+    );
+
+  } finally {
+
+    button.disabled = false;
+
+    updateAuthUI();
+  }
+}
 
 
-    function showToast(
-      message,
-      error = false
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
+
+$("forgotButton").addEventListener(
+  "click",
+  async () => {
+
+    clearAuthError();
+
+    const email =
+      $("emailInput").value.trim();
+
+    if (!email) {
+      showAuthError(
+        "اكتب بريدك الإلكتروني أولاً."
+      );
+      return;
+    }
+
+    try {
+
+      const {
+        error
+      } = await db.auth.resetPasswordForEmail(
+        email,
+        {
+          redirectTo:
+            window.location.origin
+        }
+      );
+
+      if (error) {
+        throw error;
+      }
+
+      showToast(
+        "إذا كان البريد مسجلاً، راح توصلك رسالة لإعادة كلمة المرور."
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      showAuthError(
+        translateError(error)
+      );
+    }
+  }
+);
+
+
+/* =========================================================
+   SESSION
+========================================================= */
+
+async function initialize() {
+
+  const {
+    data,
+    error
+  } = await db.auth.getSession();
+
+  if (error) {
+    console.error(error);
+  }
+
+  if (data?.session) {
+
+    await initializeUser(
+      data.session
+    );
+
+  } else {
+
+    showAuth();
+
+  }
+}
+
+
+db.auth.onAuthStateChange(
+  async (event, session) => {
+
+    if (
+      session &&
+      (
+        event === "SIGNED_IN" ||
+        event === "INITIAL_SESSION" ||
+        event === "TOKEN_REFRESHED"
+      )
     ) {
 
-      const toast =
-        $("toast");
+      state.session = session;
+      state.user = session.user;
 
-      toast.textContent =
-        message;
+      await initializeUser(
+        session
+      );
 
-      toast.classList.toggle(
-        "error",
+    }
+
+    if (
+      event === "SIGNED_OUT"
+    ) {
+
+      state.session = null;
+      state.user = null;
+      state.conversations = [];
+      state.currentId = null;
+      state.messages = [];
+
+      showAuth();
+    }
+  }
+);
+
+
+async function initializeUser(session) {
+
+  state.session = session;
+  state.user = session.user;
+
+  $("accountEmail").textContent =
+    state.user.email || "";
+
+  $("authScreen").classList.add(
+    "hidden"
+  );
+
+  $("app").classList.remove(
+    "hidden"
+  );
+
+  await ensureProfile();
+
+  await loadConversations();
+
+  if (state.conversations.length) {
+
+    await openConversation(
+      state.conversations[0].id
+    );
+
+  } else {
+
+    createNewConversationUI();
+  }
+}
+
+
+function showAuth() {
+
+  $("app").classList.add(
+    "hidden"
+  );
+
+  $("authScreen").classList.remove(
+    "hidden"
+  );
+
+  updateAuthUI();
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+async function ensureProfile() {
+
+  if (!state.user) {
+    return;
+  }
+
+  try {
+
+    const {
+      data,
+      error
+    } = await db
+      .from("profiles")
+      .select("id, display_name")
+      .eq("id", state.user.id)
+      .maybeSingle();
+
+    if (error) {
+      console.error(
+        "Profile select:",
         error
       );
-
-      toast.classList.add(
-        "show"
-      );
-
-      clearTimeout(
-        showToast.timer
-      );
-
-      showToast.timer =
-        setTimeout(() => {
-          toast.classList.remove(
-            "show"
-          );
-        }, 3500);
+      return;
     }
 
+    if (!data) {
 
-    function escapeHTML(
-      value
-    ) {
+      const displayName =
+        state.user.user_metadata?.display_name ||
+        state.user.email?.split("@")[0] ||
+        "مستخدم";
 
-      return String(
-        value ?? ""
-      )
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
+      const {
+        error: insertError
+      } = await db
+        .from("profiles")
+        .insert({
+          id: state.user.id,
+          display_name: displayName
+        });
+
+      if (insertError) {
+        console.error(
+          "Profile insert:",
+          insertError
         );
-    }
-
-
-    /* =========================================================
-       STATE
-    ========================================================= */
-
-    const state = {
-
-      user: null,
-
-      profile: null,
-
-      conversations: [],
-
-      currentId: null,
-
-      messages: [],
-
-      authMode: "login",
-
-      sending: false,
-
-      initializing: false
-    };
-
-
-    /* =========================================================
-       AUTH MODE
-    ========================================================= */
-
-    function setAuthMode(
-      mode
-    ) {
-
-      state.authMode =
-        mode;
-
-      $("authError")
-        .classList.add(
-          "hidden"
-        );
-
-      const signup =
-        mode === "signup";
-
-      const reset =
-        mode === "reset";
-
-      $("nameField")
-        .classList.toggle(
-          "hidden",
-          !signup
-        );
-
-      $("passwordField")
-        .classList.toggle(
-          "hidden",
-          reset
-        );
-
-
-      if (mode === "login") {
-
-        $("authTitle")
-          .textContent =
-          "تسجيل الدخول";
-
-        $("authSubtitle")
-          .textContent =
-          "سجّل دخولك حتى تستخدم Ayham AI";
-
-        $("authButton")
-          .textContent =
-          "تسجيل الدخول";
-
-        $("forgotButton")
-          .classList.remove(
-            "hidden"
-          );
-
-        $("switchAuth")
-          .textContent =
-          "إنشاء حساب جديد";
-
-      } else if (mode === "signup") {
-
-        $("authTitle")
-          .textContent =
-          "إنشاء حساب";
-
-        $("authSubtitle")
-          .textContent =
-          "أنشئ حسابك وابدأ استخدام Ayham AI";
-
-        $("authButton")
-          .textContent =
-          "إنشاء الحساب";
-
-        $("forgotButton")
-          .classList.add(
-            "hidden"
-          );
-
-        $("switchAuth")
-          .textContent =
-          "عندي حساب بالفعل";
-
-      } else {
-
-        $("authTitle")
-          .textContent =
-          "استعادة كلمة المرور";
-
-        $("authSubtitle")
-          .textContent =
-          "أدخل بريدك الإلكتروني لإرسال رابط الاستعادة";
-
-        $("authButton")
-          .textContent =
-          "إرسال الرابط";
-
-        $("forgotButton")
-          .classList.add(
-            "hidden"
-          );
-
-        $("switchAuth")
-          .textContent =
-          "العودة لتسجيل الدخول";
       }
     }
 
+  } catch (error) {
 
-    function showAuthError(
-      message
-    ) {
-
-      const box =
-        $("authError");
-
-      box.textContent =
-        message;
-
-      box.classList.remove(
-        "hidden"
-      );
-    }
+    console.error(
+      "Profile error:",
+      error
+    );
+  }
+}
 
 
-    /* =========================================================
-       AUTH
-    ========================================================= */
+/* =========================================================
+   CONVERSATIONS
+========================================================= */
 
-    async function handleAuth() {
+async function loadConversations() {
 
-      const email =
-        $("emailInput")
-          .value
-          .trim();
+  if (!state.user) {
+    return;
+  }
 
-      const password =
-        $("passwordInput")
-          .value;
+  const {
+    data,
+    error
+  } = await db
+    .from("conversations")
+    .select(
+      "id, user_id, title, messages, created_at, updated_at"
+    )
+    .eq(
+      "user_id",
+      state.user.id
+    )
+    .order(
+      "updated_at",
+      {
+        ascending: false
+      }
+    );
+
+  if (error) {
+
+    console.error(
+      "Load conversations:",
+      error
+    );
+
+    showToast(
+      "تعذّر تحميل المحادثات.",
+      true
+    );
+
+    return;
+  }
+
+  state.conversations =
+    data || [];
+
+  renderConversationList();
+}
+
+
+function renderConversationList() {
+
+  const list =
+    $("conversationList");
+
+  list.innerHTML = "";
+
+  if (!state.conversations.length) {
+
+    const empty =
+      document.createElement("div");
+
+    empty.style.cssText =
+      "padding:15px 8px;color:#666;font-size:13px";
+
+    empty.textContent =
+      "ما عندك محادثات بعد.";
+
+    list.appendChild(empty);
+
+    return;
+  }
+
+  state.conversations.forEach(
+    (conversation) => {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "conversation-item" +
+        (
+          conversation.id ===
+          state.currentId
+            ? " active"
+            : ""
+        );
 
       const name =
-        $("nameInput")
-          .value
-          .trim();
+        document.createElement("div");
 
-      if (!email) {
+      name.className =
+        "conversation-name";
 
-        showAuthError(
-          "اكتب البريد الإلكتروني."
-        );
-
-        return;
-      }
-
-
-      if (
-        state.authMode !== "reset" &&
-        !password
-      ) {
-
-        showAuthError(
-          "اكتب كلمة المرور."
-        );
-
-        return;
-      }
-
-
-      $("authButton")
-        .disabled = true;
-
-
-      try {
-
-        if (
-          state.authMode === "login"
-        ) {
-
-          const {
-            error
-          } =
-            await db.auth.signInWithPassword({
-              email,
-              password
-            });
-
-          if (error) {
-            throw error;
-          }
-
-
-        } else if (
-          state.authMode === "signup"
-        ) {
-
-          const {
-            data,
-            error
-          } =
-            await db.auth.signUp({
-
-              email,
-
-              password,
-
-              options: {
-                data: {
-                  display_name:
-                    name ||
-                    email.split("@")[0]
-                }
-              }
-            });
-
-
-          if (error) {
-            throw error;
-          }
-
-
-          if (!data?.session) {
-
-            showToast(
-              "تم إنشاء الحساب. إذا كان تأكيد البريد مفعلاً، افتح بريدك وأكد الحساب."
-            );
-
-            setAuthMode(
-              "login"
-            );
-
-            return;
-          }
-
-
-        } else {
-
-          const {
-            error
-          } =
-            await db.auth
-              .resetPasswordForEmail(
-                email,
-                {
-                  redirectTo:
-                    window.location.origin
-                }
-              );
-
-
-          if (error) {
-            throw error;
-          }
-
-
-          showToast(
-            "تم إرسال رابط الاستعادة إلى بريدك."
-          );
-
-          setAuthMode(
-            "login"
-          );
-
-          return;
-        }
-
-
-      } catch (error) {
-
-        console.error(
-          "Auth error:",
-          error
-        );
-
-        showAuthError(
-          translateAuthError(
-            error?.message
-          )
-        );
-
-      } finally {
-
-        $("authButton")
-          .disabled = false;
-      }
-    }
-
-
-    function translateAuthError(
-      message
-    ) {
-
-      const text =
-        String(
-          message || ""
-        ).toLowerCase();
-
-
-      if (
-        text.includes(
-          "invalid login credentials"
-        )
-      ) {
-        return "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
-      }
-
-
-      if (
-        text.includes(
-          "email not confirmed"
-        )
-      ) {
-        return "لازم تأكد بريدك الإلكتروني أولاً.";
-      }
-
-
-      if (
-        text.includes(
-          "user already registered"
-        )
-      ) {
-        return "هذا البريد مسجل مسبقاً.";
-      }
-
-
-      if (
-        text.includes(
-          "password should be at least"
-        )
-      ) {
-        return "كلمة المرور لازم تكون أقوى.";
-      }
-
-
-      return message ||
-        "صار خطأ. حاول مرة ثانية.";
-    }
-
-
-    /* =========================================================
-       PROFILE
-    ========================================================= */
-
-    async function loadProfile() {
-
-      if (!state.user) {
-        return;
-      }
-
-
-      const {
-        data,
-        error
-      } =
-        await db
-          .from("profiles")
-          .select(
-            "id, display_name"
-          )
-          .eq(
-            "id",
-            state.user.id
-          )
-          .maybeSingle();
-
-
-      if (error) {
-
-        console.warn(
-          "Profile:",
-          error
-        );
-
-        return;
-      }
-
-
-      state.profile =
-        data;
-
-
-      $("accountEmail")
-        .textContent =
-        state.user.email ||
-        "";
-    }
-
-
-    /* =========================================================
-       CONVERSATIONS
-    ========================================================= */
-
-    async function loadConversations() {
-
-      if (!state.user) {
-        return;
-      }
-
-
-      const {
-        data,
-        error
-      } =
-        await db
-          .from("conversations")
-          .select(
-            "id, title, messages, created_at, updated_at"
-          )
-          .eq(
-            "user_id",
-            state.user.id
-          )
-          .order(
-            "updated_at",
-            {
-              ascending: false
-            }
-          );
-
-
-      if (error) {
-
-        console.error(
-          "Conversation load:",
-          error
-        );
-
-        showToast(
-          "تعذّر تحميل المحادثات.",
-          true
-        );
-
-        return;
-      }
-
-
-      state.conversations =
-        data || [];
-
-
-      renderConversationList();
-    }
-
-
-    function renderConversationList() {
-
-      const list =
-        $("conversationList");
-
-      list.innerHTML =
-        "";
-
-
-      if (
-        state.conversations.length === 0
-      ) {
-
-        const empty =
-          document.createElement(
-            "div"
-          );
-
-        empty.style.cssText =
-          "color:#777;padding:10px;font-size:12px;";
-
-        empty.textContent =
-          "ماكو محادثات بعد.";
-
-        list.appendChild(
-          empty
-        );
-
-        return;
-      }
-
-
-      state.conversations.forEach(
-        conversation => {
-
-          const item =
-            document.createElement(
-              "div"
-            );
-
-          item.className =
-            "conversation-item";
-
-
-          if (
-            conversation.id ===
-            state.currentId
-          ) {
-
-            item.classList.add(
-              "active"
-            );
-          }
-
-
-          const openButton =
-            document.createElement(
-              "button"
-            );
-
-          openButton.style.cssText =
-            "flex:1;min-width:0;border:0;background:transparent;color:inherit;text-align:right;height:43px;";
-
-          const title =
-            document.createElement(
-              "span"
-            );
-
-          title.className =
-            "conversation-title";
-
-          title.textContent =
-            conversation.title ||
-            "محادثة جديدة";
-
-
-          openButton.appendChild(
-            title
-          );
-
-
-          openButton.addEventListener(
-            "click",
-            () => {
-
-              loadConversation(
-                conversation.id
-              );
-            }
-          );
-
-
-          const deleteButton =
-            document.createElement(
-              "button"
-            );
-
-          deleteButton.className =
-            "conversation-delete";
-
-          deleteButton.textContent =
-            "×";
-
-          deleteButton.title =
-            "حذف المحادثة";
-
-
-          deleteButton.addEventListener(
-            "click",
-            event => {
-
-              event.stopPropagation();
-
-              deleteConversation(
-                conversation.id
-              );
-            }
-          );
-
-
-          item.appendChild(
-            openButton
-          );
-
-          item.appendChild(
-            deleteButton
-          );
-
-          list.appendChild(
-            item
-          );
-        }
-      );
-    }
-
-
-    async function loadConversation(
-      id
-    ) {
-
-      const conversation =
-        state.conversations.find(
-          item =>
-            item.id === id
-        );
-
-
-      if (!conversation) {
-        return;
-      }
-
-
-      state.currentId =
-        conversation.id;
-
-
-      state.messages =
-        Array.isArray(
-          conversation.messages
-        )
-          ? conversation.messages
-          : [];
-
-
-      $("chatTitle")
-        .textContent =
+      name.textContent =
         conversation.title ||
         "محادثة جديدة";
 
+      const deleteButton =
+        document.createElement("button");
 
-      renderMessages();
+      deleteButton.className =
+        "delete-conversation";
 
-      renderConversationList();
+      deleteButton.textContent =
+        "×";
 
-      closeSidebar();
+      deleteButton.title =
+        "حذف المحادثة";
+
+      deleteButton.addEventListener(
+        "click",
+        async (event) => {
+
+          event.stopPropagation();
+
+          await deleteConversation(
+            conversation.id
+          );
+        }
+      );
+
+      item.appendChild(name);
+      item.appendChild(deleteButton);
+
+      item.addEventListener(
+        "click",
+        async () => {
+
+          await openConversation(
+            conversation.id
+          );
+
+          closeMobileSidebar();
+        }
+      );
+
+      list.appendChild(item);
     }
+  );
+}
 
 
-    async function deleteConversation(
+async function openConversation(id) {
+
+  const conversation =
+    state.conversations.find(
+      (item) => item.id === id
+    );
+
+  if (!conversation) {
+    return;
+  }
+
+  state.currentId =
+    conversation.id;
+
+  state.messages =
+    Array.isArray(conversation.messages)
+      ? conversation.messages
+      : [];
+
+  $("topTitle").textContent =
+    conversation.title ||
+    "محادثة جديدة";
+
+  renderConversationList();
+  renderMessages();
+}
+
+
+function createNewConversationUI() {
+
+  state.currentId = null;
+  state.messages = [];
+
+  $("topTitle").textContent =
+    "محادثة جديدة";
+
+  renderConversationList();
+  renderMessages();
+
+  setTimeout(() => {
+    $("messageInput").focus();
+  }, 100);
+}
+
+
+$("newChatButton").addEventListener(
+  "click",
+  () => {
+
+    createNewConversationUI();
+
+    closeMobileSidebar();
+  }
+);
+
+
+async function createConversation(
+  firstMessage
+) {
+
+  const title =
+    firstMessage
+      .trim()
+      .replace(/\s+/g, " ")
+      .slice(0, 55) ||
+    "محادثة جديدة";
+
+  const {
+    data,
+    error
+  } = await db
+    .from("conversations")
+    .insert({
+      user_id: state.user.id,
+      title,
+      messages: []
+    })
+    .select()
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  state.conversations.unshift(
+    data
+  );
+
+  state.currentId =
+    data.id;
+
+  renderConversationList();
+
+  return data;
+}
+
+
+async function saveCurrentConversation() {
+
+  if (
+    !state.user ||
+    !state.currentId
+  ) {
+    return;
+  }
+
+  const {
+    error
+  } = await db
+    .from("conversations")
+    .update({
+      messages: state.messages,
+      updated_at: new Date().toISOString()
+    })
+    .eq(
+      "id",
+      state.currentId
+    )
+    .eq(
+      "user_id",
+      state.user.id
+    );
+
+  if (error) {
+
+    console.error(
+      "Save conversation:",
+      error
+    );
+
+    throw error;
+  }
+
+  const item =
+    state.conversations.find(
+      (conversation) =>
+        conversation.id ===
+        state.currentId
+    );
+
+  if (item) {
+
+    item.messages =
+      state.messages;
+
+    item.updated_at =
+      new Date().toISOString();
+  }
+
+  state.conversations.sort(
+    (a, b) =>
+      new Date(b.updated_at) -
+      new Date(a.updated_at)
+  );
+
+  renderConversationList();
+}
+
+
+async function deleteConversation(id) {
+
+  if (!state.user) {
+    return;
+  }
+
+  const confirmed =
+    confirm(
+      "متأكد تريد حذف هاي المحادثة؟"
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+  const {
+    error
+  } = await db
+    .from("conversations")
+    .delete()
+    .eq(
+      "id",
       id
-    ) {
-
-      if (
-        !confirm(
-          "تحذف هاي المحادثة؟"
-        )
-      ) {
-        return;
-      }
-
-
-      const {
-        error
-      } =
-        await db
-          .from("conversations")
-          .delete()
-          .eq(
-            "id",
-            id
-          )
-          .eq(
-            "user_id",
-            state.user.id
-          );
-
-
-      if (error) {
-
-        console.error(
-          "Delete conversation:",
-          error
-        );
-
-        showToast(
-          "تعذّر حذف المحادثة.",
-          true
-        );
-
-        return;
-      }
-
-
-      if (
-        state.currentId === id
-      ) {
-
-        state.currentId =
-          null;
-
-        state.messages =
-          [];
-
-        $("chatTitle")
-          .textContent =
-          "محادثة جديدة";
-
-        renderMessages();
-      }
-
-
-      await loadConversations();
-    }
-
-
-    function newConversation() {
-
-      state.currentId =
-        null;
-
-      state.messages =
-        [];
-
-      $("chatTitle")
-        .textContent =
-        "محادثة جديدة";
-
-      renderMessages();
-
-      renderConversationList();
-
-      closeSidebar();
-
-      $("messageInput")
-        .focus();
-    }
-
-
-    async function saveConversation() {
-
-      if (!state.user) {
-        return;
-      }
-
-
-      const firstMessage =
-        state.messages.find(
-          message =>
-            message.role ===
-            "user"
-        );
-
-
-      let title =
-        firstMessage?.content ||
-        "محادثة جديدة";
-
-
-      title =
-        title
-          .replace(
-            /\s+/g,
-            " "
-          )
-          .trim()
-          .slice(
-            0,
-            60
-          );
-
-
-      if (!title) {
-        title =
-          "محادثة جديدة";
-      }
-
-
-      if (state.currentId) {
-
-        const {
-          error
-        } =
-          await db
-            .from("conversations")
-            .update({
-              title,
-              messages:
-                state.messages,
-              updated_at:
-                new Date().toISOString()
-            })
-            .eq(
-              "id",
-              state.currentId
-            )
-            .eq(
-              "user_id",
-              state.user.id
-            );
-
-
-        if (error) {
-
-          console.error(
-            "Conversation update:",
-            error
-          );
-
-          return;
-        }
-
-
-      } else {
-
-        const {
-          data,
-          error
-        } =
-          await db
-            .from("conversations")
-            .insert({
-              user_id:
-                state.user.id,
-
-              title,
-
-              messages:
-                state.messages
-            })
-            .select(
-              "id"
-            )
-            .single();
-
-
-        if (error) {
-
-          console.error(
-            "Conversation insert:",
-            error
-          );
-
-          showToast(
-            "تم الرد، لكن تعذّر حفظ المحادثة.",
-            true
-          );
-
-          return;
-        }
-
-
-        state.currentId =
-          data.id;
-      }
-
-
-      $("chatTitle")
-        .textContent =
-        title;
-
-
-      await loadConversations();
-    }
-
-
-    /* =========================================================
-       MARKDOWN-LIKE RENDERER
-    ========================================================= */
-
-    function renderAIText(
-      text
-    ) {
-
-      let safe =
-        escapeHTML(
-          text
-        );
-
-
-      const codeBlocks =
-        [];
-
-
-      safe =
-        safe.replace(
-          /```([\s\S]*?)```/g,
-          (
-            full,
-            code
-          ) => {
-
-            const index =
-              codeBlocks.length;
-
-            codeBlocks.push(
-              code.trim()
-            );
-
-            return `@@CODE_${index}@@`;
-          }
-        );
-
-
-      safe =
-        safe.replace(
-          /\*\*(.+?)\*\*/g,
-          "<strong>$1</strong>"
-        );
-
-
-      safe =
-        safe.replace(
-          /`([^`]+)`/g,
-          '<code class="inline-code">$1</code>'
-        );
-
-
-      const lines =
-        safe.split("\n");
-
-
-      let html =
-        "";
-
-      let listOpen =
-        false;
-
-
-      for (
-        let i = 0;
-        i < lines.length;
-        i++
-      ) {
-
-        const line =
-          lines[i];
-
-
-        if (
-          line.startsWith("- ") ||
-          line.startsWith("• ")
-        ) {
-
-          if (!listOpen) {
-
-            html +=
-              "<ul>";
-
-            listOpen =
-              true;
-          }
-
-
-          html +=
-            "<li>" +
-            line.slice(2) +
-            "</li>";
-
-          continue;
-        }
-
-
-        if (listOpen) {
-
-          html +=
-            "</ul>";
-
-          listOpen =
-            false;
-        }
-
-
-        if (
-          line.trim() === ""
-        ) {
-
-          html +=
-            "<br>";
-
-        } else {
-
-          html +=
-            "<p>" +
-            line +
-            "</p>";
-        }
-      }
-
-
-      if (listOpen) {
-        html += "</ul>";
-      }
-
-
-      html =
-        html.replace(
-          /@@CODE_(\d+)@@/g,
-          (
-            full,
-            index
-          ) => {
-
-            const code =
-              codeBlocks[
-                Number(index)
-              ] || "";
-
-            const encoded =
-              encodeURIComponent(
-                code
-              );
-
-
-            return `
-              <div class="code-wrap">
-                <div class="code-header">
-                  <span>Code</span>
-                  <button
-                    class="copy-code-btn"
-                    data-code="${encoded}"
-                  >
-                    نسخ
-                  </button>
-                </div>
-                <pre>${code}</pre>
-              </div>
-            `;
-          }
-        );
-
-
-      return html;
-    }
-
-
-    /* =========================================================
-       MESSAGES
-    ========================================================= */
-
-    function renderMessages() {
-
-      const container =
-        $("messages");
-
-      container.innerHTML =
-        "";
-
-
-      if (
-        state.messages.length === 0
-      ) {
-
-        const welcome =
-          document.createElement(
-            "div"
-          );
-
-        welcome.className =
-          "welcome";
-
-
-        welcome.innerHTML = `
-          <div class="welcome-logo">
-            AI
-          </div>
-
-          <h1>
-            شلون أگدر أساعدك؟
-          </h1>
-
-          <p>
-            اسأل Ayham AI أي سؤال.
-          </p>
-        `;
-
-
-        container.appendChild(
-          welcome
-        );
-
-        return;
-      }
-
-
-      state.messages.forEach(
-        message => {
-
-          addMessageElement(
-            message.role,
-            message.content
-          );
-        }
-      );
-
-
-      scrollToBottom();
-    }
-
-
-    function addMessageElement(
-      role,
-      content
-    ) {
-
-      const row =
-        document.createElement(
-          "div"
-        );
-
-      row.className =
-        "message-row " +
-        (
-          role === "user"
-            ? "user"
-            : "assistant"
-        );
-
-
-      const inner =
-        document.createElement(
-          "div"
-        );
-
-      inner.className =
-        "message-inner";
-
-
-      const avatar =
-        document.createElement(
-          "div"
-        );
-
-      avatar.className =
-        "avatar " +
-        (
-          role === "user"
-            ? "user-avatar"
-            : "ai-avatar"
-        );
-
-      avatar.textContent =
-        role === "user"
-          ? "أنت"
-          : "AI";
-
-
-      const contentBox =
-        document.createElement(
-          "div"
-        );
-
-      contentBox.className =
-        "message-content";
-
-
-      const name =
-        document.createElement(
-          "div"
-        );
-
-      name.className =
-        "message-name";
-
-      name.textContent =
-        role === "user"
-          ? "أنت"
-          : "Ayham AI";
-
-
-      const bubble =
-        document.createElement(
-          "div"
-        );
-
-      bubble.className =
-        "bubble";
-
-
-      if (
-        role === "assistant"
-      ) {
-
-        bubble.innerHTML =
-          renderAIText(
-            content
-          );
-
-      } else {
-
-        bubble.textContent =
-          content;
-      }
-
-
-      contentBox.appendChild(
-        name
-      );
-
-      contentBox.appendChild(
-        bubble
-      );
-
-
-      if (
-        role === "assistant"
-      ) {
-
-        const copyButton =
-          document.createElement(
-            "button"
-          );
-
-        copyButton.className =
-          "copy-answer";
-
-        copyButton.textContent =
-          "نسخ الرد";
-
-        copyButton.addEventListener(
-          "click",
-          async () => {
-
-            await copyText(
-              content
-            );
-
-            copyButton.textContent =
-              "تم النسخ ✓";
-
-            setTimeout(() => {
-              copyButton.textContent =
-                "نسخ الرد";
-            }, 1500);
-          }
-        );
-
-
-        contentBox.appendChild(
-          copyButton
-        );
-      }
-
-
-      inner.appendChild(
-        avatar
-      );
-
-      inner.appendChild(
-        contentBox
-      );
-
-      row.appendChild(
-        inner
-      );
-
-
-      $("messages")
-        .appendChild(
-          row
-        );
-    }
-
-
-    /* =========================================================
-       COPY
-    ========================================================= */
-
-    async function copyText(
-      text
-    ) {
-
-      try {
-
-        await navigator.clipboard.writeText(
-          text
-        );
-
-        showToast(
-          "تم النسخ."
-        );
-
-      } catch {
-
-        showToast(
-          "تعذّر النسخ.",
-          true
-        );
-      }
-    }
-
-
-    document.addEventListener(
-      "click",
-      event => {
-
-        const button =
-          event.target.closest(
-            ".copy-code-btn"
-          );
-
-
-        if (!button) {
-          return;
-        }
-
-
-        try {
-
-          const code =
-            decodeURIComponent(
-              button.dataset.code
-            );
-
-
-          navigator.clipboard
-            .writeText(
-              code
-            );
-
-
-          button.textContent =
-            "تم النسخ ✓";
-
-
-          setTimeout(() => {
-
-            button.textContent =
-              "نسخ";
-
-          }, 1500);
-
-        } catch {
-
-          showToast(
-            "تعذّر نسخ الكود.",
-            true
-          );
-        }
-      }
+    )
+    .eq(
+      "user_id",
+      state.user.id
     );
 
+  if (error) {
 
-    /* =========================================================
-       AI REPLY
-    ========================================================= */
+    console.error(error);
 
-    function extractAIReply(
+    showToast(
+      "تعذّر حذف المحادثة.",
+      true
+    );
+
+    return;
+  }
+
+  state.conversations =
+    state.conversations.filter(
+      (conversation) =>
+        conversation.id !== id
+    );
+
+  if (state.currentId === id) {
+
+    if (state.conversations.length) {
+
+      await openConversation(
+        state.conversations[0].id
+      );
+
+    } else {
+
+      createNewConversationUI();
+    }
+  }
+
+  renderConversationList();
+
+  showToast(
+    "تم حذف المحادثة."
+  );
+}
+
+
+/* =========================================================
+   RENDER MESSAGES
+========================================================= */
+
+function renderMessages() {
+
+  const container =
+    $("messagesInner");
+
+  container.innerHTML = "";
+
+  if (!state.messages.length) {
+
+    const welcome =
+      document.createElement("div");
+
+    welcome.className =
+      "welcome";
+
+    welcome.innerHTML = `
+      <div class="welcome-logo">AI</div>
+      <h1>شلون أگدر أساعدك؟</h1>
+      <p>اسألني أي سؤال وراح أحاول أساعدك.</p>
+    `;
+
+    container.appendChild(
+      welcome
+    );
+
+    return;
+  }
+
+  state.messages.forEach(
+    (message) => {
+
+      addMessageToDOM(
+        message.role,
+        message.content
+      );
+    }
+  );
+
+  scrollToBottom();
+}
+
+
+function addMessageToDOM(
+  role,
+  content
+) {
+
+  const container =
+    $("messagesInner");
+
+  const message =
+    document.createElement("div");
+
+  message.className =
+    "message " +
+    (
+      role === "user"
+        ? "user"
+        : "assistant"
+    );
+
+  const avatar =
+    document.createElement("div");
+
+  avatar.className =
+    "avatar";
+
+  avatar.textContent =
+    role === "user"
+      ? "أنت"
+      : "AI";
+
+  const body =
+    document.createElement("div");
+
+  body.className =
+    "message-content";
+
+  body.textContent =
+    content;
+
+  message.appendChild(
+    avatar
+  );
+
+  message.appendChild(
+    body
+  );
+
+  container.appendChild(
+    message
+  );
+}
+
+
+function addTyping() {
+
+  const container =
+    $("messagesInner");
+
+  const message =
+    document.createElement("div");
+
+  message.className =
+    "message assistant";
+
+  message.id =
+    "typingMessage";
+
+  message.innerHTML = `
+    <div class="avatar">AI</div>
+    <div class="message-content">
+      <div class="typing">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  `;
+
+  container.appendChild(
+    message
+  );
+
+  scrollToBottom();
+}
+
+
+function removeTyping() {
+
+  const typing =
+    $("typingMessage");
+
+  if (typing) {
+    typing.remove();
+  }
+}
+
+
+function scrollToBottom() {
+
+  const box =
+    $("messages");
+
+  requestAnimationFrame(
+    () => {
+      box.scrollTop =
+        box.scrollHeight;
+    }
+  );
+}
+
+
+/* =========================================================
+   AI CHAT
+========================================================= */
+
+async function callAIChat() {
+
+  if (!state.user) {
+    throw new Error(
+      "لازم تسجل الدخول أولاً."
+    );
+  }
+
+  const {
+    data: sessionData,
+    error: sessionError
+  } = await db.auth.getSession();
+
+  if (sessionError) {
+    throw sessionError;
+  }
+
+  const session =
+    sessionData?.session;
+
+  if (!session?.access_token) {
+
+    throw new Error(
+      "جلسة الدخول انتهت. سجّل الدخول مرة ثانية."
+    );
+  }
+
+  const payload = {
+    messages: state.messages.slice(-20)
+  };
+
+  const {
+    data,
+    error
+  } = await db.functions.invoke(
+    "ai-chat",
+    {
+      body: payload
+    }
+  );
+
+  if (error) {
+
+    console.error(
+      "Edge Function error:",
+      error
+    );
+
+    throw new Error(
+      "تعذّر الاتصال بـ ai-chat. تأكد أن Edge Function منشورة وأنها تستقبل POST."
+    );
+  }
+
+  if (!data) {
+
+    throw new Error(
+      "Edge Function رجعت استجابة فارغة."
+    );
+  }
+
+  if (data.error) {
+
+    throw new Error(
+      data.error
+    );
+  }
+
+  const reply =
+    data.reply ||
+    data.answer ||
+    data.message;
+
+  if (
+    typeof reply !== "string" ||
+    !reply.trim()
+  ) {
+
+    console.error(
+      "Invalid AI response:",
       data
-    ) {
-
-      if (
-        typeof data?.reply ===
-        "string"
-      ) {
-        return data.reply.trim();
-      }
-
-
-      if (
-        typeof data?.answer ===
-        "string"
-      ) {
-        return data.answer.trim();
-      }
-
-
-      if (
-        typeof data?.choices?.[0]?.message?.content ===
-        "string"
-      ) {
-
-        return data
-          .choices[0]
-          .message
-          .content
-          .trim();
-      }
-
-
-      return "";
-    }
-
-
-    /* =========================================================
-       CALL EDGE FUNCTION
-    ========================================================= */
-
-    async function callAIChat(
-      userMessage
-    ) {
-
-      const {
-        data,
-        error
-      } =
-        await db.auth.getSession();
-
-
-      if (error) {
-
-        console.error(
-          "Session error:",
-          error
-        );
-
-        throw new Error(
-          "تعذّر الحصول على جلسة الدخول."
-        );
-      }
-
-
-      const session =
-        data?.session;
-
-
-      if (
-        !session?.access_token
-      ) {
-
-        throw new Error(
-          "جلسة الدخول منتهية. سجّل الدخول مرة ثانية."
-        );
-      }
-
-
-      /*
-       * نستخدم fetch مباشر بدلاً من invoke
-       * حتى نضمن إرسال Authorization.
-       */
-
-      const response =
-        await fetch(
-          `${SUPABASE_URL}/functions/v1/ai-chat`,
-          {
-            method: "POST",
-
-            headers: {
-              "Content-Type":
-                "application/json",
-
-              "apikey":
-                SUPABASE_ANON_KEY,
-
-              "Authorization":
-                `Bearer ${session.access_token}`
-            },
-
-            body:
-              JSON.stringify({
-                message:
-                  userMessage,
-
-                messages:
-                  state.messages,
-
-                user_id:
-                  state.user.id,
-
-                conversation_id:
-                  state.currentId
-              })
-          }
-        );
-
-
-      let result;
-
-
-      try {
-
-        result =
-          await response.json();
-
-      } catch {
-
-        throw new Error(
-          "الـ Edge Function رجعت استجابة غير صالحة."
-        );
-      }
-
-
-      console.log(
-        "Ayham AI:",
-        response.status,
-        result
-      );
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          result?.error ||
-          `خطأ من الخادم (${response.status})`
-        );
-      }
-
-
-      const answer =
-        extractAIReply(
-          result
-        );
-
-
-      if (!answer) {
-
-        throw new Error(
-          result?.error ||
-          "الذكاء الاصطناعي ما رجع جواب."
-        );
-      }
-
-
-      return answer;
-    }
-
-
-    /* =========================================================
-       SEND
-    ========================================================= */
-
-    async function sendMessage() {
-
-      if (
-        state.sending
-      ) {
-        return;
-      }
-
-
-      if (!state.user) {
-
-        showToast(
-          "سجّل الدخول أولاً.",
-          true
-        );
-
-        return;
-      }
-
-
-      const input =
-        $("messageInput");
-
-
-      const text =
-        input.value.trim();
-
-
-      if (!text) {
-        return;
-      }
-
-
-      state.sending =
-        true;
-
-
-      $("sendButton")
-        .disabled = true;
-
-
-      input.value =
-        "";
-
-
-      resizeTextarea();
-
-
-      state.messages.push({
-        role: "user",
-        content: text
-      });
-
-
-      renderMessages();
-
-
-      addTyping();
-
-
-      try {
-
-        const answer =
-          await callAIChat(
-            text
-          );
-
-
-        removeTyping();
-
-
-        state.messages.push({
-          role: "assistant",
-          content: answer
-        });
-
-
-        renderMessages();
-
-
-        await saveConversation();
-
-
-      } catch (error) {
-
-        removeTyping();
-
-
-        console.error(
-          "Send error:",
-          error
-        );
-
-
-        showToast(
-          error?.message ||
-          "صار خطأ أثناء إرسال الرسالة.",
-          true
-        );
-
-
-      } finally {
-
-        state.sending =
-          false;
-
-
-        $("sendButton")
-          .disabled = false;
-
-
-        input.focus();
-      }
-    }
-
-
-    function addTyping() {
-
-      removeTyping();
-
-
-      const row =
-        document.createElement(
-          "div"
-        );
-
-      row.id =
-        "typingMessage";
-
-      row.className =
-        "message-row assistant";
-
-
-      row.innerHTML = `
-        <div class="message-inner">
-          <div class="avatar ai-avatar">
-            AI
-          </div>
-
-          <div class="message-content">
-            <div class="message-name">
-              Ayham AI
-            </div>
-
-            <div class="bubble">
-              <div class="typing">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-
-
-      $("messages")
-        .appendChild(
-          row
-        );
-
-
-      scrollToBottom();
-    }
-
-
-    function removeTyping() {
-
-      const typing =
-        $("typingMessage");
-
-
-      if (typing) {
-        typing.remove();
-      }
-    }
-
-
-    function scrollToBottom() {
-
-      const area =
-        $("chatScroll");
-
-
-      setTimeout(() => {
-
-        area.scrollTop =
-          area.scrollHeight;
-
-      }, 20);
-    }
-
-
-    /* =========================================================
-       TEXTAREA
-    ========================================================= */
-
-    function resizeTextarea() {
-
-      const input =
-        $("messageInput");
-
-
-      input.style.height =
-        "auto";
-
-
-      input.style.height =
-        Math.min(
-          input.scrollHeight,
-          180
-        ) + "px";
-    }
-
-
-    /* =========================================================
-       SIDEBAR
-    ========================================================= */
-
-    function openSidebar() {
-
-      $("sidebar")
-        .classList.add(
-          "open"
-        );
-
-      $("sidebarOverlay")
-        .classList.add(
-          "open"
-        );
-    }
-
-
-    function closeSidebar() {
-
-      $("sidebar")
-        .classList.remove(
-          "open"
-        );
-
-      $("sidebarOverlay")
-        .classList.remove(
-          "open"
-        );
-    }
-
-
-    /* =========================================================
-       LOGOUT
-    ========================================================= */
-
-    async function logout() {
-
-      const {
-        error
-      } =
-        await db.auth.signOut();
-
-
-      if (error) {
-
-        showToast(
-          "تعذّر تسجيل الخروج.",
-          true
-        );
-
-        return;
-      }
-
-
-      state.user =
-        null;
-
-      state.profile =
-        null;
-
-      state.conversations =
-        [];
-
-      state.currentId =
-        null;
-
-      state.messages =
-        [];
-
-
-      $("app")
-        .classList.add(
-          "hidden"
-        );
-
-      $("authScreen")
-        .classList.remove(
-          "hidden"
-        );
-
-
-      $("emailInput")
-        .value = "";
-
-      $("passwordInput")
-        .value = "";
-
-      $("nameInput")
-        .value = "";
-
-
-      setAuthMode(
-        "login"
-      );
-    }
-
-
-    /* =========================================================
-       INITIALIZE
-    ========================================================= */
-
-    async function initializeUser(
-      user
-    ) {
-
-      if (state.initializing) {
-        return;
-      }
-
-
-      state.initializing =
-        true;
-
-
-      try {
-
-        if (!user) {
-
-          state.user =
-            null;
-
-          state.profile =
-            null;
-
-          state.conversations =
-            [];
-
-          state.currentId =
-            null;
-
-          state.messages =
-            [];
-
-
-          $("app")
-            .classList.add(
-              "hidden"
-            );
-
-          $("authScreen")
-            .classList.remove(
-              "hidden"
-            );
-
-
-          return;
-        }
-
-
-        state.user =
-          user;
-
-
-        $("authScreen")
-          .classList.add(
-            "hidden"
-          );
-
-        $("app")
-          .classList.remove(
-            "hidden"
-          );
-
-
-        $("accountEmail")
-          .textContent =
-          user.email || "";
-
-
-        await loadProfile();
-
-        await loadConversations();
-
-
-        if (
-          state.conversations.length > 0
-        ) {
-
-          await loadConversation(
-            state.conversations[0].id
-          );
-
-        } else {
-
-          newConversation();
-        }
-
-
-      } finally {
-
-        state.initializing =
-          false;
-      }
-    }
-
-
-    /* =========================================================
-       EVENTS
-    ========================================================= */
-
-    $("authButton")
-      .addEventListener(
-        "click",
-        handleAuth
-      );
-
-
-    $("switchAuth")
-      .addEventListener(
-        "click",
-        () => {
-
-          if (
-            state.authMode ===
-            "login"
-          ) {
-
-            setAuthMode(
-              "signup"
-            );
-
-          } else {
-
-            setAuthMode(
-              "login"
-            );
-          }
-        }
-      );
-
-
-    $("forgotButton")
-      .addEventListener(
-        "click",
-        () => {
-
-          setAuthMode(
-            "reset"
-          );
-        }
-      );
-
-
-    $("newChatButton")
-      .addEventListener(
-        "click",
-        newConversation
-      );
-
-
-    $("logoutButton")
-      .addEventListener(
-        "click",
-        logout
-      );
-
-
-    $("sendButton")
-      .addEventListener(
-        "click",
-        sendMessage
-      );
-
-
-    $("messageInput")
-      .addEventListener(
-        "input",
-        resizeTextarea
-      );
-
-
-    $("messageInput")
-      .addEventListener(
-        "keydown",
-        event => {
-
-          if (
-            event.key === "Enter" &&
-            !event.shiftKey
-          ) {
-
-            event.preventDefault();
-
-            sendMessage();
-          }
-        }
-      );
-
-
-    $("mobileMenuButton")
-      .addEventListener(
-        "click",
-        openSidebar
-      );
-
-
-    $("sidebarOverlay")
-      .addEventListener(
-        "click",
-        closeSidebar
-      );
-
-
-    /* =========================================================
-       ENTER KEY AUTH
-    ========================================================= */
-
-    [
-      "emailInput",
-      "passwordInput",
-      "nameInput"
-    ].forEach(
-      id => {
-
-        $(id)
-          .addEventListener(
-            "keydown",
-            event => {
-
-              if (
-                event.key === "Enter"
-              ) {
-
-                event.preventDefault();
-
-                handleAuth();
-              }
-            }
-          );
-      }
     );
 
+    throw new Error(
+      "الذكاء الاصطناعي ما رجّع جواب صالح."
+    );
+  }
 
-    /* =========================================================
-       AUTH STATE
-    ========================================================= */
-
-    db.auth.onAuthStateChange(
-      async (
-        event,
-        session
-      ) => {
-
-        /*
-         * INITIAL_SESSION:
-         * أول ما الموقع يفتح.
-         *
-         * SIGNED_IN:
-         * بعد تسجيل الدخول.
-         *
-         * SIGNED_OUT:
-         * بعد تسجيل الخروج.
-         */
-
-        if (
-          session?.user
-        ) {
-
-          state.user =
-            session.user;
+  return reply.trim();
+}
 
 
-          await initializeUser(
-            session.user
-          );
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
 
-        } else if (
-          event ===
-          "SIGNED_OUT"
-        ) {
+async function sendMessage() {
 
-          await initializeUser(
-            null
-          );
-        }
-      }
+  if (state.sending) {
+    return;
+  }
+
+  const input =
+    $("messageInput");
+
+  const text =
+    input.value.trim();
+
+  if (!text) {
+    return;
+  }
+
+  if (!state.user) {
+
+    showToast(
+      "سجّل الدخول أولاً.",
+      true
     );
 
+    return;
+  }
 
-    /* =========================================================
-       BOOT
-    ========================================================= */
+  state.sending = true;
 
-    (async () => {
+  $("sendButton").disabled =
+    true;
 
-      try {
+  input.value = "";
 
-        const {
-          data,
-          error
-        } =
-          await db.auth.getSession();
+  autoResizeTextarea();
+
+  try {
+
+    /*
+      إذا ما عندنا محادثة حالياً،
+      ننشئ واحدة قبل الإرسال.
+    */
+
+    if (!state.currentId) {
+
+      await createConversation(
+        text
+      );
+    }
+
+    state.messages.push({
+      role: "user",
+      content: text
+    });
+
+    renderMessages();
+
+    addTyping();
+
+    await saveCurrentConversation();
+
+    const answer =
+      await callAIChat();
+
+    removeTyping();
+
+    state.messages.push({
+      role: "assistant",
+      content: answer
+    });
+
+    renderMessages();
+
+    await saveCurrentConversation();
+
+    showToast(
+      "تم استلام الرد."
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Send message error:",
+      error
+    );
+
+    removeTyping();
+
+    /*
+      إذا الرسالة انضافت للمحادثة
+      وما صار رد، نعرض الخطأ.
+    */
+
+    addMessageToDOM(
+      "assistant",
+      "عذراً، ما گدرت أحصل على رد من الذكاء الاصطناعي.\n\n" +
+      translateError(error)
+    );
+
+    scrollToBottom();
+
+  } finally {
+
+    state.sending = false;
+
+    $("sendButton").disabled =
+      false;
+
+    input.focus();
+  }
+}
 
 
-        if (error) {
-
-          console.error(
-            "Startup session error:",
-            error
-          );
-
-          setAuthMode(
-            "login"
-          );
-
-          return;
-        }
+$("sendButton").addEventListener(
+  "click",
+  sendMessage
+);
 
 
-        if (
-          data?.session?.user
-        ) {
+$("messageInput").addEventListener(
+  "keydown",
+  (event) => {
 
-          await initializeUser(
-            data.session.user
-          );
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey
+    ) {
 
-        } else {
+      event.preventDefault();
 
-          setAuthMode(
-            "login"
-          );
-        }
+      sendMessage();
+    }
+  }
+);
 
 
-      } catch (error) {
+/* =========================================================
+   TEXTAREA
+========================================================= */
 
-        console.error(
-          "Boot error:",
-          error
-        );
+function autoResizeTextarea() {
 
-        setAuthMode(
-          "login"
-        );
-      }
+  const textarea =
+    $("messageInput");
 
-    })();
+  textarea.style.height =
+    "auto";
 
-  </script>
+  textarea.style.height =
+    Math.min(
+      textarea.scrollHeight,
+      180
+    ) + "px";
+}
+
+
+$("messageInput").addEventListener(
+  "input",
+  autoResizeTextarea
+);
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+$("logoutButton").addEventListener(
+  "click",
+  async () => {
+
+    const {
+      error
+    } = await db.auth.signOut();
+
+    if (error) {
+
+      showToast(
+        translateError(error),
+        true
+      );
+
+      return;
+    }
+
+    showToast(
+      "تم تسجيل الخروج."
+    );
+  }
+);
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+$("mobileMenu").addEventListener(
+  "click",
+  () => {
+
+    $("sidebar").classList.toggle(
+      "open"
+    );
+  }
+);
+
+
+function closeMobileSidebar() {
+
+  $("sidebar").classList.remove(
+    "open"
+  );
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+updateAuthUI();
+
+initialize();
+
+</script>
 
 </body>
 </html>
